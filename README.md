@@ -1,4 +1,5 @@
-<h1 align="center">Welcome to Crypto Tracker 👋</h1>
+<h1 align="center">Crypto Tracker <img src='https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/32/icon/btc.png'>
+</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1-blue.svg?cacheSeconds=2592000" />
   <a href="#" target="_blank">
@@ -11,11 +12,11 @@
 
 ## Virtual crypto currency trading exchange
 
-> Currently WIP
+### WIP
 
 ## Author
 
-👤 **Saul Maldonad**
+👤 **Saul Maldonado**
 
 - Website: https://saulmaldonado.tech/
 - Twitter: [@saul_mal](https://twitter.com/saul_mal)
