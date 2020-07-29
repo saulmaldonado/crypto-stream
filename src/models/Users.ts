@@ -1,16 +1,15 @@
-import { Document, model, Model } from 'mongoose';
-import { UserSchema } from '../schemas/Users';
+import { getModelForClass } from '@typegoose/typegoose';
+import { UserInputError } from 'apollo-server-express';
+import { User } from '../schemas/Users';
 
-interface IUser extends Document {
-  username: string;
-  password: string;
-  email: string;
-}
+const UsersModel = getModelForClass(User, {
+  schemaOptions: { collection: 'auth' },
+});
 
-const UsersModel: Model<IUser> = model<IUser>('User', UserSchema);
-
-export const createUser = async (
-  user: Pick<IUser, 'username' | 'password' | 'email'>
-): Promise<void> => {
-  await UsersModel.create(user);
+export const createUser = async (user: User): Promise<User | never> => {
+  try {
+    return await UsersModel.create(user);
+  } catch (error) {
+    throw new UserInputError(error.message);
+  }
 };

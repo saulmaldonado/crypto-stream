@@ -3,23 +3,20 @@
   "version": "1.0.0",
   "description": "backend for the crypto-tracker app",
   "main": "build/index.js",
-  "nodemonConfig": {
-    "watch": "src",
-    "ext": ".ts",
-    "exec": "ts-node ./src/index.ts"
-  },
   "scripts": {
     "build": "tsc",
     "initdb": "ts-node initDatabase.ts",
-    "resetdb": "ts-node initDatabase.ts",
-    "start": "nodemon",
+    "resetdb": "ts-node initDatabase.ts --reset",
+    "start": "tsnd --respawn ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Saul Maldonado",
   "license": "MIT",
   "dependencies": {
+    "@typegoose/typegoose": "^7.3.1",
     "apollo-server-express": "^2.16.1",
+    "argon2": "^0.26.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
@@ -34,7 +31,7 @@
     "@types/mongodb": "^3.5.25",
     "@types/mongoose": "^5.7.32",
     "@types/node": "^14.0.26",
-    "nodemon": "^2.0.4",
+    "ts-node-dev": "^1.0.0-pre.56",
     "typescript": "^4.0.0-dev.20200727"
   }
 }
