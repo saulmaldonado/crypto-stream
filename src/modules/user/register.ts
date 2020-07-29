@@ -1,24 +1,20 @@
-import { Resolver, Query, Mutation, Arg } from 'type-graphql';
+import { Resolver, Mutation, Arg, Query } from 'type-graphql';
 import { hash } from 'argon2';
 
 import { createUser } from '../../models/Users';
 import { User } from '../../schemas/Users';
-import { ApolloError, UserInputError } from 'apollo-server-express';
-import { Error } from 'mongoose';
+import { ApolloError } from 'apollo-server-express';
+import { RegisterInput } from './input/registerInput';
 
 @Resolver()
 export class RegisterResolver {
   @Query(() => String)
   hello() {
-    return 'Hello';
+    return 'hello';
   }
 
   @Mutation(() => User)
-  async register(
-    @Arg('username') username: string,
-    @Arg('email') email: string,
-    @Arg('password') password: string
-  ): Promise<User | void> {
+  async register(@Arg('data') { email, password, username }: RegisterInput): Promise<User | void> {
     try {
       password = await hash(password);
     } catch (error) {

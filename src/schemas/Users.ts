@@ -4,7 +4,7 @@ import { ObjectID } from 'mongodb';
 
 @ObjectType()
 export class User {
-  @Field(() => ID)
+  @Field((type) => ID)
   id?: ObjectID;
 
   @Field()

@@ -2,7 +2,7 @@ import express from 'express';
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-express';
 import { config } from 'dotenv';
-import { buildSchema, Query, Resolver } from 'type-graphql';
+import { buildSchema, ArgumentValidationError } from 'type-graphql';
 import { connect } from './connect';
 
 import { RegisterResolver } from './modules/user/register';
