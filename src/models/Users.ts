@@ -1,13 +1,13 @@
 import { getModelForClass } from '@typegoose/typegoose';
-import { UserInputError } from 'apollo-server-express';
-import { MongoError } from 'mongodb';
+import { CollectionNames } from '../config/DbConfig';
+import { RegisterInput } from '../modules/auth/input/registerInput';
 import { User } from '../schemas/Users';
 
-const UsersModel = getModelForClass(User, {
-  schemaOptions: { collection: 'auth' },
+export const UsersModel = getModelForClass(User, {
+  schemaOptions: { collection: CollectionNames.AUTH },
 });
 
-export const createUser = async (user: User): Promise<User | void> => {
+export const createUser = async (user: RegisterInput): Promise<User | void> => {
   try {
     return await UsersModel.create(user);
   } catch (error) {

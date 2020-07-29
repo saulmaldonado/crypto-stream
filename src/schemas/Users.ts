@@ -1,11 +1,10 @@
 import { Field, ID, ObjectType } from 'type-graphql';
 import { prop } from '@typegoose/typegoose';
-import { ObjectID } from 'mongodb';
 
 @ObjectType()
 export class User {
-  @Field((type) => ID)
-  id?: ObjectID;
+  @Field()
+  id!: string;
 
   @Field()
   @prop({ required: true })

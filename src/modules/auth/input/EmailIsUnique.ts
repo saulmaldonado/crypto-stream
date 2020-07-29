@@ -1,19 +1,15 @@
-import { getModelForClass } from '@typegoose/typegoose';
 import {
   registerDecorator,
   ValidationOptions,
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { User } from '../../../schemas/Users';
+
+import { UsersModel } from '../../../models/Users';
 
 @ValidatorConstraint({ async: true })
 export class EmailIsUniqueConstraint implements ValidatorConstraintInterface {
   async validate(email: string) {
-    const UsersModel = getModelForClass(User, {
-      schemaOptions: { collection: 'auth' },
-    });
-
     const user = await UsersModel.findOne({ email });
     return !user;
   }

@@ -27,6 +27,8 @@ export class RegisterResolver {
       password,
     });
 
+    console.log(user);
+
     return user;
   }
 }

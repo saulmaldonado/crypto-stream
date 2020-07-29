@@ -5,22 +5,21 @@ import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
 } from 'class-validator';
-import { User } from '../../../schemas/Users';
+
+import { UsersModel } from '../../../models/Users';
 
 @ValidatorConstraint({ async: true })
 export class UsernameUniqueConstraint implements ValidatorConstraintInterface {
   async validate(username: string) {
-    const UsersModel = getModelForClass(User, {
-      schemaOptions: { collection: 'auth' },
-    });
-
     const user = await UsersModel.findOne({ username });
     return !user;
   }
 }
 
 export function UsernameIsUnique(validationOptions?: Omit<ValidationOptions, 'message'>) {
-  const options: ValidationOptions = { ...validationOptions, message: 'Username already exists' };
+  const message = 'Username already exists';
+
+  const options: ValidationOptions = { ...validationOptions, message };
   return function (object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
