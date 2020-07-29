@@ -8,26 +8,26 @@ import {
 import { User } from '../../../schemas/Users';
 
 @ValidatorConstraint({ async: true })
-export class EmailIsUniqueConstraint implements ValidatorConstraintInterface {
-  async validate(email: string) {
+export class UsernameUniqueConstraint implements ValidatorConstraintInterface {
+  async validate(username: string) {
     const UsersModel = getModelForClass(User, {
       schemaOptions: { collection: 'auth' },
     });
 
-    const user = await UsersModel.findOne({ email });
+    const user = await UsersModel.findOne({ username });
     return !user;
   }
 }
 
-export function EmailIsUnique(validationOptions?: Omit<ValidationOptions, 'message'>) {
-  const options: ValidationOptions = { ...validationOptions, message: 'Email already exists' };
+export function UsernameIsUnique(validationOptions?: Omit<ValidationOptions, 'message'>) {
+  const options: ValidationOptions = { ...validationOptions, message: 'Username already exists' };
   return function (object: Object, propertyName: string) {
     registerDecorator({
       target: object.constructor,
       propertyName: propertyName,
       options,
       constraints: [],
-      validator: EmailIsUniqueConstraint,
+      validator: UsernameUniqueConstraint,
     });
   };
 }
