@@ -1,8 +1,8 @@
 import mongoose, { ConnectionOptions } from 'mongoose';
-import { promises } from 'fs';
 
 /**
- * opens mongoose connection. Logs on console and attempts reconnect on disconnect.
+ * Wraps mongoose connect method in an async function and executes using provided uri
+ * and ConnectionOptions.
  * @param {string} uri
  * @param {ConnectionOptions} options
  */
@@ -24,7 +24,6 @@ export const connect = async (
 
     await connect(uri, options);
 
-    // await mongoose.connect(uri, options);
     console.log('Database Successfully connected!');
   } catch (err) {
     console.log('There was an error connecting to the database.');
@@ -33,6 +32,10 @@ export const connect = async (
   }
 };
 
+/**
+ * Wraps an asynchronous functions and displays a twirling timer animation in the console while pending.
+ * @param {Function} func 
+ */
 const asyncLoadingWrapper = <A extends any[] | [any]>(func: (...args: any) => Promise<any>) => {
   return async (...args: A) => {
     const twirlTimer = (() => {
