@@ -4,7 +4,7 @@ import { ApolloServer } from 'apollo-server-express';
 import { config } from 'dotenv';
 import { buildSchema, Query } from 'type-graphql';
 import { Resolver } from 'type-graphql';
-
+import { connect } from './connect';
 config();
 
 const app = express();
@@ -18,6 +18,14 @@ class HelloResolver {
 }
 
 (async () => {
+  const uri = process.env.CONNECTION_STRING;
+
+  await connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  });
+
   const schema = await buildSchema({
     resolvers: [HelloResolver],
   });
@@ -30,6 +38,6 @@ class HelloResolver {
   const port = process.env.PORT ?? 5000;
 
   app.listen({ port }, () => {
-    console.log(`Listing on port ${port}... 📡`);
+    console.log(`Listening on port ${port}... 📡`);
   });
 })();
