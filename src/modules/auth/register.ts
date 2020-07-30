@@ -14,7 +14,6 @@ export class RegisterResolver {
   @Mutation(() => User)
   async register(@Arg('data') { email, password, username }: RegisterInput): Promise<User | void> {
     const user = await registerUser({ email, password, username });
-
     return user;
   }
 }

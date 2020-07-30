@@ -1,4 +1,3 @@
-import { getModelForClass } from '@typegoose/typegoose';
 import {
   registerDecorator,
   ValidationOptions,
