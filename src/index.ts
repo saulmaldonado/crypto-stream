@@ -3,11 +3,9 @@ import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-express';
 import { config } from 'dotenv';
 import { buildSchema } from 'type-graphql';
-import { connect } from './connect';
 
+import { connect } from './connect';
 import { RegisterResolver } from './modules/auth/register';
-import { ObjectID } from 'mongodb';
-import { ObjectIdScalar } from './modules/auth/authScalars/ObjectIdScalar';
 config();
 
 const app = express();
@@ -23,7 +21,6 @@ const app = express();
 
   const schema = await buildSchema({
     resolvers: [RegisterResolver],
-    scalarsMap: [{ type: ObjectID, scalar: ObjectIdScalar }],
   });
 
   const server = new ApolloServer({

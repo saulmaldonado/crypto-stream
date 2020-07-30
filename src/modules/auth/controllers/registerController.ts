@@ -1,14 +1,33 @@
-import { ApolloError } from 'apollo-server-express';
-import { hash } from 'argon2';
-import { UsersModel } from '../../../models/Users';
 import { User } from '../../../schemas/Users';
 import { RegisterInput } from '../input/registerInput';
+import axios from 'axios';
+import { Auth0Endpoints } from '../../../config/Auth0Config';
 
-export const registerUser = async ({ password, ...user }: RegisterInput): Promise<User | void> => {
-  try {
-    password = await hash(password);
-    return await UsersModel.create({ password, ...user });
-  } catch (error) {
-    new ApolloError(error.message, 'INTERNAL_SERVER_ERROR');
-  }
+type SignupRequestParams = {
+  client_id: string;
+  email: string;
+  password: string;
+  connection: string;
+  username?: string;
+  given_name?: string;
+  family_name?: string;
+  name?: string;
+  nickname?: string;
+  picture?: string;
+  user_metadata: Record<string, string>;
+};
+
+export const registerUser = async ({ email, password, username }: RegisterInput): Promise<User> => {
+  const { data: user } = await axios.post(
+    Auth0Endpoints.signup,
+    {
+      client_id: process.env.AUTH0_CLIENT_ID,
+      email,
+      password,
+      username,
+      connection: process.env.AUTH0_CONNECTION,
+    },
+    { headers: { 'content-type': 'application/json' } }
+  );
+  return user;
 };
