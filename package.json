@@ -29,6 +29,7 @@
     "jwks-rsa": "^1.8.1",
     "mongodb": "^3.5.9",
     "mongoose": "^5.9.26",
+    "qs": "^6.9.4",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^8.10.2",
     "type-graphql": "^1.0.0-rc.3"

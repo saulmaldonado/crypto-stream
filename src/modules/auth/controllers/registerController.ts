@@ -3,7 +3,7 @@ import { RegisterInput } from '../input/registerInput';
 import axios from 'axios';
 import { Auth0Endpoints } from '../../../config/Auth0Config';
 
-type SignupRequestParams = {
+type SignupRequestBody = {
   client_id: string;
   email: string;
   password: string;
