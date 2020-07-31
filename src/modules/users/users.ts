@@ -1,20 +1,20 @@
 import { Resolver, Mutation, Arg, Query } from 'type-graphql';
-import { UserAuth } from '../../schemas/UsersAuth';
-import { registerUser } from '../auth/controllers/registerController';
-import { RegisterInput } from '../auth/input/registerInput';
+import { User } from '../../schemas/User';
+import { addNewPortfolio } from './controllers/addPortfolio';
+import { getUserPortfolio } from './controllers/getPortfolio';
+import { AddPortfolioInput } from './input/AddPortfolioInput';
 
 @Resolver()
 export class RegisterResolver {
-  @Query(() => UserAuth)
-  hello() {
-    return 'hello';
+  @Query(() => User)
+  async getPortfolio(@Arg('userID') userID: string) {
+    const user = await getUserPortfolio(userID);
+
+    return user;
   }
 
-  @Mutation(() => UserAuth)
-  async register(
-    @Arg('data') { email, password, username }: RegisterInput
-  ): Promise<UserAuth | never> {
-    const user = await registerUser({ email, password, username });
-    return user;
+  @Mutation(() => User)
+  async addPortfolio(@Arg('data') { userID, username }: AddPortfolioInput): Promise<User | never> {
+    return await addNewPortfolio(userID, username);
   }
 }
