@@ -1,4 +1,5 @@
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
+
 import { LoginTokens } from '../../schemas/Tokens';
 import { loginUser } from './controllers/loginController';
 import { LoginInput } from './input/loginInput';

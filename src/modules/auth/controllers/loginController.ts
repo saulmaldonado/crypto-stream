@@ -59,6 +59,15 @@ export const loginUser = async ({
     );
     return tokens;
   } catch (error) {
-    throw new ApolloError(error.response.data.error_description, error.response.data.error);
+    let {
+      response: {
+        data: { error_description, error_type },
+      },
+    } = error;
+
+    // Wrong email/username is already handled by LoginInput class-validators
+    if (error_description === 'Wrong email or password.') error_description = 'Wrong password';
+
+    throw new ApolloError(error_description, error_type);
   }
 };

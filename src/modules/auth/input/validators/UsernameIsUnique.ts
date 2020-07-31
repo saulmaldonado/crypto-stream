@@ -5,7 +5,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 
-import { UsersModel } from '../../../models/Users';
+import { UsersModel } from '../../../../models/Users';
 
 @ValidatorConstraint({ async: true })
 export class UsernameUniqueConstraint implements ValidatorConstraintInterface {
