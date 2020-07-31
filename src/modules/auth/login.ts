@@ -1,6 +1,6 @@
 import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 
-import { LoginTokens } from '../../schemas/Tokens';
+import { LoginTokensAndID } from '../../schemas/Tokens';
 import { loginUser } from './controllers/loginController';
 import { LoginInput } from './input/loginInput';
 
@@ -11,10 +11,10 @@ export class LoginResolver {
     return true;
   }
 
-  @Mutation(() => LoginTokens)
+  @Mutation(() => LoginTokensAndID)
   async login(
     @Arg('data') { usernameOrEmail, password }: LoginInput
-  ): Promise<LoginTokens | never> {
+  ): Promise<LoginTokensAndID | never> {
     const tokens = await loginUser({ usernameOrEmail, password });
 
     return tokens;

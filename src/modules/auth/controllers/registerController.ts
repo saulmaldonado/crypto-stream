@@ -1,6 +1,7 @@
+import axios from 'axios';
+
 import { User } from '../../../schemas/Users';
 import { RegisterInput } from '../input/registerInput';
-import axios from 'axios';
 import { Auth0Endpoints } from '../../../config/Auth0Config';
 
 type SignupRequestBody = {

@@ -1,26 +1,11 @@
 import { ApolloError } from 'apollo-server-express';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios from 'axios';
 import qs from 'qs';
 
 import { Auth0Endpoints } from '../../../config/Auth0Config';
-import { LoginTokens } from '../../../schemas/Tokens';
-import { User } from '../../../schemas/Users';
+import { LoginTokensAndID } from '../../../schemas/Tokens';
 import { LoginInput } from '../input/loginInput';
-
-var options = {
-  method: 'POST',
-  url: 'https://YOUR_DOMAIN/oauth/token',
-  headers: { 'content-type': 'application/x-www-form-urlencoded' },
-  form: {
-    grant_type: 'password',
-    username: 'user@example.com',
-    password: 'pwd',
-    audience: 'YOUR_API_IDENTIFIER',
-    scope: 'read:sample',
-    client_id: 'YOUR_CLIENT_ID',
-    client_secret: 'YOUR_CLIENT_SECRET',
-  },
-};
+import { getUserInfo } from './getUserInfo';
 
 type LoginRequestBody = {
   grant_type: 'password';
@@ -35,7 +20,7 @@ type LoginRequestBody = {
 export const loginUser = async ({
   usernameOrEmail,
   password,
-}: LoginInput): Promise<LoginTokens | never> => {
+}: LoginInput): Promise<LoginTokensAndID | never> => {
   if (!process.env.AUTH0_CLIENT_ID) {
     throw new ApolloError('Auth0 client ID not provided', 'INTERNAL_SERVER_ERROR');
   }
@@ -50,14 +35,17 @@ export const loginUser = async ({
   };
 
   try {
-    const { data: tokens } = await axios.post<LoginTokens>(
+    const { data: tokens } = await axios.post<Omit<LoginTokensAndID, 'userID'>>(
       Auth0Endpoints.login,
       qs.stringify(form),
       {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       }
     );
-    return tokens;
+
+    const { sub: userID } = getUserInfo(tokens.id_token);
+
+    return { ...tokens, userID };
   } catch (error) {
     let {
       response: {

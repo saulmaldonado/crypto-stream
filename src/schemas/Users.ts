@@ -13,4 +13,8 @@ export class User {
   @Field()
   @prop({ required: true })
   public email!: string;
+
+  @Field()
+  @prop()
+  public emailVerified!: boolean;
 }

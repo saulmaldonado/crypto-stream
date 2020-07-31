@@ -7,6 +7,7 @@ import { buildSchema } from 'type-graphql';
 import { connect } from './connect';
 import { RegisterResolver } from './modules/auth/register';
 import { LoginResolver } from './modules/auth/login';
+import { EmailResolver } from './modules/auth/verifyEmail';
 config();
 
 const app = express();
@@ -21,7 +22,7 @@ const app = express();
   });
 
   const schema = await buildSchema({
-    resolvers: [RegisterResolver, LoginResolver],
+    resolvers: [RegisterResolver, LoginResolver, EmailResolver],
   });
 
   const server = new ApolloServer({
