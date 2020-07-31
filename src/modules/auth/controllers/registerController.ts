@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { User } from '../../../schemas/Users';
+import { UserAuth } from '../../../schemas/UsersAuth';
 import { RegisterInput } from '../input/registerInput';
 import { Auth0Endpoints } from '../../../config/Auth0Config';
 
@@ -18,7 +18,11 @@ type SignupRequestBody = {
   user_metadata: Record<string, string>;
 };
 
-export const registerUser = async ({ email, password, username }: RegisterInput): Promise<User> => {
+export const registerUser = async ({
+  email,
+  password,
+  username,
+}: RegisterInput): Promise<UserAuth> => {
   const { data: user } = await axios.post(
     Auth0Endpoints.signup,
     {

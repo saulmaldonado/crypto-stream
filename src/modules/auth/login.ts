@@ -1,6 +1,5 @@
 import { ApolloError } from 'apollo-server-express';
 import { ExpressContext } from 'apollo-server-express/dist/ApolloServer';
-import { access } from 'fs';
 import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 
 import { LoginTokensAndID } from '../../schemas/Tokens';

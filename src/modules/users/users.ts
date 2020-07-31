@@ -1,12 +1,11 @@
 import { Resolver, Mutation, Arg, Query } from 'type-graphql';
-
-import { registerUser } from './controllers/registerController';
 import { UserAuth } from '../../schemas/UsersAuth';
-import { RegisterInput } from './input/registerInput';
+import { registerUser } from '../auth/controllers/registerController';
+import { RegisterInput } from '../auth/input/registerInput';
 
 @Resolver()
 export class RegisterResolver {
-  @Query(() => String)
+  @Query(() => UserAuth)
   hello() {
     return 'hello';
   }
