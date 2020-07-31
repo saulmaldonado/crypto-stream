@@ -27,6 +27,7 @@ const app = express();
 
   const server = new ApolloServer({
     schema,
+    context: ({ req }) => ({ req }),
   });
 
   server.applyMiddleware({ app });

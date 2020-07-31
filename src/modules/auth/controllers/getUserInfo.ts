@@ -31,7 +31,9 @@ export const getUserInfo = (id_token: string): IdToken => {
   return decode(id_token) as IdToken;
 };
 
-export const getUserID = (access_token: string): string => {
+export const getUserID = (access_token?: string): string => {
+  if (!access_token) throw new Error('Access Token not provided');
+
   if (!isJWT(access_token)) throw new Error('Not valid JWT access token');
 
   const { sub: userID } = decode(access_token) as AccessToken;
