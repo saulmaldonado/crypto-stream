@@ -5,12 +5,12 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 
-import { UsersModel } from '../../../../models/Users';
+import { UsersAuthModel } from '../../../../models/Users';
 
 @ValidatorConstraint({ async: true })
 export class UsernameOrEmailExistsConstraint implements ValidatorConstraintInterface {
   async validate(usernameOrEmail: string) {
-    let user = await UsersModel.findOne({
+    let user = await UsersAuthModel.findOne({
       $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
     });
     if (user) return true;

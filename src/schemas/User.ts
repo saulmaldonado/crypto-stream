@@ -9,17 +9,18 @@ export class User {
   id!: string;
 
   @Field()
+  @prop()
   userID!: string;
 
   @Field()
   @prop()
   public username!: string;
 
-  @Field()
+  @Field(() => [Coin], { nullable: 'itemsAndList' })
   @prop()
   public portfolio?: Coin[];
 
-  @Field()
+  @Field(() => [Transaction], { nullable: 'itemsAndList' })
   @prop()
   public tradingHistory?: Transaction[];
 }

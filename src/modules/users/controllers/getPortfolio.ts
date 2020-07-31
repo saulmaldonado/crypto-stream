@@ -5,7 +5,7 @@ import { User } from '../../../schemas/User';
 export const getUserPortfolio = async (userID: string): Promise<User | never> => {
   const user = await UsersModel.findOne({ userID });
 
-  if (!user) throw new ApolloError('User not found', 'AuthenticationError');
+  if (!user) throw new ApolloError('User portfolio not found', 'AuthenticationError');
 
   return user;
 };

@@ -5,12 +5,10 @@ import { getUserPortfolio } from './controllers/getPortfolio';
 import { AddPortfolioInput } from './input/AddPortfolioInput';
 
 @Resolver()
-export class RegisterResolver {
+export class UserResolver {
   @Query(() => User)
-  async getPortfolio(@Arg('userID') userID: string) {
-    const user = await getUserPortfolio(userID);
-
-    return user;
+  async getPortfolio(@Arg('userID') userID: string): Promise<User | never> {
+    return await getUserPortfolio(userID);
   }
 
   @Mutation(() => User)
