@@ -21,6 +21,7 @@ const app = express();
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
+    useFindAndModify: false,
   });
 
   const schema = await buildSchema({
