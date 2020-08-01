@@ -1,5 +1,6 @@
 import { Field, ObjectType } from 'type-graphql';
 import { prop } from '@typegoose/typegoose';
+
 import { Coin } from './Coin';
 import { Transaction } from './Transaction';
 
@@ -16,11 +17,11 @@ export class User {
   @prop()
   public username!: string;
 
-  @Field(() => [Coin], { nullable: 'itemsAndList' })
-  @prop()
+  @Field(() => [Coin], { nullable: 'items' })
+  @prop({ type: Coin })
   public portfolio?: Coin[];
 
-  @Field(() => [Transaction], { nullable: 'itemsAndList' })
-  @prop()
+  @Field(() => [Transaction], { nullable: 'items' })
+  @prop({ type: Transaction })
   public tradingHistory?: Transaction[];
 }

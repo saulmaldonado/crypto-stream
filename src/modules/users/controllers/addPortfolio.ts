@@ -1,4 +1,5 @@
 import { ApolloError } from 'apollo-server-express';
+
 import { UsersModel } from '../../../models/Users';
 import { User } from '../../../schemas/User';
 

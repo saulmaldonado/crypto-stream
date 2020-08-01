@@ -4,7 +4,7 @@ import { Field, ObjectType } from 'type-graphql';
 @ObjectType()
 export class Transaction {
   @Field()
-  id!: number;
+  id!: string;
 
   @Field()
   @prop()
@@ -16,7 +16,7 @@ export class Transaction {
 
   @Field()
   @prop()
-  coinID!: number;
+  coinID!: string;
 
   @Field()
   @prop()

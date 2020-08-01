@@ -9,6 +9,7 @@ import { RegisterResolver } from './modules/auth/register';
 import { LoginResolver } from './modules/auth/login';
 import { EmailResolver } from './modules/auth/verifyEmail';
 import { UserResolver } from './modules/users/users';
+import { TransactionResolver } from './modules/users/transaction';
 config();
 
 const app = express();
@@ -23,7 +24,7 @@ const app = express();
   });
 
   const schema = await buildSchema({
-    resolvers: [RegisterResolver, LoginResolver, EmailResolver, UserResolver],
+    resolvers: [RegisterResolver, LoginResolver, EmailResolver, UserResolver, TransactionResolver],
   });
 
   const server = new ApolloServer({

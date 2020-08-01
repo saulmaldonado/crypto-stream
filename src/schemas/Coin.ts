@@ -5,7 +5,7 @@ import { Field, ObjectType } from 'type-graphql';
 export class Coin {
   @Field()
   @prop()
-  id!: number;
+  id!: string;
 
   @Field()
   @prop()
@@ -14,10 +14,6 @@ export class Coin {
   @Field()
   @prop()
   symbol!: string;
-
-  @Field()
-  @prop()
-  slug!: string;
 
   @Field()
   @prop()
