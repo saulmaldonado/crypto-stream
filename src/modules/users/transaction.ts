@@ -1,6 +1,7 @@
 import { Resolver, Mutation, Arg, Query } from 'type-graphql';
 
 import { Transaction } from '../../schemas/Transaction';
+import { addNewTrade } from './controllers/addTrade';
 import { addNewTransaction } from './controllers/addTransaction';
 import { getTransactionById } from './controllers/getTransacation';
 import { AddTransactionInput } from './input/AddTransactionInput';
@@ -22,6 +23,7 @@ export class TransactionResolver {
 
   @Mutation(() => Transaction)
   async addTrade(@Arg('data') data: AddTransactionInput): Promise<any | never> {
+    await addNewTrade(data);
     return await addNewTransaction(data);
   }
 }

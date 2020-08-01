@@ -9,11 +9,15 @@ export class Coin {
 
   @Field()
   @prop()
-  name!: string;
+  coinName!: string;
 
   @Field()
   @prop()
-  symbol!: string;
+  coinID!: string;
+
+  @Field()
+  @prop()
+  coinSymbol!: string;
 
   @Field()
   @prop()
