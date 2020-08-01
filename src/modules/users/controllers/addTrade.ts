@@ -1,8 +1,17 @@
+import { DocumentType } from '@typegoose/typegoose';
 import { ApolloError } from 'apollo-server-express';
-import { CoinModel } from '../../../models/Coin';
+
 import { UsersModel } from '../../../models/Users';
-import { Coin } from '../../../schemas/Coin';
+import { User } from '../../../schemas/User';
 import { AddTransactionInput } from '../input/AddTransactionInput';
+import { buy } from './trading/buy';
+import { sell } from './trading/sell';
+
+export type UserPortfolio = DocumentType<Pick<User, 'portfolio' | 'id'>>;
+export type trade = (
+  user: UserPortfolio,
+  coin: Omit<AddTransactionInput, 'buyOrSell'>
+) => Promise<void>;
 
 export const addNewTrade = async ({
   coinID,
@@ -21,37 +30,9 @@ export const addNewTrade = async ({
 
   //buy
   if (buyOrSell.toLowerCase().trim() === 'buy') {
-    //Add new coin
-    if (!user.portfolio?.[0]) {
-      const coin = new CoinModel({
-        coinName,
-        coinID,
-        coinSymbol,
-        quantity,
-      });
-      await UsersModel.findOneAndUpdate(
-        { userID },
-        {
-          $push: { portfolio: coin },
-        },
-        {
-          new: true,
-        }
-      );
-      //update quantity of coin
-    } else {
-      user.portfolio[0].quantity += quantity;
-      await user.save();
-    }
-    //sell coin
+    await buy(user, { coinID, coinName, coinSymbol, quantity, userID });
   } else {
-    if (!user.portfolio?.[0] || user.portfolio![0].quantity < quantity) {
-      throw new ApolloError('Insufficient coins', 'BAD_USER_INPUT');
-    } else if (user.portfolio[0].quantity === quantity) {
-      await user.updateOne({ $pull: { portfolio: { coinID: { $in: coinID } } } });
-    } else {
-      user.portfolio[0].quantity -= quantity;
-      await user.save();
-    }
+    //sell
+    await sell(user, { coinID, coinName, coinSymbol, quantity, userID });
   }
 };
