@@ -6,12 +6,13 @@ import { LoginTokensAndID } from '../../schemas/Tokens';
 import { getUserID } from './controllers/getUserInfo';
 import { loginUser } from './controllers/loginController';
 import { LoginInput } from './input/loginInput';
+import { Context } from './middleware/Context';
 
 @Resolver()
 export class LoginResolver {
   @Query(() => String)
   getUserID(
-    @Ctx() ctx: ExpressContext,
+    @Ctx() ctx: Context,
     @Arg('AccessToken', { nullable: true }) access_token?: string
   ): string | never {
     try {

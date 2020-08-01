@@ -10,6 +10,8 @@ import { LoginResolver } from './modules/auth/login';
 import { EmailResolver } from './modules/auth/verifyEmail';
 import { UserResolver } from './modules/users/users';
 import { TransactionResolver } from './modules/users/transaction';
+import { ExpressContext } from 'apollo-server-express/dist/ApolloServer';
+import { customAuthChecker } from './modules/auth/middleware/authChecker';
 config();
 
 const app = express();
@@ -26,11 +28,11 @@ const app = express();
 
   const schema = await buildSchema({
     resolvers: [RegisterResolver, LoginResolver, EmailResolver, UserResolver, TransactionResolver],
+    authChecker: customAuthChecker,
   });
-
   const server = new ApolloServer({
     schema,
-    context: ({ req }) => ({ req }),
+    context: ({ req }: ExpressContext) => ({ req }),
   });
 
   server.applyMiddleware({ app });

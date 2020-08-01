@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Arg, Query } from 'type-graphql';
+import { Resolver, Mutation, Arg, Query, Authorized } from 'type-graphql';
 
 import { Transaction } from '../../schemas/Transaction';
 import { addNewTrade } from './controllers/addTrade';
@@ -13,6 +13,7 @@ export class TransactionResolver {
    * @param transactionID
    * @param userID
    */
+  @Authorized()
   @Query(() => Transaction)
   async getTransaction(
     @Arg('transactionID') transactionID: string,
@@ -21,6 +22,7 @@ export class TransactionResolver {
     return await getTransactionById(transactionID, userID);
   }
 
+  @Authorized()
   @Mutation(() => Transaction)
   async addTrade(@Arg('data') data: AddTransactionInput): Promise<any | never> {
     await addNewTrade(data);
