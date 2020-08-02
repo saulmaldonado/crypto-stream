@@ -13,7 +13,7 @@
 ## Virtual crypto currency trading exchange
 
 ### WIP
-
+Rewrite of CryptoTracker for React and React Native. Backend written using GraphQL
 ## Author
 
 👤 **Saul Maldonado**
