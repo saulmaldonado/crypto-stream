@@ -5,13 +5,13 @@ import { Coin } from './Coin';
 import { Transaction } from './Transaction';
 
 @ObjectType()
-export class User {
+export class Portfolio {
   @Field()
-  id!: string;
+  public id!: string;
 
   @Field()
   @prop()
-  userID!: string;
+  public userID!: string;
 
   @Field()
   @prop()

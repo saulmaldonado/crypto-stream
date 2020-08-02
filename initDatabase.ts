@@ -3,6 +3,8 @@ import { config } from 'dotenv';
 import { exit, stdin, stdout } from 'process';
 import { createInterface } from 'readline';
 
+import { CollectionNames } from './src/config/DbConfig';
+
 config();
 
 const reset: boolean = process.argv.includes('--reset');
@@ -43,8 +45,8 @@ const client = new MongoClient(uri, { useUnifiedTopology: true });
       });
     }
 
-    await conn.db('cryptoTracker').createCollection('users');
-    await conn.db('cryptoTracker').createCollection('auth');
+    await conn.db('cryptoTracker').createCollection(CollectionNames.PORTFOLIOS);
+    await conn.db('cryptoTracker').createCollection(CollectionNames.AUTH);
 
     console.log('Database initialized');
     exit(0);

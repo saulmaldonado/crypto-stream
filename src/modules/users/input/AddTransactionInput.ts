@@ -7,7 +7,7 @@ import { IsBuyOrSell } from './validators/IsBuyOrSell';
 export class AddTransactionInput {
   @Field()
   @IsUserID()
-  userID!: string;
+  portfolioID!: string;
 
   @Field()
   coinID!: string;

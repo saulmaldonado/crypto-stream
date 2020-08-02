@@ -1,6 +1,6 @@
 import { AuthChecker } from 'type-graphql';
 import jwksRsa from 'jwks-rsa';
-import { decode, JwtHeader, Secret, verify } from 'jsonwebtoken';
+import { decode, Secret, verify } from 'jsonwebtoken';
 import { ApolloError } from 'apollo-server-express';
 
 import { Context } from './Context';

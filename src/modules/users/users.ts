@@ -1,6 +1,6 @@
 import { Resolver, Mutation, Arg, Query } from 'type-graphql';
 
-import { User } from '../../schemas/User';
+import { User } from '../../schemas/Portfolio';
 import { addNewPortfolio } from './controllers/addPortfolio';
 import { getUserPortfolio } from './controllers/getPortfolio';
 import { AddPortfolioInput } from './input/AddPortfolioInput';

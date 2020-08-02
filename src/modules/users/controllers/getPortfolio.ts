@@ -1,12 +1,12 @@
 import { ApolloError } from 'apollo-server-express';
-import { UsersModel } from '../../../models/Users';
-import { User } from '../../../schemas/User';
+import { PortfolioModel } from '../../../models/Users';
+import { Portfolio } from '../../../schemas/Portfolio';
 
-export const getUserPortfolio = async (userID: string): Promise<User | never> => {
-  let user: User | null = null;
+export const getUsersPortfolio = async (userID: string): Promise<Portfolio | never> => {
+  let user: Portfolio | null = null;
 
   try {
-    user = await UsersModel.findOne({ userID });
+    user = await PortfolioModel.findOne({ _id: userID });
   } catch (error) {
     throw new ApolloError(error, 'DATABASE_ERROR');
   }

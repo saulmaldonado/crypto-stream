@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-server-express';
 
 import { UsersModel } from '../../../models/Users';
-import { User } from '../../../schemas/User';
+import { User } from '../../../schemas/Portfolio';
 
 export const addNewPortfolio = async (userID: string, username: string): Promise<User | never> => {
   try {

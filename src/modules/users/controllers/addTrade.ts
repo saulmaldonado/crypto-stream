@@ -1,13 +1,13 @@
 import { DocumentType } from '@typegoose/typegoose';
 import { ApolloError } from 'apollo-server-express';
 
-import { UsersModel } from '../../../models/Users';
-import { User } from '../../../schemas/User';
+import { PortfolioModel } from '../../../models/Users';
+import { Portfolio } from '../../../schemas/Portfolio';
 import { AddTransactionInput } from '../input/AddTransactionInput';
 import { buy } from './trading/buy';
 import { sell } from './trading/sell';
 
-export type UserPortfolio = DocumentType<Pick<User, 'portfolio' | 'id'>>;
+export type UserPortfolio = DocumentType<Pick<Portfolio, 'portfolio' | 'id'>>;
 export type trade = (
   user: UserPortfolio,
   coin: Omit<AddTransactionInput, 'buyOrSell'>
@@ -19,10 +19,10 @@ export const addNewTrade = async ({
   coinSymbol,
   quantity,
   buyOrSell,
-  userID,
+  portfolioID,
 }: AddTransactionInput) => {
-  const user = await UsersModel.findOne(
-    { userID: userID },
+  const user = await PortfolioModel.findOne(
+    { _id: portfolioID },
     { portfolio: { $elemMatch: { coinID } } }
   );
 
@@ -30,9 +30,9 @@ export const addNewTrade = async ({
 
   //buy
   if (buyOrSell.toLowerCase().trim() === 'buy') {
-    await buy(user, { coinID, coinName, coinSymbol, quantity, userID });
+    await buy(user, { coinID, coinName, coinSymbol, quantity, portfolioID });
   } else {
     //sell
-    await sell(user, { coinID, coinName, coinSymbol, quantity, userID });
+    await sell(user, { coinID, coinName, coinSymbol, quantity, portfolioID });
   }
 };
