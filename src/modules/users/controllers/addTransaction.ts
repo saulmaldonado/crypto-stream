@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-server-express';
 
 import { TransactionModel } from '../../../models/Transaction';
-import { PortfolioModel } from '../../../models/Users';
+import { PortfolioModel } from '../../../models/Portfolio';
 import { Transaction } from '../../../schemas/Transaction';
 import { AddTransactionInput } from '../input/AddTransactionInput';
 

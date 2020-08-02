@@ -5,7 +5,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 
-import { UsersAuthModel } from '../../../../models/Users';
+import { UsersAuthModel } from '../../../../models/Portfolio';
 
 @ValidatorConstraint({ async: true })
 export class UsernameOrEmailExistsConstraint implements ValidatorConstraintInterface {

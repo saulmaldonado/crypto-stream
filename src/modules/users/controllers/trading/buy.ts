@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-server-express';
 
 import { CoinModel } from '../../../../models/Coin';
-import { UsersModel } from '../../../../models/Users';
+import { PortfolioModel } from '../../../../models/Portfolio';
 import { trade } from '../addTrade';
 
 /**
@@ -9,7 +9,7 @@ import { trade } from '../addTrade';
  * @param user
  * @param param1
  */
-export const buy: trade = async (user, { coinID, coinName, coinSymbol, quantity, userID }) => {
+export const buy: trade = async (user, { coinID, coinName, coinSymbol, quantity, portfolioID }) => {
   // Add new coin to portfolio if coin is not initially found
   try {
     if (!user.portfolio?.[0]) {
@@ -19,8 +19,8 @@ export const buy: trade = async (user, { coinID, coinName, coinSymbol, quantity,
         coinSymbol,
         quantity,
       });
-      await UsersModel.findOneAndUpdate(
-        { userID },
+      await PortfolioModel.findOneAndUpdate(
+        { _id: portfolioID },
         {
           $push: { portfolio: coin },
         }

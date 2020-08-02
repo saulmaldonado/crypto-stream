@@ -51,8 +51,11 @@ export const customAuthChecker: AuthChecker<Context> = async ({ context }) => {
   }
 };
 
-type JWTPayload = {
+export type JWTPayload = {
   iss?: string;
+  /**
+   * userID
+   */
   sub?: string;
   aud?: string[];
   iat?: number;
@@ -60,4 +63,5 @@ type JWTPayload = {
   azp?: string;
   scope?: string;
   gty?: string;
+  permissions?: string[];
 };

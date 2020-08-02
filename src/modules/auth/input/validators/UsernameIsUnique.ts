@@ -5,12 +5,12 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 
-import { UsersModel } from '../../../../models/Users';
+import { UsersAuthModel } from '../../../../models/Portfolio';
 
 @ValidatorConstraint({ async: true })
 export class UsernameUniqueConstraint implements ValidatorConstraintInterface {
   async validate(username: string) {
-    const user = await UsersModel.findOne({ username });
+    const user = await UsersAuthModel.findOne({ username });
     return !user;
   }
 }

@@ -1,12 +1,10 @@
 import { InputType, Field } from 'type-graphql';
 
-import { IsUserID } from '../../auth/input/validators/IsUserID';
 import { IsBuyOrSell } from './validators/IsBuyOrSell';
 
 @InputType()
 export class AddTransactionInput {
   @Field()
-  @IsUserID()
   portfolioID!: string;
 
   @Field()

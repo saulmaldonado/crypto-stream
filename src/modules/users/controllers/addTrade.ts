@@ -1,7 +1,7 @@
 import { DocumentType } from '@typegoose/typegoose';
 import { ApolloError } from 'apollo-server-express';
 
-import { PortfolioModel } from '../../../models/Users';
+import { PortfolioModel } from '../../../models/Portfolio';
 import { Portfolio } from '../../../schemas/Portfolio';
 import { AddTransactionInput } from '../input/AddTransactionInput';
 import { buy } from './trading/buy';
@@ -26,7 +26,7 @@ export const addNewTrade = async ({
     { portfolio: { $elemMatch: { coinID } } }
   );
 
-  if (!user) throw new ApolloError('User does not exist', 'AUTHENTICATION_ERROR');
+  if (!user) throw new ApolloError('Portfolio does not exist', 'AUTHENTICATION_ERROR');
 
   //buy
   if (buyOrSell.toLowerCase().trim() === 'buy') {
