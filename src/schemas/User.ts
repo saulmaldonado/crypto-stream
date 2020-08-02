@@ -18,7 +18,7 @@ export class User {
   public username!: string;
 
   @Field(() => [Coin], { nullable: 'items' })
-  @prop({ type: Coin })
+  @prop({ type: Coin, _id: false })
   public portfolio?: Coin[];
 
   @Field(() => [Transaction], { nullable: 'items' })
