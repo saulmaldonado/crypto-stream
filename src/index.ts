@@ -7,11 +7,6 @@ import http from 'http';
 import Redis from 'ioredis';
 
 import { connect } from './connect';
-import { RegisterResolver } from './modules/auth/register';
-import { LoginResolver } from './modules/auth/login';
-import { EmailResolver } from './modules/auth/verifyEmail';
-import { PortfolioResolver } from './modules/users/portfolios';
-import { TransactionResolver } from './modules/users/transaction';
 import { ExpressContext } from 'apollo-server-express/dist/ApolloServer';
 import { customAuthChecker } from './modules/auth/middleware/authChecker';
 import { PriceResolver } from './subscriptions/prices';
