@@ -48,23 +48,13 @@ const app = express();
   });
 
   const schema = await buildSchema({
-    resolvers: [
-      RegisterResolver,
-      LoginResolver,
-      EmailResolver,
-      PortfolioResolver,
-      TransactionResolver,
-      PriceResolver,
-    ],
+    resolvers: [PriceResolver],
     authChecker: customAuthChecker,
     pubSub,
   });
   const server = new ApolloServer({
     schema,
     context: ({ req }: ExpressContext) => ({ req }),
-    subscriptions: {
-      onConnect: (params, webSocket, context) => console.log(params),
-    },
   });
 
   server.applyMiddleware({ app });

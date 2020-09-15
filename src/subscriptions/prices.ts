@@ -6,6 +6,7 @@ import {
   ObjectType,
   Publisher,
   PubSub,
+  Query,
   Resolver,
   Root,
   Subscription,
@@ -29,19 +30,13 @@ export class PriceResolver {
     return pricePayload;
   }
 
-  @Mutation(() => Boolean)
-  async getPrices(
-    @Arg('coinID') coinID: string,
-    @PubSub('PRICES') publish: Publisher<PricePayload>
-  ) {
+  @Query(() => PricePayload)
+  async fetchPrices(@Arg('coinID') coinID: string) {
     const priceData = await axios.get<PriceData[]>(
       `https://api.nomics.com/v1/currencies/ticker?key=${process.env.NOMICS_API_KEY}&ids=${coinID}&interval=1d`
     );
 
-    const payload = { currentPrice: Number(priceData.data[0].price), coinID };
-
-    await publish(payload);
-    return true;
+    return { currentPrice: Number(priceData.data[0].price), coinID };
   }
 }
 
