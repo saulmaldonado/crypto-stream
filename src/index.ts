@@ -17,12 +17,7 @@ config();
 const app = express();
 
 (async () => {
-  const REDIS_HOST = '127.0.0.1';
-  const REDIS_PORT = 6379;
-
   const options: Redis.RedisOptions = {
-    host: REDIS_HOST,
-    port: REDIS_PORT,
     retryStrategy: (times) => Math.max(times * 100, 3000),
   };
 
