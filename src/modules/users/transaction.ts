@@ -6,7 +6,7 @@ import { isManagement } from '../auth/jwt/isManagement';
 import { Context } from '../auth/middleware/Context';
 import { addNewTrade } from './controllers/addTrade';
 import { addNewTransaction } from './controllers/addTransaction';
-import { getTransactionById } from './controllers/getTransacation';
+import { getTransactionById } from './controllers/getTransaction';
 import { AddTransactionInput } from './input/AddTransactionInput';
 
 @Resolver()

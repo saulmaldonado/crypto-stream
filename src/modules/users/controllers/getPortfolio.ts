@@ -7,7 +7,6 @@ export const getUserPortfolios = async (userID: string): Promise<Portfolio[] | n
 
   try {
     portfolios = await PortfolioModel.find({ userID });
-    console.log(portfolios);
   } catch (error) {
     throw new ApolloError(error, 'DATABASE_ERROR');
   }
