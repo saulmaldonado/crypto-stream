@@ -9,5 +9,5 @@ export class APIKey {
 
   @Field()
   @prop()
-  public key?: string;
+  public key!: string;
 }
