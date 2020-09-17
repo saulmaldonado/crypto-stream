@@ -3,7 +3,7 @@ import { MiddlewareFn } from 'type-graphql';
 import { redis } from '../../..';
 import { Context } from './Context';
 
-export const rateLimit: (limit: number) => MiddlewareFn<Context> = (limit) => async (
+export const rateLimitAnon: (limit: number) => MiddlewareFn<Context> = (limit) => async (
   { context },
   next
 ) => {

@@ -9,7 +9,7 @@ import {
   Subscription,
   UseMiddleware,
 } from 'type-graphql';
-import { rateLimit } from '../modules/auth/middleware/rateLimit';
+import { rateLimitAnon } from '../modules/auth/middleware/rateLimit';
 
 @ObjectType()
 export class PricePayload {
@@ -25,7 +25,7 @@ export class PriceResolver {
   @Subscription(() => PricePayload, {
     topics: 'PRICES',
   })
-  @UseMiddleware(rateLimit(100))
+  @UseMiddleware(rateLimitAnon(100))
   async requestPrices(@Root() pricePayload: PricePayload): Promise<PricePayload | never> {
     return pricePayload;
   }
