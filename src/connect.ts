@@ -7,8 +7,9 @@ import mongoose, { ConnectionOptions } from 'mongoose';
  * @param {ConnectionOptions} options
  */
 export const connect = async (
-  uri: string = 'mongodb://localhost:27017/',
-  options: ConnectionOptions
+  options: ConnectionOptions,
+  db: string = '',
+  uri: string = 'mongodb://localhost:27017'
 ): Promise<void | never> => {
   try {
     const connect = asyncLoadingWrapper<[uri: string, options: ConnectionOptions]>(
@@ -17,7 +18,7 @@ export const connect = async (
 
     console.log('connecting to MongoDB...');
 
-    await connect('mongodb://localhost:27017/', options);
+    await connect(`${uri}/${db}`, options);
 
     console.log('Database Successfully connected!');
   } catch (err) {

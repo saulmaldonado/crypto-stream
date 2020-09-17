@@ -3,3 +3,7 @@ export enum CollectionNames {
   PORTFOLIOS = 'portfolios',
   API_KEYS = 'keys',
 }
+
+export enum MongoDBCnfig {
+  NAME = 'cryptoTracker',
+}

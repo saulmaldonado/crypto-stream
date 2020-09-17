@@ -14,6 +14,7 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { pricePublish } from './services/pricePublush';
 import { LoginResolver } from './modules/auth/login';
 import { APIKeyResolver } from './modules/auth/APIKey';
+import { MongoDBCnfig } from './config/DbConfig';
 config();
 
 const app = express();
@@ -30,14 +31,15 @@ const app = express();
 
   app.set('pubSub', pubSub);
 
-  const uri = process.env.CONNECTION_STRING;
-
-  await connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  });
+  await connect(
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+    },
+    MongoDBCnfig.NAME
+  );
 
   const schema = await buildSchema({
     resolvers: [PriceResolver, LoginResolver, APIKeyResolver],
