@@ -4,6 +4,6 @@ export enum CollectionNames {
   API_KEYS = 'keys',
 }
 
-export enum MongoDBCnfig {
+export enum MongoDBConfig {
   NAME = 'cryptoTracker',
 }

@@ -1,19 +1,15 @@
 import axios from 'axios';
 import {
   Arg,
-  Ctx,
   Field,
-  Mutation,
   ObjectType,
-  Publisher,
-  PubSub,
   Query,
   Resolver,
   Root,
   Subscription,
+  UseMiddleware,
 } from 'type-graphql';
-import { checkAPIKey } from '../modules/auth/api/APIkeys';
-import { Context } from '../modules/auth/middleware/Context';
+import { rateLimit } from '../modules/auth/middleware/rateLimit';
 
 @ObjectType()
 export class PricePayload {
@@ -29,10 +25,8 @@ export class PriceResolver {
   @Subscription(() => PricePayload, {
     topics: 'PRICES',
   })
-  async requestPrices(
-    @Root() pricePayload: PricePayload,
-    @Ctx() ctx: Context
-  ): Promise<PricePayload | never> {
+  @UseMiddleware(rateLimit(100))
+  async requestPrices(@Root() pricePayload: PricePayload): Promise<PricePayload | never> {
     return pricePayload;
   }
 

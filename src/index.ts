@@ -14,16 +14,19 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { pricePublish } from './services/pricePublush';
 import { LoginResolver } from './modules/auth/login';
 import { APIKeyResolver } from './modules/auth/APIKey';
-import { MongoDBCnfig } from './config/DbConfig';
+import { MongoDBConfig } from './config/DbConfig';
 import { checkAPIKey } from './modules/auth/api/APIkeys';
 config();
 
 const app = express();
+export const redis = new Redis();
 
 (async () => {
   const options: Redis.RedisOptions = {
     retryStrategy: (times) => Math.max(times * 100, 3000),
   };
+
+  const redis = new Redis();
 
   const pubSub = new RedisPubSub({
     publisher: new Redis(options),
@@ -39,7 +42,7 @@ const app = express();
       useCreateIndex: true,
       useFindAndModify: false,
     },
-    MongoDBCnfig.NAME
+    MongoDBConfig.NAME
   );
 
   const schema = await buildSchema({
