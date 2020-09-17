@@ -3,26 +3,21 @@ import mongoose, { ConnectionOptions } from 'mongoose';
 /**
  * Wraps mongoose connect method in an async function and executes using provided uri
  * and ConnectionOptions.
- * @param {string} uri
+ * @param {string} [uri='mongodb://localhost:27017/']
  * @param {ConnectionOptions} options
  */
 export const connect = async (
-  uri: string | undefined,
+  uri: string = 'mongodb://localhost:27017/',
   options: ConnectionOptions
 ): Promise<void | never> => {
-  if (!uri) throw new Error('Connection string not provided');
-
-  const uriAbridged = uri.match(/@(.+mongodb\.net.+)\?/i);
-  if (!uriAbridged) throw new Error('invalid connection string');
-  const [, address] = uriAbridged;
-
-  const log = () => console.log(`connecting to ${address}...`);
-
-  log();
   try {
-    const connect = asyncLoadingWrapper<[uri: string, options: ConnectionOptions]>(mongoose.connect);
+    const connect = asyncLoadingWrapper<[uri: string, options: ConnectionOptions]>(
+      mongoose.connect
+    );
 
-    await connect(uri, options);
+    console.log('connecting to MongoDB...');
+
+    await connect('mongodb://localhost:27017/', options);
 
     console.log('Database Successfully connected!');
   } catch (err) {
@@ -34,7 +29,7 @@ export const connect = async (
 
 /**
  * Wraps an asynchronous functions and displays a twirling timer animation in the console while pending.
- * @param {Function} func 
+ * @param {Function} func
  */
 const asyncLoadingWrapper = <A extends any[] | [any]>(func: (...args: any) => Promise<any>) => {
   return async (...args: A) => {
