@@ -12,6 +12,8 @@ import { customAuthChecker } from './modules/auth/middleware/authChecker';
 import { PriceResolver } from './subscriptions/prices';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { pricePublish } from './services/pricePublush';
+import { LoginResolver } from './modules/auth/login';
+import { APIKeyResolver } from './modules/auth/APIKey';
 config();
 
 const app = express();
@@ -38,7 +40,7 @@ const app = express();
   });
 
   const schema = await buildSchema({
-    resolvers: [PriceResolver],
+    resolvers: [PriceResolver, LoginResolver, APIKeyResolver],
     authChecker: customAuthChecker,
     pubSub,
   });
@@ -60,5 +62,5 @@ const app = express();
     console.log(`🚀 Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`);
   });
 
-  pricePublish(app, 15);
+  // pricePublish(app, 15);
 })();

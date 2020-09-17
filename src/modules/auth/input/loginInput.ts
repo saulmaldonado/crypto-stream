@@ -7,8 +7,8 @@ import { UsernameOrEmailExists } from './validators/UsernameOrEmailExists';
 @InputType()
 export class LoginInput {
   @Field()
-  @IsUsernameOrEmail()
-  @UsernameOrEmailExists()
+  // @IsUsernameOrEmail()
+  // @UsernameOrEmailExists()
   usernameOrEmail!: string;
 
   @Field()

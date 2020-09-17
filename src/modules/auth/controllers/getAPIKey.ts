@@ -4,7 +4,7 @@ import { generateAPIKey } from '../api/APIkeys';
 import { getTokenUserID } from '../jwt/getTokenUserID';
 import { Context } from '../middleware/Context';
 
-const getAPIKey = async (ctx: Context) => {
+export const getKey = async (ctx: Context) => {
   const userID = getTokenUserID(ctx);
 
   try {
