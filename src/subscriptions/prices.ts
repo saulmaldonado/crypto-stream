@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {
   Arg,
+  Ctx,
   Field,
   Mutation,
   ObjectType,
@@ -11,6 +12,8 @@ import {
   Root,
   Subscription,
 } from 'type-graphql';
+import { checkAPIKey } from '../modules/auth/api/APIkeys';
+import { Context } from '../modules/auth/middleware/Context';
 
 @ObjectType()
 export class PricePayload {
@@ -26,7 +29,10 @@ export class PriceResolver {
   @Subscription(() => PricePayload, {
     topics: 'PRICES',
   })
-  requestPrices(@Root() pricePayload: PricePayload): PricePayload {
+  async requestPrices(
+    @Root() pricePayload: PricePayload,
+    @Ctx() ctx: Context
+  ): Promise<PricePayload | never> {
     return pricePayload;
   }
 
