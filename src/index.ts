@@ -16,7 +16,6 @@ import { LoginResolver } from './modules/auth/login';
 import { APIKeyResolver } from './modules/auth/APIKey';
 import { MongoDBCnfig } from './config/DbConfig';
 import { checkAPIKey } from './modules/auth/api/APIkeys';
-import { connectionHeaders } from './modules/auth/middleware/Context';
 config();
 
 const app = express();
@@ -52,9 +51,7 @@ const app = express();
     schema,
     context: ({ req, connection }: ExpressContext) => ({ req, connection }),
     subscriptions: {
-      onConnect: async (connectionParams: connectionHeaders) => {
-        await checkAPIKey(connectionParams);
-      },
+      onConnect: checkAPIKey,
     },
   });
 
