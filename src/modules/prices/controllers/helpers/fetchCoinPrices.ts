@@ -21,6 +21,7 @@ export const fetchPrices = async (
   const coinIDsString = coinIDs.length
     ? `&${qs.stringify({ ids: coinIDs }, { arrayFormat: 'comma' })}`
     : '';
+  if (coinIDsString) limit = coinIDs.length;
 
   try {
     const { data } = await axios.get<PriceData[]>(

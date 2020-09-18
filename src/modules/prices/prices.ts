@@ -71,7 +71,9 @@ export class PriceResolver {
   @Query(() => [PricePayload])
   @UseMiddleware(rateLimitAll(50))
   async getPrices(@Arg('data') { coinIDs }: getPriceInput): Promise<PricePayload[] | never> {
-    return await fetchPrices({ coinIDs });
+    const coins = await fetchPrices({ coinIDs });
+    console.log(coins);
+    return coins;
   }
 
   @Query(() => [CoinRanking])

@@ -53,7 +53,18 @@ export const redis = new Redis();
   });
   const server = new ApolloServer({
     schema,
-    context: ({ req, connection }: ExpressContext) => ({ req, connection }),
+    context: async ({ req, connection }) => {
+      if (connection) {
+        // check connection for metadata
+        return connection.context;
+      } else {
+        const token = req.headers.authorization?.split(' ')[1] || '';
+        const key = req.header('x-api-key');
+        const address = req.ip;
+
+        return { token, key, address };
+      }
+    },
     subscriptions: {
       onConnect: checkAPIKey,
     },

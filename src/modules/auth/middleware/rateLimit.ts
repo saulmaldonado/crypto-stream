@@ -1,16 +1,17 @@
 import { ApolloError } from 'apollo-server-express';
 import { MiddlewareFn } from 'type-graphql';
 import { redis } from '../../..';
-import { Context } from './Context';
+import { Context, ContextHeaders } from './Context';
 
 const ONE_DAY = 60 * 60 * 24;
 
-export const rateLimitAnon: (limit: number) => MiddlewareFn<Context> = (limit) => async (
+export const rateLimitAnon: (limit: number) => MiddlewareFn<ContextHeaders> = (limit) => async (
   { context },
   next
 ) => {
-  if (context.connection.context.ip) {
-    const key = context.connection.context.APIKey;
+  const { key, address } = context;
+  if (!key) {
+    const key = address;
     const current = await redis.incr(key);
 
     if (current > limit) {
@@ -23,14 +24,21 @@ export const rateLimitAnon: (limit: number) => MiddlewareFn<Context> = (limit) =
   return next();
 };
 
-export const rateLimitAll: (limit: number) => MiddlewareFn<Context> = (limit) => async (
+export const rateLimitAll: (limit: number) => MiddlewareFn<ContextHeaders> = (limit) => async (
   { context },
   next
 ) => {
-  const address = context.req.ip;
+  let { address, key } = context;
 
-  const key = `${address} HIT ENDPOINT`;
-  const current = await redis.incr(key);
+  if (!key) {
+    limit /= 2;
+    key = address;
+  }
+
+  const rateLimitKey = `${key} HIT ENDPOINT`;
+  const current = await redis.incr(rateLimitKey);
+
+  console.log(current);
 
   if (current > limit) {
     throw new ApolloError("You've reached your limit");
