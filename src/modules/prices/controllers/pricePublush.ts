@@ -24,8 +24,13 @@ export const pricePublish = (app: Express, priceInterval: number = 60) => {
   }, priceInterval);
 };
 
+/**
+ *
+ * @param {Array.<string>} coinIDs Array of coin IDs to fetch
+ * @returns {Array.<PricePayload>} Array of coin market data
+ */
 export const fetchPrices = async (coinIDs: string[]): Promise<PricePayload[] | never> => {
-  coinIDs.forEach((coin, i, arr) => {
+  coinIDs.forEach((_, i, arr) => {
     arr[i] = arr[i].toUpperCase();
   });
   const coinIDString = stringify({ ids: coinIDs }, { arrayFormat: 'comma' });

@@ -1,5 +1,5 @@
 /**
- *
+ * Cycles the pricePublish method to fetch and publish new prices at every interval
  * @param fn {function} Callback function to run at every interval
  * @param interval {number} Interval in seconds
  */

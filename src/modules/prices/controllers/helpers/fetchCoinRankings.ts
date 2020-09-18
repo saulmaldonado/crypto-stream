@@ -1,5 +1,10 @@
 import axios from 'axios';
 
+/**
+ * Fetches and return an array of the top 100 coins by market cap
+ *
+ * @returns {Array<{name {string}, coinID {string}, rank {number}}>}
+ */
 export const fetchRankings = async () => {
   const {
     data: { data },
@@ -14,15 +19,30 @@ export const fetchRankings = async () => {
   }));
 };
 
+/**
+ * Cycles fetchRankings methods to automatically fetch new ranking at every interval
+ *
+ * @param {Function} fn function to cycle
+ * @param {Number} interval interval to fetch new rankings by hour
+ */
 export const coinRankingsInit = (fn: () => void, interval: number) => {
+  const ONE_HOUR = 1000 * 60 * 60;
   const now = new Date();
-  const nextMinute = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0, 0);
+  const nextHour = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    now.getHours() + 1,
+    0,
+    0,
+    0
+  );
 
-  const diff = nextMinute.getTime() - now.getTime();
+  const diff = nextHour.getTime() - now.getTime();
 
   const loop = () => {
     fn();
-    setInterval(fn, interval * 1000);
+    setInterval(fn, interval * ONE_HOUR);
   };
 
   fn();
