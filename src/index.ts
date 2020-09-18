@@ -16,6 +16,7 @@ import { LoginResolver } from './modules/auth/login';
 import { APIKeyResolver } from './modules/auth/APIKey';
 import { MongoDBConfig } from './config/DbConfig';
 import { checkAPIKey } from './modules/auth/api/APIkeys';
+import { RegisterResolver } from './modules/auth/register';
 config();
 
 const app = express();
@@ -25,8 +26,6 @@ export const redis = new Redis();
   const options: Redis.RedisOptions = {
     retryStrategy: (times) => Math.max(times * 100, 3000),
   };
-
-  const redis = new Redis();
 
   const pubSub = new RedisPubSub({
     publisher: new Redis(options),
@@ -41,12 +40,14 @@ export const redis = new Redis();
       useUnifiedTopology: true,
       useCreateIndex: true,
       useFindAndModify: false,
+      authSource: MongoDBConfig.AUTH_SOURCE,
     },
-    MongoDBConfig.NAME
+    MongoDBConfig.DB_NAME,
+    process.env.CONNECTION_STRING
   );
 
   const schema = await buildSchema({
-    resolvers: [PriceResolver, LoginResolver, APIKeyResolver],
+    resolvers: [PriceResolver, LoginResolver, APIKeyResolver, RegisterResolver],
     authChecker: customAuthChecker,
     pubSub,
   });
@@ -71,5 +72,5 @@ export const redis = new Redis();
     console.log(`🚀 Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`);
   });
 
-  pricePublish(app, 15);
+  // pricePublish(app, 15);
 })();

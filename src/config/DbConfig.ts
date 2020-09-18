@@ -5,5 +5,6 @@ export enum CollectionNames {
 }
 
 export enum MongoDBConfig {
-  NAME = 'cryptoTracker',
+  DB_NAME = 'cryptoTracker',
+  AUTH_SOURCE = 'admin',
 }
