@@ -1,22 +1,23 @@
 import { ApolloError } from 'apollo-server-express';
 import { randomBytes } from 'crypto';
 import { KeyModel } from '../../../models/Key';
-import { connectionHeaders } from '../middleware/Context';
 import { ConnectionContext } from 'subscriptions-transport-ws';
 
 export const generateAPIKey = () => {
   return randomBytes(16).toString('hex');
 };
 
-export const checkAPIKey = async (
-  connection: connectionHeaders,
+export const checkAPIKeySubscription = async (
+  connection: any,
   _: any,
   context: ConnectionContext
 ) => {
   const APIKey = connection['X-API-Key'];
+  const token = connection.Authorization?.split(' ')[1] || '';
+  const address = context.request.socket.localAddress;
+
   if (!APIKey || Array.isArray(APIKey)) {
-    const address = context.request.connection.remoteAddress!;
-    return { ip: address };
+    return { address, token };
   } else {
     const result = await KeyModel.findOne({ key: APIKey }).catch((err) => {
       throw new ApolloError(err, 'DATABASE_ERROR');
@@ -24,6 +25,6 @@ export const checkAPIKey = async (
 
     if (!result) throw new ApolloError('Invalid API key', 'UNAUTHORIZED');
 
-    return { APIKey };
+    return { APIKey, address, token };
   }
 };

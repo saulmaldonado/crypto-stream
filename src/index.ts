@@ -15,7 +15,7 @@ import { pricePublish } from './modules/prices/controllers/pricePublush';
 import { LoginResolver } from './modules/auth/login';
 import { APIKeyResolver } from './modules/auth/APIKey';
 import { MongoDBConfig } from './config/DbConfig';
-import { checkAPIKey } from './modules/auth/api/APIkeys';
+import { checkAPIKeySubscription } from './modules/auth/api/APIkeys';
 import { RegisterResolver } from './modules/auth/register';
 config();
 
@@ -62,11 +62,11 @@ export const redis = new Redis();
         const key = req.header('x-api-key');
         const address = req.ip;
 
-        return { token, key, address };
+        return { token, key, address, req };
       }
     },
     subscriptions: {
-      onConnect: checkAPIKey,
+      onConnect: checkAPIKeySubscription,
     },
   });
 
