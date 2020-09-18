@@ -9,7 +9,7 @@ import { allCoinIDs } from '../../../../config/coinIDs';
 @ValidatorConstraint()
 export class CoinIDConstraint implements ValidatorConstraintInterface {
   async validate(coinIDs: string[]) {
-    return coinIDs.every((coin) => allCoinIDs.includes(coin));
+    return coinIDs.every((coin) => allCoinIDs.includes(coin.toUpperCase()));
   }
 }
 
