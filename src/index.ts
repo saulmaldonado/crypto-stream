@@ -7,7 +7,6 @@ import http from 'http';
 import Redis from 'ioredis';
 
 import { connect } from './connect';
-import { ExpressContext } from 'apollo-server-express/dist/ApolloServer';
 import { customAuthChecker } from './modules/auth/middleware/authChecker';
 import { PriceResolver } from './modules/prices/prices';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
@@ -17,6 +16,7 @@ import { APIKeyResolver } from './modules/auth/APIKey';
 import { MongoDBConfig } from './config/DbConfig';
 import { checkAPIKeySubscription } from './modules/auth/api/APIkeys';
 import { RegisterResolver } from './modules/auth/register';
+import { createContext } from './modules/auth/middleware/Context';
 config();
 
 const app = express();
@@ -53,18 +53,7 @@ export const redis = new Redis();
   });
   const server = new ApolloServer({
     schema,
-    context: async ({ req, connection }) => {
-      if (connection) {
-        // check connection for metadata
-        return connection.context;
-      } else {
-        const token = req.headers.authorization?.split(' ')[1] || '';
-        const key = req.header('x-api-key');
-        const address = req.ip;
-
-        return { token, key, address, req };
-      }
-    },
+    context: createContext,
     subscriptions: {
       onConnect: checkAPIKeySubscription,
     },
