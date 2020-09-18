@@ -9,7 +9,8 @@ import {
   UseMiddleware,
 } from 'type-graphql';
 import { rateLimitAll, rateLimitAnon } from '../auth/middleware/rateLimit';
-import { fetchPrices } from './controllers/pricePublush';
+import { getRankings } from './controllers/getRankings';
+import { fetchPrices } from './controllers/helpers/fetchCoinPrices';
 import { getPriceInput } from './input/coinIDs';
 
 @ObjectType()
@@ -45,6 +46,18 @@ export class PricePayload {
   oneDayVolume!: number;
 }
 
+@ObjectType()
+export class CoinRanking {
+  @Field()
+  ranking!: number;
+
+  @Field()
+  coinID!: string;
+
+  @Field()
+  name!: string;
+}
+
 @Resolver()
 export class PriceResolver {
   @Subscription(() => [PricePayload], {
@@ -58,6 +71,12 @@ export class PriceResolver {
   @Query(() => [PricePayload])
   @UseMiddleware(rateLimitAll(50))
   async getPrices(@Arg('data') { coinIDs }: getPriceInput): Promise<PricePayload[] | never> {
-    return await fetchPrices(coinIDs);
+    return await fetchPrices({ coinIDs });
+  }
+
+  @Query(() => [CoinRanking])
+  @UseMiddleware(rateLimitAnon(100))
+  async getCoinRankings(@Arg('limit') limit: number): Promise<CoinRanking[] | never> {
+    return await getRankings(limit);
   }
 }

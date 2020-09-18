@@ -1,7 +1,7 @@
 /**
  * Cycles the pricePublish method to fetch and publish new prices at every interval
- * @param fn {function} Callback function to run at every interval
- * @param interval {number} Interval in seconds
+ * @param {function} fn  Callback function to run at every interval
+ * @param {number}  interval Interval in seconds
  */
 export const pricePublishedInit = (fn: () => void, interval: number) => {
   const now = new Date();
