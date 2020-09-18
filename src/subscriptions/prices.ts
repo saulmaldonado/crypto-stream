@@ -9,7 +9,7 @@ import {
   Subscription,
   UseMiddleware,
 } from 'type-graphql';
-import { rateLimitAnon } from '../modules/auth/middleware/rateLimit';
+import { rateLimitAll, rateLimitAnon } from '../modules/auth/middleware/rateLimit';
 
 @ObjectType()
 export class PricePayload {
@@ -31,6 +31,7 @@ export class PriceResolver {
   }
 
   @Query(() => PricePayload)
+  @UseMiddleware(rateLimitAll(50))
   async fetchPrices(@Arg('coinID') coinID: string) {
     const priceData = await axios.get<PriceData[]>(
       `https://api.nomics.com/v1/currencies/ticker?key=${process.env.NOMICS_API_KEY}&ids=${coinID}&interval=1d`
