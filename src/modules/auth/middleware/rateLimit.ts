@@ -27,7 +27,7 @@ export const rateLimitAll: (limit: number) => MiddlewareFn<Context> = (limit) =>
   { context },
   next
 ) => {
-  const address = context.connection.context.ip;
+  const address = context.req.ip;
 
   const key = `${address} HIT ENDPOINT`;
   const current = await redis.incr(key);
