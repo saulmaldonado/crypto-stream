@@ -10,7 +10,7 @@ import { connect } from './connect';
 import { customAuthChecker } from './modules/auth/middleware/authChecker';
 import { PriceResolver } from './modules/prices/prices';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
-import { pricePublish } from './modules/prices/controllers/pricePublush';
+import { pricePublish } from './modules/prices/publsihers/pricePublush';
 import { LoginResolver } from './modules/auth/login';
 import { APIKeyResolver } from './modules/auth/APIKey';
 import { MongoDBConfig } from './config/DbConfig';

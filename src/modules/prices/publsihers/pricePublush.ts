@@ -2,7 +2,7 @@ import { Express } from 'express';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 
 import { pricePublishedInit } from './helpers/pricePublisherInit';
-import { fetchPrices } from './helpers/fetchCoinPrices';
+import { fetchPrices } from '../controllers/helpers/fetchCoinPrices';
 import { allCoinIDs } from '../../../config/coinIDsConfig';
 
 const fetchAndPublish = async (pubSub: RedisPubSub, coinIDs: string[]) => {
