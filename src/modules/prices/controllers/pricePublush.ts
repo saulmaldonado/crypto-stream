@@ -3,6 +3,14 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 
 import { pricePublishedInit } from './helpers/pricePublisherInit';
 import { fetchPrices } from './helpers/fetchCoinPrices';
+import { allCoinIDs } from '../../../config/coinIDsConfig';
+
+const fetchAndPublish = async (pubSub: RedisPubSub, coinIDs: string[]) => {
+  const coins = await fetchPrices({ coinIDs });
+
+  pubSub.publish('PRICES', coins);
+};
+
 /**
  *
  * @param {Express} app  Express app instance
@@ -11,17 +19,10 @@ import { fetchPrices } from './helpers/fetchCoinPrices';
 export const pricePublish = async (app: Express, priceInterval: number = 60) => {
   const pubSub = app.get('pubSub') as RedisPubSub;
 
-  const fetchAndPublish = async (pubSub: RedisPubSub, coinIDs: string[]) => {
-    const coins = await fetchPrices();
-
-    console.log(coins);
-
-    pubSub.publish('PRICES', coins);
-  };
-
-  let rankings: string[] = [];
+  // fetches the top 100 coins from coinIDsConfig file
+  let coinIDs: string[] = allCoinIDs.slice(0, 100);
 
   pricePublishedInit(() => {
-    fetchAndPublish(pubSub, rankings);
+    fetchAndPublish(pubSub, coinIDs);
   }, priceInterval);
 };

@@ -4,7 +4,7 @@ import {
   ValidationOptions,
   registerDecorator,
 } from 'class-validator';
-import { allCoinIDs } from '../../../../config/coinIDs';
+import { allCoinIDs } from '../../../../config/coinIDsConfig';
 
 @ValidatorConstraint()
 export class CoinIDConstraint implements ValidatorConstraintInterface {

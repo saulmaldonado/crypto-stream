@@ -72,7 +72,6 @@ export class PriceResolver {
   @UseMiddleware(rateLimitAll(50))
   async getPrices(@Arg('data') { coinIDs }: getPriceInput): Promise<PricePayload[] | never> {
     const coins = await fetchPrices({ coinIDs });
-    console.log(coins);
     return coins;
   }
 
