@@ -28,7 +28,7 @@ const asyncLoadingWrapper = <A extends any[] | [any]>(
 /**
  * Wraps mongoose connect method in an async function and executes using provided uri
  * and ConnectionOptions.
- * @param {string} [uri='mongodb://localhost:27017/']
+ * @param {string} [uri='mongodb://localhost:27017']
  * @param {ConnectionOptions} options
  */
 export const connect = async (

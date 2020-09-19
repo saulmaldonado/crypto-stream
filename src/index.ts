@@ -42,8 +42,7 @@ export const redis = new Redis();
       useFindAndModify: false,
       authSource: MongoDBConfig.AUTH_SOURCE,
     },
-    MongoDBConfig.DB_NAME,
-    process.env.CONNECTION_STRING
+    MongoDBConfig.DB_NAME
   );
 
   const schema = await buildSchema({
