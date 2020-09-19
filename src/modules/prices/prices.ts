@@ -80,6 +80,12 @@ export class PriceResolver {
   async getCoinRankings(
     @Arg('limit', { defaultValue: 100 }) limit: number
   ): Promise<CoinRanking[] | never> {
-    return await getRankings(limit);
+    console.time();
+
+    const rankings = await getRankings(limit);
+
+    console.timeEnd();
+
+    return rankings;
   }
 }

@@ -70,5 +70,5 @@ export const redis = new Redis();
     console.log(`🚀 Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`);
   });
 
-  startPricePublisher(pubSub, 5);
+  // startPricePublisher(pubSub, 5);
 })();

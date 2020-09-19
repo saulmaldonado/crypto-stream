@@ -3,11 +3,14 @@ import axios from 'axios';
 import qs from 'qs';
 
 import { PricePayload } from '../../prices';
+import { redis } from '../../../../index';
 
 type FetchPricesArguments = {
   coinIDs?: string[];
   limit?: number;
 };
+
+const ONE_MINUTE = 60;
 
 /**
  *
@@ -21,14 +24,30 @@ export const fetchPrices = async (
   const coinIDsString = coinIDs.length
     ? `&${qs.stringify({ ids: coinIDs }, { arrayFormat: 'comma' })}`
     : '';
-  if (coinIDsString) limit = coinIDs.length;
 
   try {
-    console.time();
     const { data } = await axios.get<PriceData[]>(
       `https://api.nomics.com/v1/currencies/ticker?key=${process.env.NOMICS_API_KEY}${coinIDsString}&interval=1d`
     );
-    console.timeEnd();
+
+    if (coinIDsString) {
+      limit = coinIDs.length;
+    } else {
+      redis
+        .set(
+          'rankings',
+          JSON.stringify(
+            data.map(({ id: coinID, name }, index) => ({
+              ranking: index + 1,
+              coinID,
+              name,
+            }))
+          ),
+          'ex',
+          ONE_MINUTE * 10
+        )
+        .catch((reason) => console.error(reason));
+    }
 
     data.length = limit;
 
