@@ -29,13 +29,13 @@ export class TransactionResolver {
       userID = getTokenUserID(ctx);
     }
 
-    return await getTransactionById(transactionID, userID);
+    return getTransactionById(transactionID, userID);
   }
 
   @Authorized()
   @Mutation(() => Transaction)
   async addTrade(@Arg('data') data: AddTransactionInput): Promise<any | never> {
     await addNewTrade(data);
-    return await addNewTransaction(data);
+    return addNewTransaction(data);
   }
 }

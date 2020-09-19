@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { IsJWT } from 'class-validator';
 import { Field, ObjectType } from 'type-graphql';
 import { IsUserID } from '../modules/auth/input/validators/IsUserID';

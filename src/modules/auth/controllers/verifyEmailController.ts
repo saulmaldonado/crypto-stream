@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { ApolloError } from 'apollo-server-express';
 import axios from 'axios';
 
@@ -19,13 +20,10 @@ export const verifyEmail = async (user_id: string): Promise<void | never> => {
     client_id: process.env.AUTH0_MANAGEMENT_CLIENT_ID,
   };
   try {
-    const {
-      data: { status },
-    } = await axios.post<EmailVerificationResponseBody>(Auth0Endpoints.emailVerification, body, {
+    await axios.post<EmailVerificationResponseBody>(Auth0Endpoints.emailVerification, body, {
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${access_token}` },
     });
   } catch (error) {
-    console.log(error);
     throw new ApolloError(error.response.data.message, 'INTERNAL_SERVER_ERROR');
   }
 };

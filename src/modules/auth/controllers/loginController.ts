@@ -1,5 +1,6 @@
+/* eslint-disable camelcase */
 import { ApolloError } from 'apollo-server-express';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import qs from 'qs';
 
 import { Auth0Endpoints } from '../../../config/Auth0Config';
@@ -35,27 +36,29 @@ export const loginUser = async ({
   };
 
   try {
-    const { data: tokens } = await axios.post<Omit<LoginTokensAndID, 'userID'>>(
-      Auth0Endpoints.login,
-      qs.stringify(form),
-      {
+    const { data: tokens } = await axios
+      .post<Omit<LoginTokensAndID, 'userID'>>(Auth0Endpoints.login, qs.stringify(form), {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      }
-    );
+      })
+      .catch((error: AxiosError) => {
+        throw new ApolloError(error.message, 'INTERNAL_SERVER_ERROR', {
+          code: error.code,
+          hostname: error.config.url,
+        });
+      });
 
     const { sub: userID } = getUserInfo(tokens.id_token);
 
     return { ...tokens, userID };
   } catch (error) {
-    let {
-      response: {
-        data: { error_description, error_type },
-      },
-    } = error;
-
-    // Wrong email/username is already handled by LoginInput class-validators
-    if (error_description === 'Wrong email or password.') error_description = 'Wrong password';
-
-    throw new ApolloError(error_description, error_type);
+    if (error?.response?.status === 403) {
+      const {
+        response: {
+          data: { error_description, error_type },
+        },
+      } = error;
+      throw new ApolloError(error_description, error_type);
+    }
+    throw error;
   }
 };

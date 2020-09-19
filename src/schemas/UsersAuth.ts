@@ -1,20 +1,17 @@
+/* eslint-disable camelcase */
 import { Field, ObjectType } from 'type-graphql';
-import { prop } from '@typegoose/typegoose';
 
 @ObjectType()
 export class UserAuth {
   @Field()
-  id!: string;
+  _id!: string;
 
   @Field()
-  @prop({ required: true })
   public username!: string;
 
   @Field()
-  @prop({ required: true })
   public email!: string;
 
   @Field()
-  @prop()
-  public emailVerified!: boolean;
+  public email_verified!: boolean;
 }

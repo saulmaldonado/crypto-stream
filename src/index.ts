@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from 'express';
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-express';
@@ -6,28 +7,25 @@ import { buildSchema } from 'type-graphql';
 import http from 'http';
 import Redis from 'ioredis';
 
-import { connect } from './connect';
-import { RegisterResolver } from './modules/auth/register';
-import { LoginResolver } from './modules/auth/login';
-import { EmailResolver } from './modules/auth/verifyEmail';
-import { PortfolioResolver } from './modules/users/portfolios';
-import { TransactionResolver } from './modules/users/transaction';
-import { ExpressContext } from 'apollo-server-express/dist/ApolloServer';
-import { customAuthChecker } from './modules/auth/middleware/authChecker';
-import { PriceResolver } from './subscriptions/prices';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
-import { pricePublish } from './services/pricePublush';
+import { connect } from './connect';
+import { customAuthChecker } from './modules/auth/middleware/authChecker';
+import { PriceResolver } from './modules/prices/prices';
+import { startPricePublisher } from './modules/prices/publsihers/pricePublush';
+import { LoginResolver } from './modules/auth/login';
+import { APIKeyResolver } from './modules/apiKey/APIKey';
+import { MongoDBConfig } from './config/DbConfig';
+import { checkAPIKeySubscription } from './subscriptions/middleware/APIkeys';
+import { RegisterResolver } from './modules/auth/register';
+import { createContext } from './modules/auth/middleware/Context';
+
 config();
 
 const app = express();
+export const redis = new Redis();
 
 (async () => {
-  const REDIS_HOST = '127.0.0.1';
-  const REDIS_PORT = 6379;
-
   const options: Redis.RedisOptions = {
-    host: REDIS_HOST,
-    port: REDIS_PORT,
     retryStrategy: (times) => Math.max(times * 100, 3000),
   };
 
@@ -36,34 +34,27 @@ const app = express();
     subscriber: new Redis(options),
   });
 
-  app.set('pubSub', pubSub);
-
-  const uri = process.env.CONNECTION_STRING;
-
-  await connect(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-  });
+  await connect(
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      authSource: MongoDBConfig.AUTH_SOURCE,
+    },
+    MongoDBConfig.DB_NAME
+  );
 
   const schema = await buildSchema({
-    resolvers: [
-      RegisterResolver,
-      LoginResolver,
-      EmailResolver,
-      PortfolioResolver,
-      TransactionResolver,
-      PriceResolver,
-    ],
+    resolvers: [PriceResolver, LoginResolver, APIKeyResolver, RegisterResolver],
     authChecker: customAuthChecker,
     pubSub,
   });
   const server = new ApolloServer({
     schema,
-    context: ({ req }: ExpressContext) => ({ req }),
+    context: createContext,
     subscriptions: {
-      onConnect: (params, webSocket, context) => console.log(params),
+      onConnect: checkAPIKeySubscription,
     },
   });
 
@@ -80,5 +71,5 @@ const app = express();
     console.log(`🚀 Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`);
   });
 
-  pricePublish(app, 15);
+  startPricePublisher(pubSub, 15);
 })();

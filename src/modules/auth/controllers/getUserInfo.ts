@@ -1,6 +1,7 @@
+/* eslint-disable camelcase */
 import { isJWT } from 'class-validator';
 import { decode } from 'jsonwebtoken';
-import { IsUserID, IsUserIDConstraint } from '../input/validators/IsUserID';
+import { IsUserIDConstraint } from '../input/validators/IsUserID';
 
 type IdToken = {
   nickname: string;

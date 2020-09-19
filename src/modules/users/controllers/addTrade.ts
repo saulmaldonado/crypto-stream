@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { DocumentType } from '@typegoose/typegoose';
 import { ApolloError } from 'apollo-server-express';
 
@@ -8,6 +9,7 @@ import { buy } from './trading/buy';
 import { sell } from './trading/sell';
 
 export type UserPortfolio = DocumentType<Pick<Portfolio, 'portfolio' | 'id'>>;
+
 export type trade = (
   user: UserPortfolio,
   coin: Omit<AddTransactionInput, 'buyOrSell'>
@@ -28,11 +30,11 @@ export const addNewTrade = async ({
 
   if (!user) throw new ApolloError('Portfolio does not exist', 'AUTHENTICATION_ERROR');
 
-  //buy
+  // buy
   if (buyOrSell.toLowerCase().trim() === 'buy') {
     await buy(user, { coinID, coinName, coinSymbol, quantity, portfolioID });
   } else {
-    //sell
+    // sell
     await sell(user, { coinID, coinName, coinSymbol, quantity, portfolioID });
   }
 };

@@ -21,10 +21,10 @@ export function IsUsernameOrEmail(validationOptions?: Omit<ValidationOptions, 'm
   const message = 'Username or email is not valid';
 
   const options: ValidationOptions = { ...validationOptions, message };
-  return function (object: Object, propertyName: string) {
+  return (object: Object, propertyName: string) => {
     registerDecorator({
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options,
       constraints: [],
       validator: UsernameOrEmailConstraint,

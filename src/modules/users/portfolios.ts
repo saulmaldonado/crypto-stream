@@ -22,7 +22,7 @@ export class PortfolioResolver {
     } else {
       userID = getTokenUserID(ctx);
     }
-    return await getUserPortfolios(userID);
+    return getUserPortfolios(userID);
   }
 
   @Authorized()
@@ -36,7 +36,7 @@ export class PortfolioResolver {
       isManagement(ctx);
     }
 
-    return await getPortfolioById(portfolioID);
+    return getPortfolioById(portfolioID);
   }
 
   @Authorized()
@@ -44,6 +44,6 @@ export class PortfolioResolver {
   async addPortfolio(
     @Arg('data') { userID, username }: AddPortfolioInput
   ): Promise<Portfolio | never> {
-    return await addNewPortfolio(userID, username);
+    return addNewPortfolio(userID, username);
   }
 }

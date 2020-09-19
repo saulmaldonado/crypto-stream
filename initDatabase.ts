@@ -46,7 +46,7 @@ const client = new MongoClient(uri, { useUnifiedTopology: true });
     }
 
     await conn.db('cryptoTracker').createCollection(CollectionNames.PORTFOLIOS);
-    await conn.db('cryptoTracker').createCollection(CollectionNames.AUTH);
+    await conn.db('cryptoTracker').createCollection(CollectionNames.API_KEYS);
 
     console.log('Database initialized');
     exit(0);
