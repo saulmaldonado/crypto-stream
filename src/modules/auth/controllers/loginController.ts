@@ -56,8 +56,6 @@ export const loginUser = async ({
           data: { error_description, error_type },
         },
       } = error;
-      if (error_description === 'Wrong email or password.') error_description = 'Wrong password';
-
       throw new ApolloError(error_description, error_type);
     }
     throw error;
