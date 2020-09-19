@@ -6,11 +6,6 @@ import { RegisterInput } from './input/registerInput';
 
 @Resolver()
 export class RegisterResolver {
-  @Query(() => String)
-  hello() {
-    return 'hello';
-  }
-
   @Mutation(() => UserAuth)
   async register(
     @Arg('data') { email, password, username }: RegisterInput

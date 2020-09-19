@@ -1,5 +1,5 @@
 import { redis } from '../../../..';
-import { PricePayload } from '../../prices';
+import { PricePayload } from '../../../../schemas/PricePayload';
 
 export const getCoinsFromCache = async (coinIDs: string[]) => {
   const result = await redis.get('lastPrices');

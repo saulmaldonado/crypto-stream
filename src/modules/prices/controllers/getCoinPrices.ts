@@ -1,4 +1,4 @@
-import { PricePayload } from '../prices';
+import { PricePayload } from '../../../schemas/PricePayload';
 import { getCoinsFromCache } from '../publsihers/helpers/getCoinsFromCache';
 import { fetchPrices } from './helpers/fetchCoinPrices';
 

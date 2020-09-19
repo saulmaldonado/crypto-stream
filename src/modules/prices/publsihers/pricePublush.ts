@@ -3,7 +3,8 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { pricePublishedInit } from './helpers/pricePublisherInit';
 import { fetchPrices } from '../controllers/helpers/fetchCoinPrices';
 import { redis } from '../../..';
-import { CoinRanking, PricePayload } from '../prices';
+import { CoinRanking } from '../../../schemas/CoinRanking';
+import { PricePayload } from '../../../schemas/PricePayload';
 
 const fetchAndPublish = async (pubSub: RedisPubSub) => {
   // fetch the coin rankings from cache (rankings have 10min expiry)

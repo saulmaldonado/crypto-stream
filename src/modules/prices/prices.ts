@@ -1,62 +1,10 @@
-import {
-  Arg,
-  Field,
-  ObjectType,
-  Query,
-  Resolver,
-  Root,
-  Subscription,
-  UseMiddleware,
-} from 'type-graphql';
+import { Arg, Query, Resolver, Root, Subscription, UseMiddleware } from 'type-graphql';
+import { CoinRanking } from '../../schemas/CoinRanking';
+import { PricePayload } from '../../schemas/PricePayload';
 import { rateLimitAll, rateLimitAnon } from '../auth/middleware/rateLimit';
 import { getCoinPrices } from './controllers/getCoinPrices';
 import { getRankings } from './controllers/getRankings';
 import { getPriceInput } from './input/coinIDs';
-
-@ObjectType()
-export class PricePayload {
-  @Field()
-  currentPrice!: number;
-
-  @Field()
-  name!: string;
-
-  @Field()
-  coinID!: string;
-
-  @Field()
-  priceTimestamp!: string;
-
-  @Field()
-  circulatingSupply!: number;
-
-  @Field()
-  maxSupply!: number;
-
-  @Field()
-  marketCap!: number;
-
-  @Field()
-  oneDayPriceChange!: number;
-
-  @Field()
-  oneDayPriceChangePct!: number;
-
-  @Field()
-  oneDayVolume!: number;
-}
-
-@ObjectType()
-export class CoinRanking {
-  @Field()
-  ranking!: number;
-
-  @Field()
-  coinID!: string;
-
-  @Field()
-  name!: string;
-}
 
 @Resolver()
 export class PriceResolver {

@@ -2,8 +2,8 @@ import { ApolloError } from 'apollo-server-express';
 import axios from 'axios';
 import qs from 'qs';
 
-import { PricePayload } from '../../prices';
 import { redis } from '../../../../index';
+import { PricePayload } from '../../../../schemas/PricePayload';
 
 type FetchPricesArguments = {
   coinIDs?: string[];

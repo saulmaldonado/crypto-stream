@@ -1,5 +1,6 @@
 import { redis } from '../../..';
-import { CoinRanking, PricePayload } from '../prices';
+import { CoinRanking } from '../../../schemas/CoinRanking';
+import { PricePayload } from '../../../schemas/PricePayload';
 import { fetchPrices } from './helpers/fetchCoinPrices';
 
 export const getRankings = async (limit: number): Promise<CoinRanking[]> => {
