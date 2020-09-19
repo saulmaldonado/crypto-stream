@@ -8,7 +8,7 @@ export const refreshAPIKey = async (ctx: Context) => {
   const userID = getTokenUserID(ctx);
 
   try {
-    let APIKey = await KeyModel.findOne({ userID });
+    const APIKey = await KeyModel.findOne({ userID });
 
     if (!APIKey) {
       throw new ApolloError('No API Key for user', 'INTERNAL_SERVER_ERROR');

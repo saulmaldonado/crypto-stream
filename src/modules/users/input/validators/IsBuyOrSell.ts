@@ -8,8 +8,8 @@ import {
 @ValidatorConstraint()
 export class IsBuyOrSellConstraint implements ValidatorConstraintInterface {
   async validate(buyOrSell: string) {
-    buyOrSell = buyOrSell.toLowerCase().trim();
-    return buyOrSell === 'buy' || buyOrSell === 'sell';
+    const buyOrSellTransformed = buyOrSell.toLowerCase().trim();
+    return buyOrSellTransformed === 'buy' || buyOrSellTransformed === 'sell';
   }
 }
 
@@ -17,10 +17,10 @@ export function IsBuyOrSell(validationOptions?: Omit<ValidationOptions, 'message
   const message = 'Trade type must be "buy" or "sell"';
 
   const options: ValidationOptions = { ...validationOptions, message };
-  return function (object: Object, propertyName: string) {
+  return (object: Object, propertyName: string) => {
     registerDecorator({
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options,
       constraints: [],
       validator: IsBuyOrSellConstraint,

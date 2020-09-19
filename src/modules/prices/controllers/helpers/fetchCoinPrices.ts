@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable camelcase */
 import { ApolloError } from 'apollo-server-express';
 import axios from 'axios';
 import qs from 'qs';
@@ -9,6 +11,32 @@ type FetchPricesArguments = {
   coinIDs?: string[];
   limit?: number;
   subscription?: boolean;
+};
+
+export type PriceData = {
+  id: string;
+  currency: string;
+  symbol: string;
+  name: string;
+  logo_url: string;
+  price: string;
+  price_date: string;
+  price_timestamp: string;
+  max_supply: string;
+  circulating_supply: string;
+  market_cap: string;
+  rank: string;
+  high: string;
+  high_timestamp: string;
+  '1d': {
+    volume: string;
+    price_change: string;
+    price_change_pct: string;
+    volume_change: string;
+    volume_change_pct: string;
+    market_cap_change: string;
+    market_cap_change_pct: string;
+  };
 };
 
 const ONE_MINUTE = 60;
@@ -55,20 +83,18 @@ export const fetchPrices = async (
 
     data.length = limit;
 
-    const mappedData: PricePayload[] = data.map((coin) => {
-      return {
-        currentPrice: Number(coin.price),
-        name: coin.name,
-        coinID: coin.id,
-        priceTimestamp: coin.price_timestamp,
-        circulatingSupply: Number(coin.circulating_supply),
-        maxSupply: Number(coin.max_supply),
-        marketCap: Number(coin.market_cap),
-        oneDayPriceChange: Number(coin['1d']?.price_change ?? 0),
-        oneDayPriceChangePct: Number(coin['1d']?.price_change_pct ?? 0),
-        oneDayVolume: Number(coin['1d']?.volume ?? 0),
-      };
-    });
+    const mappedData: PricePayload[] = data.map((coin) => ({
+      currentPrice: Number(coin.price),
+      name: coin.name,
+      coinID: coin.id,
+      priceTimestamp: coin.price_timestamp,
+      circulatingSupply: Number(coin.circulating_supply),
+      maxSupply: Number(coin.max_supply),
+      marketCap: Number(coin.market_cap),
+      oneDayPriceChange: Number(coin['1d']?.price_change ?? 0),
+      oneDayPriceChangePct: Number(coin['1d']?.price_change_pct ?? 0),
+      oneDayVolume: Number(coin['1d']?.volume ?? 0),
+    }));
 
     // if called for subscription, set subscription cache
     if (subscription) redis.set('lastPrices', JSON.stringify(mappedData), 'ex', ONE_HOUR);
@@ -77,30 +103,4 @@ export const fetchPrices = async (
   } catch (error) {
     throw new ApolloError(error, 'EXTERNAL_API_ERROR');
   }
-};
-
-export type PriceData = {
-  id: string;
-  currency: string;
-  symbol: string;
-  name: string;
-  logo_url: string;
-  price: string;
-  price_date: string;
-  price_timestamp: string;
-  max_supply: string;
-  circulating_supply: string;
-  market_cap: string;
-  rank: string;
-  high: string;
-  high_timestamp: string;
-  '1d': {
-    volume: string;
-    price_change: string;
-    price_change_pct: string;
-    volume_change: string;
-    volume_change_pct: string;
-    market_cap_change: string;
-    market_cap_change_pct: string;
-  };
 };

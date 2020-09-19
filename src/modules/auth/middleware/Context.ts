@@ -11,11 +11,10 @@ export type ContextHeaders = { token: string; key: string; address: string };
 export const createContext = ({ req, connection }: ExpressContext) => {
   if (connection) {
     return connection.context;
-  } else {
-    const token = req.headers.authorization?.split(' ')[1] || '';
-    const key = req.header('x-api-key');
-    const address = req.ip;
-
-    return { token, key, address, req };
   }
+  const token = req.headers.authorization?.split(' ')[1] || '';
+  const key = req.header('x-api-key');
+  const address = req.ip;
+
+  return { token, key, address, req };
 };

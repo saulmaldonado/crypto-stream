@@ -6,11 +6,10 @@ export const getTransactionById = async (transactionID: string, userID?: string)
   let user: Pick<Portfolio, 'id' | 'tradingHistory'> | null = null;
   try {
     user = await PortfolioModel.findOne(
-      { userID: userID, tradingHistory: { $elemMatch: { _id: transactionID } } },
+      { userID, tradingHistory: { $elemMatch: { _id: transactionID } } },
       { _id: 0, tradingHistory: { $elemMatch: { _id: transactionID } } }
     );
   } catch (error) {
-    console.log(user);
     throw new ApolloError(error, 'DATABASE_ERROR');
   }
 

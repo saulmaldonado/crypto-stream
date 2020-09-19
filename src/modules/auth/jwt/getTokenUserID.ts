@@ -1,6 +1,6 @@
+import { decode } from 'jsonwebtoken';
 import { Context } from '../middleware/Context';
 
-import { decode } from 'jsonwebtoken';
 import { JWTPayload } from '../middleware/authChecker';
 
 export const getTokenUserID = ({ req }: Context): string => {

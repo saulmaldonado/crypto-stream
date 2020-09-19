@@ -1,23 +1,24 @@
-import axios, { AxiosError } from 'axios';
+/* eslint-disable camelcase */
+import axios from 'axios';
 
+import { ApolloError } from 'apollo-server-express';
 import { UserAuth } from '../../../schemas/UsersAuth';
 import { RegisterInput } from '../input/registerInput';
 import { Auth0Endpoints } from '../../../config/Auth0Config';
-import { ApolloError } from 'apollo-server-express';
 
-type SignupRequestBody = {
-  client_id: string;
-  email: string;
-  password: string;
-  connection: string;
-  username?: string;
-  given_name?: string;
-  family_name?: string;
-  name?: string;
-  nickname?: string;
-  picture?: string;
-  user_metadata: Record<string, string>;
-};
+// type SignupRequestBody = {
+//   client_id: string;
+//   email: string;
+//   password: string;
+//   connection: string;
+//   username?: string;
+//   given_name?: string;
+//   family_name?: string;
+//   name?: string;
+//   nickname?: string;
+//   picture?: string;
+//   user_metadata: Record<string, string>;
+// };
 
 export const registerUser = async ({
   email,

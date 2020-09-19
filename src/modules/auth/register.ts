@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Arg, Query } from 'type-graphql';
+import { Resolver, Mutation, Arg } from 'type-graphql';
 
 import { registerUser } from './controllers/registerController';
 import { UserAuth } from '../../schemas/UsersAuth';

@@ -5,6 +5,21 @@ import { ApolloError } from 'apollo-server-express';
 
 import { Context } from './Context';
 
+export type JWTPayload = {
+  iss?: string;
+  /**
+   * userID
+   */
+  sub?: string;
+  aud?: string[];
+  iat?: number;
+  exp?: number;
+  azp?: string;
+  scope?: string;
+  gty?: string;
+  permissions?: string[];
+};
+
 export const customAuthChecker: AuthChecker<Context> = async ({ context }) => {
   const { req } = context;
   if (!req.headers.authorization) return false;
@@ -27,11 +42,12 @@ export const customAuthChecker: AuthChecker<Context> = async ({ context }) => {
 
   try {
     const decodedToken = await new Promise<JWTPayload | never>((res, rej) =>
-      secret(req, header, payload, (err, secret) => {
-        if (err || !secret)
+      secret(req, header, payload, (err, JWTsecret) => {
+        if (err || !secret) {
           rej(new ApolloError(err ?? 'Unable to verify JWT', 'INTERNAL_SERVER_ERROR'));
-        const decodedToken = verify(token, secret as Secret) as JWTPayload;
-        res(decodedToken);
+        }
+        const resultToken = verify(token, JWTsecret as Secret) as JWTPayload;
+        res(resultToken);
       })
     );
 
@@ -49,19 +65,4 @@ export const customAuthChecker: AuthChecker<Context> = async ({ context }) => {
   } catch (error) {
     return false;
   }
-};
-
-export type JWTPayload = {
-  iss?: string;
-  /**
-   * userID
-   */
-  sub?: string;
-  aud?: string[];
-  iat?: number;
-  exp?: number;
-  azp?: string;
-  scope?: string;
-  gty?: string;
-  permissions?: string[];
 };

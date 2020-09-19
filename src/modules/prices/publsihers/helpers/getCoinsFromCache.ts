@@ -4,7 +4,7 @@ import { PricePayload } from '../../../../schemas/PricePayload';
 export const getCoinsFromCache = async (coinIDs: string[]) => {
   const result = await redis.get('lastPrices');
 
-  let coins: PricePayload[] = [];
+  const coins: PricePayload[] = [];
 
   if (result) {
     const cache: PricePayload[] = JSON.parse(result);
@@ -16,15 +16,13 @@ export const getCoinsFromCache = async (coinIDs: string[]) => {
       if (match) {
         coins.push(match);
         return true;
-      } else {
-        index = i;
-        return false;
       }
+      index = i;
+      return false;
     });
 
     const restOfCoinIds = index ? coinIDs.slice(index) : null;
     return { ok: true, allMatched, coins, restOfCoinIds };
-  } else {
-    return { ok: false };
   }
+  return { ok: false };
 };

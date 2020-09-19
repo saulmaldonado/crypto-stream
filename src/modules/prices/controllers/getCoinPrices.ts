@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { PricePayload } from '../../../schemas/PricePayload';
 import { getCoinsFromCache } from '../publsihers/helpers/getCoinsFromCache';
 import { fetchPrices } from './helpers/fetchCoinPrices';
@@ -13,5 +14,5 @@ export const getCoinPrices = async (coinIDs: string[]) => {
     return coins!;
   }
 
-  return await fetchPrices({ coinIDs });
+  return fetchPrices({ coinIDs });
 };

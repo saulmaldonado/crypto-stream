@@ -1,7 +1,7 @@
 import { ArrayMaxSize } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 
-import { IsCoinID } from '../input/validators/IsCoinID';
+import { IsCoinID } from './validators/IsCoinID';
 
 @InputType()
 export class getPriceInput {

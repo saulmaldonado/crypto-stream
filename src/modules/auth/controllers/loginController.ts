@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { ApolloError } from 'apollo-server-express';
 import axios, { AxiosError } from 'axios';
 import qs from 'qs';
@@ -51,7 +52,7 @@ export const loginUser = async ({
     return { ...tokens, userID };
   } catch (error) {
     if (error?.response?.status === 403) {
-      let {
+      const {
         response: {
           data: { error_description, error_type },
         },

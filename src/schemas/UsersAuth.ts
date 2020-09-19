@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()

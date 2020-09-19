@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import express from 'express';
 import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server-express';
@@ -6,10 +7,10 @@ import { buildSchema } from 'type-graphql';
 import http from 'http';
 import Redis from 'ioredis';
 
+import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { connect } from './connect';
 import { customAuthChecker } from './modules/auth/middleware/authChecker';
 import { PriceResolver } from './modules/prices/prices';
-import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { startPricePublisher } from './modules/prices/publsihers/pricePublush';
 import { LoginResolver } from './modules/auth/login';
 import { APIKeyResolver } from './modules/apiKey/APIKey';
@@ -17,6 +18,7 @@ import { MongoDBConfig } from './config/DbConfig';
 import { checkAPIKeySubscription } from './subscriptions/middleware/APIkeys';
 import { RegisterResolver } from './modules/auth/register';
 import { createContext } from './modules/auth/middleware/Context';
+
 config();
 
 const app = express();

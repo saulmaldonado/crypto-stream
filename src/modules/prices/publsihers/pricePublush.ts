@@ -12,11 +12,12 @@ const fetchAndPublish = async (pubSub: RedisPubSub) => {
   let coins: PricePayload[] = [];
 
   if (!res) {
-    // if cache is empty, fetch all prices and filter to the top 100. This will also set ranking cache again
+    /** if cache is empty, fetch all prices and filter to the top 100.
+    This will also set ranking cache again */
     coins = await fetchPrices({ limit: 100, subscription: true });
   } else {
     // map the cache to coinIDs array and fetch the coins
-    let rankings: CoinRanking[] = JSON.parse(res);
+    const rankings: CoinRanking[] = JSON.parse(res);
     const coinIDs: string[] = rankings.slice(0, 100).map((coin) => coin.coinID);
     coins = await fetchPrices({ coinIDs, subscription: true });
   }
@@ -27,7 +28,7 @@ const fetchAndPublish = async (pubSub: RedisPubSub) => {
 /**
  *
  * @param {Express} app  Express app instance
- * @param {number} [priceInterval=60] Interval at which prices will be published in seconds. Default: 60s
+ * @param {number} [priceInterval=60] Interval at which prices will be published in seconds.
  */
 export const startPricePublisher = async (pubSub: RedisPubSub, priceInterval: number = 60) => {
   pricePublishedInit(() => {

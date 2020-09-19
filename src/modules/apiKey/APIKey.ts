@@ -7,11 +7,11 @@ import { refreshAPIKey } from './controllers/refreshAPIKey';
 export class APIKeyResolver {
   @Query(() => String)
   async getAPIKey(@Ctx() ctx: Context): Promise<string | never> {
-    return await getKey(ctx);
+    return getKey(ctx);
   }
 
   @Query(() => String)
   async refreshAPIKey(@Ctx() ctx: Context) {
-    return await refreshAPIKey(ctx);
+    return refreshAPIKey(ctx);
   }
 }

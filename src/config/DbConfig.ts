@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-shadow */
 export enum CollectionNames {
   PORTFOLIOS = 'portfolios',
   API_KEYS = 'keys',
