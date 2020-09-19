@@ -9,8 +9,8 @@ import {
   UseMiddleware,
 } from 'type-graphql';
 import { rateLimitAll, rateLimitAnon } from '../auth/middleware/rateLimit';
+import { getCoinPrices } from './controllers/getCoinPrices';
 import { getRankings } from './controllers/getRankings';
-import { fetchPrices } from './controllers/helpers/fetchCoinPrices';
 import { getPriceInput } from './input/coinIDs';
 
 @ObjectType()
@@ -71,8 +71,7 @@ export class PriceResolver {
   @Query(() => [PricePayload], { nullable: 'items' })
   @UseMiddleware(rateLimitAll(50))
   async getPrices(@Arg('data') { coinIDs }: getPriceInput): Promise<PricePayload[] | never> {
-    const coins = await fetchPrices({ coinIDs });
-    return coins;
+    return await getCoinPrices(coinIDs);
   }
 
   @Query(() => [CoinRanking], { nullable: 'items' })
@@ -80,12 +79,6 @@ export class PriceResolver {
   async getCoinRankings(
     @Arg('limit', { defaultValue: 100 }) limit: number
   ): Promise<CoinRanking[] | never> {
-    console.time();
-
-    const rankings = await getRankings(limit);
-
-    console.timeEnd();
-
-    return rankings;
+    return await getRankings(limit);
   }
 }

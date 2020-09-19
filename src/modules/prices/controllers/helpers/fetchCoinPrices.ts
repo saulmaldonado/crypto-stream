@@ -8,10 +8,11 @@ import { redis } from '../../../../index';
 type FetchPricesArguments = {
   coinIDs?: string[];
   limit?: number;
+  subscription?: boolean;
 };
 
 const ONE_MINUTE = 60;
-
+const ONE_HOUR = 60 * 60;
 /**
  *
  * @param {coinID: Array<string>=[], limit: number=100} options for fetching market prices
@@ -19,7 +20,10 @@ const ONE_MINUTE = 60;
  * @returns {Array.<PricePayload>} Array of coin market data
  */
 export const fetchPrices = async (
-  { coinIDs = [], limit = 100 }: FetchPricesArguments = { coinIDs: [], limit: 100 }
+  { coinIDs = [], limit = 100, subscription = false }: FetchPricesArguments = {
+    coinIDs: [],
+    limit: 100,
+  }
 ): Promise<PricePayload[] | never> => {
   const coinIDsString = coinIDs.length
     ? `&${qs.stringify({ ids: coinIDs }, { arrayFormat: 'comma' })}`
@@ -51,7 +55,7 @@ export const fetchPrices = async (
 
     data.length = limit;
 
-    return data.map((coin) => {
+    const mappedData: PricePayload[] = data.map((coin) => {
       return {
         currentPrice: Number(coin.price),
         name: coin.name,
@@ -65,6 +69,11 @@ export const fetchPrices = async (
         oneDayVolume: Number(coin['1d']?.volume ?? 0),
       };
     });
+
+    // if called for subscription, set subscription cache
+    if (subscription) redis.set('lastPrices', JSON.stringify(mappedData), 'ex', ONE_HOUR);
+
+    return mappedData;
   } catch (error) {
     throw new ApolloError(error, 'EXTERNAL_API_ERROR');
   }
