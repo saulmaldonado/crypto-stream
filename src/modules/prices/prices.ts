@@ -25,7 +25,7 @@ export class PricePayload {
   coinID!: string;
 
   @Field()
-  priceTimestamp!: Date;
+  priceTimestamp!: string;
 
   @Field()
   circulatingSupply!: number;
@@ -77,7 +77,9 @@ export class PriceResolver {
 
   @Query(() => [CoinRanking], { nullable: 'items' })
   @UseMiddleware(rateLimitAnon(100))
-  async getCoinRankings(@Arg('limit') limit: number): Promise<CoinRanking[] | never> {
+  async getCoinRankings(
+    @Arg('limit', { defaultValue: 100 }) limit: number
+  ): Promise<CoinRanking[] | never> {
     return await getRankings(limit);
   }
 }

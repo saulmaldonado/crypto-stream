@@ -24,9 +24,11 @@ export const fetchPrices = async (
   if (coinIDsString) limit = coinIDs.length;
 
   try {
+    console.time();
     const { data } = await axios.get<PriceData[]>(
       `https://api.nomics.com/v1/currencies/ticker?key=${process.env.NOMICS_API_KEY}${coinIDsString}&interval=1d`
     );
+    console.timeEnd();
 
     data.length = limit;
 
@@ -35,7 +37,7 @@ export const fetchPrices = async (
         currentPrice: Number(coin.price),
         name: coin.name,
         coinID: coin.id,
-        priceTimestamp: new Date(coin.price_timestamp),
+        priceTimestamp: coin.price_timestamp,
         circulatingSupply: Number(coin.circulating_supply),
         maxSupply: Number(coin.max_supply),
         marketCap: Number(coin.market_cap),
