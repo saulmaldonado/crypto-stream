@@ -1,8 +1,8 @@
 import { ApolloError } from 'apollo-server-express';
 import { KeyModel } from '../../../models/Key';
-import { generateAPIKey } from '../api/APIkeys';
-import { getTokenUserID } from '../jwt/getTokenUserID';
-import { Context } from '../middleware/Context';
+import { generateAPIKey } from '../../../subscriptions/middleware/APIkeys';
+import { getTokenUserID } from '../../auth/jwt/getTokenUserID';
+import { Context } from '../../auth/middleware/Context';
 
 export const refreshAPIKey = async (ctx: Context) => {
   const userID = getTokenUserID(ctx);

@@ -2,9 +2,9 @@ import { ApolloError } from 'apollo-server-express';
 import WebSocket from 'ws';
 
 import { randomBytes } from 'crypto';
-import { KeyModel } from '../../../models/Key';
+import { KeyModel } from '../../models/Key';
 import { ConnectionContext } from 'subscriptions-transport-ws';
-import { ConnectionHeaders } from '../middleware/Context';
+import { ConnectionHeaders } from '../../modules/auth/middleware/Context';
 
 export const generateAPIKey = () => {
   return randomBytes(16).toString('hex');

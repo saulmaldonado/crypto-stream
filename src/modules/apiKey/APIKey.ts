@@ -1,5 +1,5 @@
 import { Ctx, Query, Resolver } from 'type-graphql';
-import { Context } from './middleware/Context';
+import { Context } from '../auth/middleware/Context';
 import { getKey } from './controllers/getAPIKey';
 import { refreshAPIKey } from './controllers/refreshAPIKey';
 
