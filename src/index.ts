@@ -10,7 +10,7 @@ import { connect } from './connect';
 import { customAuthChecker } from './modules/auth/middleware/authChecker';
 import { PriceResolver } from './modules/prices/prices';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
-import { pricePublish } from './modules/prices/publsihers/pricePublush';
+import { startPricePublisher } from './modules/prices/publsihers/pricePublush';
 import { LoginResolver } from './modules/auth/login';
 import { APIKeyResolver } from './modules/auth/APIKey';
 import { MongoDBConfig } from './config/DbConfig';
@@ -31,8 +31,6 @@ export const redis = new Redis();
     publisher: new Redis(options),
     subscriber: new Redis(options),
   });
-
-  app.set('pubSub', pubSub);
 
   await connect(
     {
@@ -72,5 +70,5 @@ export const redis = new Redis();
     console.log(`🚀 Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`);
   });
 
-  pricePublish(app, 15);
+  startPricePublisher(pubSub, 5);
 })();
