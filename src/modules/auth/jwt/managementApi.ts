@@ -1,10 +1,7 @@
 import { ApolloError } from 'apollo-server-express';
 import axios from 'axios';
-import { config } from 'dotenv';
 
 import { Auth0Endpoints } from '../../../config/Auth0Config';
-
-config();
 
 type AccessTokenRequestBody = {
   client_id: string;
