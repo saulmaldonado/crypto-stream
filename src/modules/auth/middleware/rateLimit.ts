@@ -3,7 +3,7 @@
 import { ApolloError } from 'apollo-server-express';
 import { MiddlewareFn } from 'type-graphql';
 import { redis } from '../../..';
-import { checkAPIKey, validateKey } from '../../apiKey/middlware/checkAPIKey';
+import { validateKey } from '../../apiKey/middleware/checkAPIKey';
 import { ContextHeaders } from './Context';
 
 const ONE_DAY = 60 * 60 * 24;
