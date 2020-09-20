@@ -11,7 +11,6 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { connect } from './connect';
 import { customAuthChecker } from './modules/auth/middleware/authChecker';
 import { PriceResolver } from './modules/prices/prices';
-import { startPricePublisher } from './modules/prices/publsihers/pricePublush';
 import { LoginResolver } from './modules/auth/login';
 import { APIKeyResolver } from './modules/apiKey/APIKey';
 import { MongoDBConfig } from './config/DbConfig';
@@ -40,9 +39,8 @@ export const redis = new Redis();
       useUnifiedTopology: true,
       useCreateIndex: true,
       useFindAndModify: false,
-      authSource: MongoDBConfig.AUTH_SOURCE,
     },
-    MongoDBConfig.DB_NAME
+    MongoDBConfig.API_DB_NAME
   );
 
   const schema = await buildSchema({
@@ -71,5 +69,5 @@ export const redis = new Redis();
     console.log(`🚀 Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`);
   });
 
-  startPricePublisher(pubSub, 15);
+  // startPricePublisher(pubSub, 15);
 })();
