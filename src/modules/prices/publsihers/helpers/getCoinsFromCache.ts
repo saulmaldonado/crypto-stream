@@ -21,7 +21,7 @@ export const getCoinsFromCache = async (coinIDs: string[]) => {
       return false;
     });
 
-    const restOfCoinIds = index ? coinIDs.slice(index) : null;
+    const restOfCoinIds = !allMatched ? coinIDs.slice(index!) : null;
     return { ok: true, allMatched, coins, restOfCoinIds };
   }
   return { ok: false };
