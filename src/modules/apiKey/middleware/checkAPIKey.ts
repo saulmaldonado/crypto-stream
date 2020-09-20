@@ -5,17 +5,6 @@ import { ContextHeaders } from '../../auth/middleware/Context';
 import { KeyModel } from '../../../models/Key';
 import { hashKey } from '../controllers/helpers/keyFunctions';
 
-export const checkAPIKey: () => MiddlewareFn<ContextHeaders> = () => async ({ context }, next) => {
-  const { key } = context;
-
-  if (!key) {
-    return next();
-  }
-
-  validateKey(key);
-  return next();
-};
-
 export const validateKey = async (key: string): Promise<void | never> => {
   const keyID = key.split('.')[0];
 
@@ -28,4 +17,15 @@ export const validateKey = async (key: string): Promise<void | never> => {
 
   if (hashedDownstreamKey !== hashedUpstreamKey)
     throw new ApolloError('Invalid API signature', 'UNAUTHORIZED');
+};
+
+export const checkAPIKey: () => MiddlewareFn<ContextHeaders> = () => async ({ context }, next) => {
+  const { key } = context;
+
+  if (!key) {
+    return next();
+  }
+
+  validateKey(key);
+  return next();
 };

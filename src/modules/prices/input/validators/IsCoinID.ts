@@ -11,7 +11,8 @@ export class CoinIDConstraint implements ValidatorConstraintInterface {
   async validate(coinIDs: string[]) {
     return coinIDs.every((coin, i, arr) => {
       // * mutates the original string
-      coin = arr[i] = arr[i].toUpperCase();
+      arr[i] = arr[i].toUpperCase();
+      coin = arr[i];
       return allCoinIDs.includes(coin);
     });
   }
