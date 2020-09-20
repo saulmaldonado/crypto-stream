@@ -20,10 +20,8 @@ export type JWTPayload = {
   permissions?: string[];
 };
 
-export const customAuthChecker: AuthChecker<Context> = async ({ context }) => {
-  const { req } = context;
-  if (!req.headers.authorization) return false;
-  const token = req.headers.authorization.split(' ')[1];
+export const customAuthChecker: AuthChecker<Context> = async ({ context: { req, token } }) => {
+  if (!token) return false;
   const secret = jwksRsa.expressJwtSecret({
     cache: true,
     rateLimit: true,

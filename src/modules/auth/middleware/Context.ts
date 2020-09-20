@@ -2,7 +2,13 @@ import { ExpressContext } from 'apollo-server-express/dist/ApolloServer';
 import { Request } from 'express';
 import { ExecutionParams } from 'subscriptions-transport-ws';
 
-export type Context = { req: Request; connection: ExecutionParams };
+export type Context = {
+  req: Request;
+  connection: ExecutionParams;
+  token?: string;
+  address?: string;
+  key?: string;
+};
 
 export type ConnectionHeaders = { Authorization?: string; 'X-API-Key'?: string };
 

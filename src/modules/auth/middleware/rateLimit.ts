@@ -3,6 +3,7 @@
 import { ApolloError } from 'apollo-server-express';
 import { MiddlewareFn } from 'type-graphql';
 import { redis } from '../../..';
+import { checkAPIKey, validateKey } from '../../apiKey/middlware/checkAPIKey';
 import { ContextHeaders } from './Context';
 
 const ONE_DAY = 60 * 60 * 24;
@@ -13,7 +14,7 @@ export const rateLimitAnon: (limit: number) => MiddlewareFn<ContextHeaders> = (l
 ) => {
   const { key, address } = context;
   if (!key) {
-    const current = await redis.incr(key);
+    const current = await redis.incr(address);
 
     if (current > limit) {
       throw new ApolloError("You've reached your limit");
@@ -34,13 +35,13 @@ export const rateLimitAll: (limit: number) => MiddlewareFn<ContextHeaders> = (li
   if (!key) {
     limit /= 2;
     key = address;
+  } else {
+    await validateKey(key);
   }
 
   const rateLimitKey = `${key} HIT ENDPOINT`;
+  console.log(rateLimitKey);
   const current = await redis.incr(rateLimitKey);
-
-  // eslint-disable-next-line no-console
-  console.log(current);
 
   if (current > limit) {
     throw new ApolloError("You've reached your limit");

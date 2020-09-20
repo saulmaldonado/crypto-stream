@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable no-plusplus */
-/* eslint-disable indent */
 /* eslint-disable no-bitwise */
 /* eslint-disable no-unused-vars */
 import mongoose, { ConnectionOptions } from 'mongoose';
