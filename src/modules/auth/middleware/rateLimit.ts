@@ -40,7 +40,6 @@ export const rateLimitAll: (limit: number) => MiddlewareFn<ContextHeaders> = (li
   }
 
   const rateLimitKey = `${key} HIT ENDPOINT`;
-  console.log(rateLimitKey);
   const current = await redis.incr(rateLimitKey);
 
   if (current > limit) {

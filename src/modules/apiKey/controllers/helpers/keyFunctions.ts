@@ -12,19 +12,6 @@ export type Key = {
   timestamp: Date;
 };
 
-export const generateAPIKey = (token: Context) => {
-  const userID = getTokenUserID(token);
-  const timestamp = new Date();
-  try {
-    const { key, _id } = genKey(userID, timestamp);
-    const hashedKey = hashKey(key);
-
-    return { _id, key, hashedKey, timestamp };
-  } catch (error) {
-    throw new ApolloError(error, 'INTERNAL_SERVER_ERROR');
-  }
-};
-
 export const genKey = (userID: string, timestamp: Date, _id?: string) => {
   const time = timestamp.getTime();
   const keyString = `${userID}.${time}`;
@@ -42,4 +29,17 @@ export const genKey = (userID: string, timestamp: Date, _id?: string) => {
 
 export const hashKey = (key: string) => {
   return pbkdf2Sync(key, process.env.API_KEY_SECRET!, 10000, 64, 'sha512').toString('hex');
+};
+
+export const generateAPIKey = (token: Context) => {
+  const userID = getTokenUserID(token);
+  const timestamp = new Date();
+  try {
+    const { key, _id } = genKey(userID, timestamp);
+    const hashedKey = hashKey(key);
+
+    return { _id, key, hashedKey, timestamp };
+  } catch (error) {
+    throw new ApolloError(error, 'INTERNAL_SERVER_ERROR');
+  }
 };

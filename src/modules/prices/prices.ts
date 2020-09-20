@@ -1,7 +1,7 @@
 import { Arg, Query, Resolver, Root, Subscription, UseMiddleware } from 'type-graphql';
 import { CoinRanking } from '../../schemas/CoinRanking';
 import { PricePayload } from '../../schemas/PricePayload';
-import { checkAPIKey } from '../apiKey/middlware/checkAPIKey';
+import { checkAPIKey } from '../apiKey/middleware/checkAPIKey';
 import { rateLimitAll, rateLimitAnon } from '../auth/middleware/rateLimit';
 import { getCoinPrices } from './controllers/getCoinPrices';
 import { getRankings } from './controllers/getRankings';

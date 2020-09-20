@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import { prop } from '@typegoose/typegoose';
 import { Field, ObjectType } from 'type-graphql';
 
