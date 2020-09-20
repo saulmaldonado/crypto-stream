@@ -1,12 +1,28 @@
 import { ApolloError } from 'apollo-server-express';
 import WebSocket from 'ws';
+import { pbkdf2Sync } from 'crypto';
+import { v4 } from 'uuid';
 
-import { randomBytes } from 'crypto';
 import { ConnectionContext } from 'subscriptions-transport-ws';
 import { KeyModel } from '../../models/Key';
-import { ConnectionHeaders } from '../../modules/auth/middleware/Context';
+import { ConnectionHeaders, Context } from '../../modules/auth/middleware/Context';
+import { getTokenUserID } from '../../modules/auth/jwt/getTokenUserID';
 
-export const generateAPIKey = () => randomBytes(16).toString('hex');
+export const generateAPIKey = (token: Context) => {
+  const userID = getTokenUserID(token);
+  const secret = process.env.API_KEY_SECRET!;
+  const time = Date.now();
+  const keyString = `${userID}.${time}`;
+  try {
+    const keySig = pbkdf2Sync(keyString, secret, 10000, 16, 'sha512').toString('hex');
+    const keyID = v4();
+    const key = `${keyID}.${keySig}`;
+
+    return { id: keyID, key };
+  } catch (error) {
+    throw new ApolloError(error, 'INTERNAL_SERVER_ERROR');
+  }
+};
 
 export const checkAPIKeySubscription = async (
   connection: ConnectionHeaders,

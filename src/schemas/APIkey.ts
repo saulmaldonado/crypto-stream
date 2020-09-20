@@ -5,6 +5,10 @@ import { Field, ObjectType } from 'type-graphql';
 export class APIKey {
   @Field()
   @prop()
+  public _id!: string;
+
+  @Field()
+  @prop()
   public userID!: string;
 
   @Field()

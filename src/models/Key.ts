@@ -3,5 +3,5 @@ import { CollectionNames } from '../config/DbConfig';
 import { APIKey } from '../schemas/APIkey';
 
 export const KeyModel = getModelForClass(APIKey, {
-  schemaOptions: { collection: CollectionNames.API_KEYS },
+  schemaOptions: { collection: CollectionNames.API_KEYS, _id: false },
 });

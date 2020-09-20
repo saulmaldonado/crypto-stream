@@ -11,12 +11,14 @@ export const refreshAPIKey = async (ctx: Context) => {
     const APIKey = await KeyModel.findOne({ userID });
 
     if (!APIKey) {
-      throw new ApolloError('No API Key for user', 'INTERNAL_SERVER_ERROR');
+      throw new ApolloError('No API key can be found for user', 'INTERNAL_SERVER_ERROR');
     }
 
-    const key = generateAPIKey();
-    APIKey.key = key;
-    const result = await APIKey.save();
+    APIKey.remove();
+
+    const { key, id } = generateAPIKey(ctx);
+
+    const result = await KeyModel.create({ userID, key, _id: id });
 
     return result.key;
   } catch (error) {

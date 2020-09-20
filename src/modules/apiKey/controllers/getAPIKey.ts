@@ -1,4 +1,5 @@
 import { ApolloError } from 'apollo-server-express';
+
 import { KeyModel } from '../../../models/Key';
 import { generateAPIKey } from '../../../subscriptions/middleware/APIkeys';
 import { getTokenUserID } from '../../auth/jwt/getTokenUserID';
@@ -11,8 +12,8 @@ export const getKey = async (ctx: Context) => {
     let APIKey = await KeyModel.findOne({ userID });
 
     if (!APIKey) {
-      const key = generateAPIKey();
-      APIKey = await KeyModel.create({ userID, key });
+      const { id, key } = generateAPIKey(ctx);
+      APIKey = await KeyModel.create({ userID, key, _id: id });
     }
 
     return APIKey.key;
