@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-server-express';
 import { MiddlewareFn } from 'type-graphql';
 
-import { ContextHeaders } from './Context';
+import { ContextHeaders } from '../../auth/middleware/Context';
 import { KeyModel } from '../../../models/Key';
 
 export const checkAPIKey: () => MiddlewareFn<ContextHeaders> = () => async ({ context }, next) => {
@@ -10,6 +10,7 @@ export const checkAPIKey: () => MiddlewareFn<ContextHeaders> = () => async ({ co
   if (!key) {
     return next();
   }
+
   const result = await KeyModel.findOne({ key }).catch((err) => {
     throw new ApolloError(err, 'DATABASE_ERROR');
   });

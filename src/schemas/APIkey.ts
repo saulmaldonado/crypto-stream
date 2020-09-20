@@ -4,14 +4,22 @@ import { Field, ObjectType } from 'type-graphql';
 @ObjectType()
 export class APIKey {
   @Field()
+  public timestamp!: Date;
+
+  @Field()
+  public key!: string;
+}
+
+export class APIKeyModel {
   @prop()
   public _id!: string;
 
-  @Field()
   @prop()
   public userID!: string;
 
-  @Field()
   @prop()
-  public key!: string;
+  public timestamp!: Date;
+
+  @prop()
+  public hashedKey!: string;
 }

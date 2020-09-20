@@ -16,11 +16,15 @@ export const refreshAPIKey = async (ctx: Context) => {
 
     APIKey.remove();
 
-    const { key, id } = generateAPIKey(ctx);
+    const { key, _id, hashedKey, timestamp } = generateAPIKey(ctx);
 
-    const result = await KeyModel.create({ userID, key, _id: id });
+    try {
+      await KeyModel.create({ _id, hashedKey, userID, timestamp });
+    } catch (error) {
+      throw new ApolloError(error, 'DATABASE_ERROR');
+    }
 
-    return result.key;
+    return { key, timestamp };
   } catch (error) {
     throw new ApolloError(error, 'DATABASE_ERROR');
   }
