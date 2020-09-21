@@ -53,8 +53,8 @@ export const customAuthChecker: AuthChecker<Context> = async ({ context: { req, 
 
     if (
       !(iss === `https://${process.env.AUTH0_DOMAIN}/`) ||
-      !(aud![0] === process.env.AUTH0_AUDIENCE) ||
-      !(azp === process.env.AUTH0_CLIENT_ID)
+      !(aud![0] === process.env.AUTH0_AUDIENCE || aud === process.env.AUTH0_AUDIENCE) ||
+      !(azp === process.env.AUTH0_CLIENT_ID || azp === process.env.AUTH0_API_ID)
     ) {
       return false;
     }

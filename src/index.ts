@@ -40,7 +40,7 @@ export const redis = new Redis();
       useCreateIndex: true,
       useFindAndModify: false,
     },
-    MongoDBConfig.API_DB_NAME
+    'test'
   );
 
   const schema = await buildSchema({

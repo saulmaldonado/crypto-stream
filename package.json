@@ -8,7 +8,7 @@
     "initdb": "ts-node initDatabase.ts",
     "resetdb": "ts-node initDatabase.ts --reset",
     "start": "tsnd --respawn ./src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --detectOpenHandles"
   },
   "keywords": [],
   "author": "Saul Maldonado",
