@@ -3,20 +3,18 @@ import { MiddlewareFn } from 'type-graphql';
 
 import { ContextHeaders } from '../../auth/middleware/Context';
 import { KeyModel } from '../../../models/Key';
-import { hashKey } from '../controllers/helpers/keyFunctions';
+import { decryptKey } from '../controllers/helpers/keyFunctions';
 
 export const validateKey = async (key: string): Promise<void | never> => {
-  const keyID = key.split('.')[0];
+  const _id = key.split('.')[0];
 
-  const APIKey = await KeyModel.findOne({ _id: keyID });
+  const APIKey = await KeyModel.findOne({ _id });
 
   if (!APIKey) throw new ApolloError('Invalid API Key', 'UNAUTHORIZED');
 
-  const hashedDownstreamKey = hashKey(key);
-  const hashedUpstreamKey = APIKey.hashedKey;
+  const decryptedKey = decryptKey(APIKey.encryptedKey, APIKey.iv);
 
-  if (hashedDownstreamKey !== hashedUpstreamKey)
-    throw new ApolloError('Invalid API signature', 'UNAUTHORIZED');
+  if (key !== decryptedKey) throw new ApolloError('Invalid API signature', 'UNAUTHORIZED');
 };
 
 export const checkAPIKey: () => MiddlewareFn<ContextHeaders> = () => async ({ context }, next) => {
@@ -26,6 +24,6 @@ export const checkAPIKey: () => MiddlewareFn<ContextHeaders> = () => async ({ co
     return next();
   }
 
-  validateKey(key);
+  await validateKey(key);
   return next();
 };

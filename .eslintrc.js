@@ -18,7 +18,6 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
-    // 'linebreak-style': 0,
     'import/extensions': 0,
     'import/prefer-default-export': 0,
     'comma-dangle': [

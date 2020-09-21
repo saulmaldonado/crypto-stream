@@ -15,12 +15,15 @@ export class APIKeyModel {
   @prop()
   public _id!: string;
 
-  @prop()
+  @prop({ index: true })
   public userID!: string;
 
   @prop()
   public timestamp!: Date;
 
   @prop()
-  public hashedKey!: string;
+  public encryptedKey!: string;
+
+  @prop()
+  public iv!: string;
 }
