@@ -15,14 +15,16 @@ export const checkAPIKeySubscription = async (
   websocket: WebSocket,
   context: ConnectionContext
 ) => {
-  const APIKey = connectionParams['X-API-Key'];
+  const key = connectionParams['X-API-Key'];
   const token = connectionParams.Authorization?.split(' ')[1];
   const address = context.request.socket.localAddress;
 
-  if (!APIKey || Array.isArray(APIKey)) {
+  console.log(key);
+
+  if (!key || Array.isArray(key)) {
     return { address, token };
   }
-  const _id: string = APIKey.split('.')[0];
+  const _id: string = key.split('.')[0];
 
   const result = await KeyModel.findOne({ _id });
 
@@ -31,9 +33,9 @@ export const checkAPIKeySubscription = async (
 
     const decryptedKey = decryptKey(result.encryptedKey, result.iv);
 
-    if (decryptedKey !== APIKey) throw new Error();
+    if (decryptedKey !== key) throw new Error();
 
-    return { APIKey, address, token };
+    return { key, address, token };
   } catch (error) {
     throw new ApolloError('API key is invalid.', 'UNAUTHORIZED');
   }

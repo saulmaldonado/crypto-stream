@@ -16,6 +16,7 @@ import { checkAPIKeySubscription } from './subscriptions/middleware/APIkeys';
 import { RegisterResolver } from './modules/auth/register';
 import { createContext } from './modules/auth/middleware/Context';
 import { pubSub } from './utils/redisPubSub';
+import { startPricePublisher } from './modules/prices/publsihers/pricePublush';
 
 config();
 
