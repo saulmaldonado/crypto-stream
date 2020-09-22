@@ -1,4 +1,4 @@
-import { redis } from '../../../..';
+import { redis } from '../../../../utils/redisCache';
 import { PricePayload } from '../../../../schemas/PricePayload';
 
 export const getCoinsFromCache = async (coinIDs: string[]) => {

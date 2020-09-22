@@ -4,7 +4,7 @@ import { ApolloError } from 'apollo-server-express';
 import axios from 'axios';
 import qs from 'qs';
 
-import { redis } from '../../../../index';
+import { redis } from '../../../../utils/redisCache';
 import { PricePayload } from '../../../../schemas/PricePayload';
 
 type FetchPricesArguments = {

@@ -3,22 +3,17 @@ import { Request } from 'express';
 import { ExecutionParams } from 'subscriptions-transport-ws';
 
 export type Context = {
-  req: Request;
-  connection: ExecutionParams;
   token?: string;
-  address?: string;
+  address: string;
   key?: string;
+  req: Request;
 };
 
-export type ConnectionHeaders = { Authorization?: string; 'X-API-Key'?: string };
-
-export type ContextHeaders = { token: string; key: string; address: string };
-
-export const createContext = ({ req, connection }: ExpressContext) => {
+export const createContext = ({ req, connection }: ExpressContext): ExecutionParams | Context => {
   if (connection) {
     return connection.context;
   }
-  const token = req.headers.authorization?.split(' ')[1] || '';
+  const token = req.headers.authorization?.split(' ')[1];
   const key = req.header('x-api-key');
   const address = req.ip;
 

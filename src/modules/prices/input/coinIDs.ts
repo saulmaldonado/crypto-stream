@@ -4,7 +4,7 @@ import { Field, InputType } from 'type-graphql';
 import { IsCoinID } from './validators/IsCoinID';
 
 @InputType()
-export class getPriceInput {
+export class CoinIDInput {
   @Field(() => [String])
   @ArrayMinSize(1)
   @ArrayMaxSize(100)

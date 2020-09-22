@@ -2,37 +2,34 @@
 /* eslint-disable no-unused-vars */
 import { ApolloError } from 'apollo-server-express';
 import { MiddlewareFn } from 'type-graphql';
-import { redis } from '../../..';
 import { validateKey } from '../../apiKey/middleware/checkAPIKey';
-import { ContextHeaders } from './Context';
+import { Context } from './Context';
+import { redis } from '../../../utils/redisCache';
+import { redisConfig } from '../../../config/RedisConfig';
 
-const ONE_DAY = 60 * 60 * 24;
-
-export const rateLimitAnon: (limit: number) => MiddlewareFn<ContextHeaders> = (limit) => async (
-  { context },
+export const rateLimitAnon: (limit: number) => MiddlewareFn<Context> = (limit) => async (
+  { context: { address, key } },
   next
 ) => {
-  const { key, address } = context;
   if (!key) {
     const current = await redis.incr(address);
 
     if (current > limit) {
       throw new ApolloError("You've reached your limit");
     } else if (current === 1) {
-      await redis.expire(address, ONE_DAY);
+      await redis.expire(address, redisConfig.ONE_DAY);
     }
   }
 
   return next();
 };
 
-export const rateLimitAll: (limit: number) => MiddlewareFn<ContextHeaders> = (limit) => async (
-  { context },
+export const rateLimitAll: (limit: number) => MiddlewareFn<Context> = (limit) => async (
+  { context: { address, key } },
   next
 ) => {
-  let { address, key } = context;
-
   if (!key) {
+    // unauthenticated API request are rate limited to half
     limit /= 2;
     key = address;
   } else {
@@ -45,7 +42,7 @@ export const rateLimitAll: (limit: number) => MiddlewareFn<ContextHeaders> = (li
   if (current > limit) {
     throw new ApolloError("You've reached your limit");
   } else if (current === 1) {
-    await redis.expire(key, ONE_DAY);
+    await redis.expire(key, redisConfig.ONE_DAY);
   }
 
   return next();
