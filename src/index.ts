@@ -59,5 +59,5 @@ const app = express();
     console.log(`🚀 Subscriptions ready at ws://localhost:${port}${server.subscriptionsPath}`);
   });
 
-  // startPricePublisher(pubSub, 15);
+  startPricePublisher(pubSub, 15);
 })();

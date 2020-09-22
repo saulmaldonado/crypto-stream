@@ -19,8 +19,6 @@ export const checkAPIKeySubscription = async (
   const token = connectionParams.Authorization?.split(' ')[1];
   const address = context.request.socket.localAddress;
 
-  console.log(key);
-
   if (!key || Array.isArray(key)) {
     return { address, token };
   }

@@ -5,7 +5,7 @@ import { checkAPIKey } from '../apiKey/middleware/checkAPIKey';
 import { rateLimitAll, rateLimitAnon } from '../auth/middleware/rateLimit';
 import { getCoinPrices } from './controllers/getCoinPrices';
 import { getRankings } from './controllers/getRankings';
-import { getPriceInput } from './input/coinIDs';
+import { CoinIDInput } from './input/coinIDs';
 
 @Resolver()
 export class PriceResolver {
@@ -13,13 +13,19 @@ export class PriceResolver {
     topics: 'PRICES',
   })
   @UseMiddleware(rateLimitAnon(100))
-  async requestPrices(@Root() pricePayload: PricePayload): Promise<PricePayload | never> {
+  async streamPrices(
+    @Root() pricePayload: PricePayload[],
+    @Arg('data', { nullable: true }) input: CoinIDInput
+  ): Promise<PricePayload[] | never> {
+    if (input?.coinIDs && input?.coinIDs.length) {
+      return pricePayload.filter((coin) => input.coinIDs.includes(coin.coinID));
+    }
     return pricePayload;
   }
 
   @Query(() => [PricePayload], { nullable: 'items' })
   @UseMiddleware(rateLimitAll(100))
-  async getPrices(@Arg('data') { coinIDs }: getPriceInput): Promise<PricePayload[] | never> {
+  async getPrices(@Arg('data') { coinIDs }: CoinIDInput): Promise<PricePayload[] | never> {
     return getCoinPrices(coinIDs);
   }
 
