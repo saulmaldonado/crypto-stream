@@ -1,6 +1,6 @@
 import { ApolloServer } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
-import { customAuthChecker } from '../modules/auth/middleware/authChecker';
+import { customAuthChecker } from '../../modules/auth/middleware/authChecker';
 
 export const initializeTestingServer = async (
   resolvers: [Function, ...Function[]],

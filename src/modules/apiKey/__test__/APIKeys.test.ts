@@ -3,12 +3,11 @@ import Redis from 'ioredis';
 import mongoose from 'mongoose';
 import { gql } from 'apollo-server-express';
 
-import { initializeTestingServer } from '../../../testingUtils/initializeServer';
-import { getInvalidTestingToken, getTestingToken } from '../../../testingUtils/getTestingToken';
+import { initializeTestingServer } from '../../../utils/testing/initializeServer';
+import { getInvalidTestingToken, getTestingToken } from '../../../utils/testing/getTestingToken';
 import { APIKeyResolver } from '../APIKey';
 import { KeyModel } from '../../../models/Key';
 
-let redis: Redis.Redis;
 let token: string;
 
 beforeAll(async () => {
@@ -18,7 +17,6 @@ beforeAll(async () => {
     useCreateIndex: true,
     useFindAndModify: false,
   });
-  redis = new Redis({ db: 10 });
   token = await getTestingToken();
 });
 
@@ -28,7 +26,6 @@ afterEach(async () => {
 
 afterAll(async () => {
   await mongoose.connection.close();
-  redis.disconnect();
 });
 
 describe('APIKeys: getAPIKey', () => {

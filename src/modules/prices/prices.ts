@@ -9,25 +9,25 @@ import { CoinIDInput } from './input/coinIDs';
 
 @Resolver()
 export class PriceResolver {
-  @Subscription(() => [PricePayload], {
-    topics: 'PRICES',
-  })
-  @UseMiddleware(rateLimitAnon(100))
-  async streamPrices(
-    @Root() pricePayload: PricePayload[],
-    @Arg('data', { nullable: true }) input: CoinIDInput
-  ): Promise<PricePayload[] | never> {
-    if (input?.coinIDs && input?.coinIDs.length) {
-      return pricePayload.filter((coin) => input.coinIDs.includes(coin.coinID));
-    }
-    return pricePayload;
-  }
+  // @Subscription(() => [PricePayload], {
+  //   topics: 'PRICES',
+  // })
+  // @UseMiddleware(rateLimitAnon(100))
+  // async streamPrices(
+  //   @Root() pricePayload: PricePayload[],
+  //   @Arg('data', { nullable: true }) input: CoinIDInput
+  // ): Promise<PricePayload[] | never> {
+  //   if (input?.coinIDs && input?.coinIDs.length) {
+  //     return pricePayload.filter((coin) => input.coinIDs.includes(coin.coinID));
+  //   }
+  //   return pricePayload;
+  // }
 
-  @Query(() => [PricePayload], { nullable: 'items' })
-  @UseMiddleware(rateLimitAll(100))
-  async getPrices(@Arg('data') { coinIDs }: CoinIDInput): Promise<PricePayload[] | never> {
-    return getCoinPrices(coinIDs);
-  }
+  // @Query(() => [PricePayload], { nullable: 'items' })
+  // @UseMiddleware(rateLimitAll(100))
+  // async getPrices(@Arg('data') { coinIDs }: CoinIDInput): Promise<PricePayload[] | never> {
+  //   return getCoinPrices(coinIDs);
+  // }
 
   @Query(() => [CoinRanking], { nullable: 'items' })
   @UseMiddleware(rateLimitAnon(100))
