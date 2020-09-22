@@ -7,10 +7,7 @@ import { Context } from './Context';
 
 export type JWTPayload = {
   iss?: string;
-  /**
-   * userID
-   */
-  sub?: string;
+  sub?: string; //userID
   aud?: string[];
   iat?: number;
   exp?: number;
@@ -20,7 +17,13 @@ export type JWTPayload = {
   permissions?: string[];
 };
 
-export const customAuthChecker: AuthChecker<Context> = async ({ context: { req, token } }) => {
+type JWTToken = {
+  header: Record<string, string>;
+  payload: Record<string, string>;
+  signature: string;
+};
+
+export const customAuthChecker: AuthChecker<Context> = async ({ context: { token, req } }) => {
   if (!token) return false;
   const secret = jwksRsa.expressJwtSecret({
     cache: true,
@@ -30,16 +33,13 @@ export const customAuthChecker: AuthChecker<Context> = async ({ context: { req, 
   });
 
   const decoded = decode(token, { complete: true });
+
   if (!decoded) return false;
 
-  const { header, payload } = decoded as {
-    header: Record<string, string>;
-    payload: Record<string, string>;
-    signature: string;
-  };
+  const { header, payload } = decoded as JWTToken;
 
   try {
-    const decodedToken = await new Promise<JWTPayload | never>((res, rej) =>
+    const decodedToken = await new Promise<JWTPayload>((res, rej) =>
       secret(req, header, payload, (err, JWTsecret) => {
         if (err || !secret) {
           rej(new ApolloError(err ?? 'Unable to verify JWT', 'INTERNAL_SERVER_ERROR'));

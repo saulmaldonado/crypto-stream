@@ -1,7 +1,7 @@
 import { ApolloError } from 'apollo-server-express';
 import { MiddlewareFn } from 'type-graphql';
 
-import { ContextHeaders } from '../../auth/middleware/Context';
+import { Context } from '../../auth/middleware/Context';
 import { KeyModel } from '../../../models/Key';
 import { decryptKey } from '../controllers/helpers/keyFunctions';
 
@@ -17,7 +17,7 @@ export const validateKey = async (key: string): Promise<void | never> => {
   if (key !== decryptedKey) throw new ApolloError('Invalid API signature', 'UNAUTHORIZED');
 };
 
-export const checkAPIKey: () => MiddlewareFn<ContextHeaders> = () => async ({ context }, next) => {
+export const checkAPIKey: () => MiddlewareFn<Context> = () => async ({ context }, next) => {
   const { key } = context;
 
   if (!key) {

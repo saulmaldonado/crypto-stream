@@ -2,7 +2,7 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 
 import { pricePublishedInit } from './helpers/pricePublisherInit';
 import { fetchPrices } from '../controllers/helpers/fetchCoinPrices';
-import { redis } from '../../..';
+import { redis } from '../../../utils/redisCache';
 import { CoinRanking } from '../../../schemas/CoinRanking';
 import { PricePayload } from '../../../schemas/PricePayload';
 

@@ -1,4 +1,4 @@
-import { redis } from '../../..';
+import { redis } from '../../../utils/redisCache';
 import { CoinRanking } from '../../../schemas/CoinRanking';
 import { PricePayload } from '../../../schemas/PricePayload';
 import { fetchPrices } from './helpers/fetchCoinPrices';
@@ -11,6 +11,7 @@ export const getRankings = async (limit: number): Promise<CoinRanking[]> => {
     coins = await fetchPrices({ limit });
   } else {
     coins = JSON.parse(res);
+    coins.length = limit;
   }
 
   return coins.map(({ coinID, name }, index) => ({
