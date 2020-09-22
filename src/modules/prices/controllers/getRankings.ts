@@ -11,6 +11,7 @@ export const getRankings = async (limit: number): Promise<CoinRanking[]> => {
     coins = await fetchPrices({ limit });
   } else {
     coins = JSON.parse(res);
+    coins.length = limit;
   }
 
   return coins.map(({ coinID, name }, index) => ({
