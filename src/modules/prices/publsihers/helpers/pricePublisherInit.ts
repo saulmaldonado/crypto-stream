@@ -18,12 +18,12 @@ export const pricePublishedInit = (fn: () => void, interval: number) => {
 
   const loop = () => {
     fn();
-    setInterval(fn, interval * 1000);
+    return setInterval(fn, interval * 1000);
   };
 
   if (diff > 100) {
-    setTimeout(loop, diff);
+    return setTimeout(loop, diff);
   } else {
-    loop();
+    return loop();
   }
 };

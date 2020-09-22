@@ -1,5 +1,4 @@
 import { createTestClient } from 'apollo-server-testing';
-import Redis from 'ioredis';
 import mongoose from 'mongoose';
 import { gql } from 'apollo-server-express';
 
