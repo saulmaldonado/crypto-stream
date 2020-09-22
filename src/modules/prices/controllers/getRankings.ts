@@ -1,4 +1,4 @@
-import { redis } from '../../..';
+import { redis } from '../../../utils/redisCache';
 import { CoinRanking } from '../../../schemas/CoinRanking';
 import { PricePayload } from '../../../schemas/PricePayload';
 import { fetchPrices } from './helpers/fetchCoinPrices';
