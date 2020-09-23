@@ -10,9 +10,11 @@ let userID: string = 'auth0|5f6aa02c4419aa00717f9ee8';
 
 describe('keyFunctions: genKey', () => {
   let generatedKey: Omit<Key, 'timestamp'>;
+
   beforeAll(() => {
     generatedKey = genKey(userID, time);
   });
+
   it('should return the expected api key object', () => {
     expect(generatedKey).toEqual(
       expect.objectContaining({
@@ -33,9 +35,11 @@ describe('keyFunctions: genKey', () => {
 
 describe('keyFunctions: generateAPIKey', () => {
   let getTokenUserIDMock: jest.SpyInstance<string, [Context]>;
+
   afterAll(() => {
     getTokenUserIDMock.mockRestore();
   });
+
   it('should return a complete Key object', () => {
     const getTokenUserIDMock = jest.spyOn(tokenMethods, 'getTokenUserID');
     getTokenUserIDMock.mockImplementation(() => 'auth0|5f6aa02c4419aa00717f9ee8');
@@ -53,6 +57,7 @@ describe('keyFunctions: generateAPIKey', () => {
 describe('keyFunctions: decryptKey', () => {
   let encryptedKey: string;
   let iv: string;
+
   beforeAll(() => {
     ({ encryptedKey, iv } = genKey(userID, time));
   });
