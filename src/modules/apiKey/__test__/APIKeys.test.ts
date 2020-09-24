@@ -10,7 +10,7 @@ import { KeyModel } from '../../../models/Key';
 let token: string;
 
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost:27017/test', {
+  await mongoose.connect('mongodb://localhost:27017/test3', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -24,7 +24,7 @@ afterEach(async () => {
 });
 
 afterAll(async () => {
-  await mongoose.connection.close();
+  await mongoose.disconnect();
 });
 
 describe('APIKeys: getAPIKey', () => {

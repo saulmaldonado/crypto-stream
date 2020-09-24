@@ -3,14 +3,15 @@ import { KeyModel } from '../../../models/Key';
 import { Context } from '../../auth/middleware/Context';
 import * as tokenMethods from '../../auth/jwt/getTokenUserID';
 import { getKey } from '../controllers/getAPIKey';
-import { generateAPIKey, genKey } from '../controllers/helpers/keyFunctions';
+import { generateAPIKey } from '../controllers/helpers/keyFunctions';
 import { config } from 'dotenv';
+import { redis } from '../../../utils/redisCache';
 config();
 
 let userID: string = 'auth0|5f6aa02c4419aa00717f9ee8';
 
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost:27017/test', {
+  await mongoose.connect('mongodb://localhost:27017/test5', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -32,6 +33,7 @@ describe('getAPIKey: controller', () => {
 
   afterAll(() => {
     getTokenUserIDMock.mockRestore();
+    redis.disconnect();
   });
 
   afterEach(async () => {

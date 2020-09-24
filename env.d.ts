@@ -15,6 +15,7 @@ declare global {
       NOMICS_API_KEY?: string;
       API_KEY_SECRET?: string;
       AUTH0_API_ID?: string;
+      NODE_ENV: string;
     }
   }
 }

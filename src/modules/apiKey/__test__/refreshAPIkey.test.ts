@@ -10,7 +10,7 @@ config();
 let userID: string = 'auth0|5f6aa02c4419aa00717f9ee8';
 
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost:27017/test', {
+  await mongoose.connect('mongodb://localhost:27017/test2', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

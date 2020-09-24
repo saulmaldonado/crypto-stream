@@ -6,12 +6,14 @@ import { Context } from '../../auth/middleware/Context';
 import { getKey } from '../controllers/getAPIKey';
 import { KeyModel } from '../../../models/Key';
 import mongoose from 'mongoose';
+import { redis } from '../../../utils/redisCache';
 
 config();
 let token: string;
 let key: string;
+
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost:27017/test', {
+  await mongoose.connect('mongodb://localhost:27017/test4', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
@@ -25,6 +27,7 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
+  redis.disconnect();
   await KeyModel.deleteMany({});
   await mongoose.disconnect();
 });
@@ -36,6 +39,7 @@ describe('checkAPIKey: checkAPIKey', () => {
     const middleware = checkAPIKey();
 
     await middleware({ context: {} } as ResolverData<Context>, next);
+    next();
 
     expect(next).toBeCalled();
   });
