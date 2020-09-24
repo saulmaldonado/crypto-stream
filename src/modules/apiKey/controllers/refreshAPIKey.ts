@@ -15,7 +15,7 @@ export const refreshAPIKey = async (ctx: Context): Promise<APIKey> => {
       throw new ApolloError('No API key can be found for user', 'INTERNAL_SERVER_ERROR');
     }
 
-    APIKey.remove();
+    await APIKey.remove();
 
     const { key, _id, encryptedKey, timestamp, iv } = generateAPIKey(ctx);
 
