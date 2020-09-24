@@ -23,7 +23,6 @@ afterAll(async () => {
 });
 
 describe('getAPIKey: controller', () => {
-  let context: Context;
   let getTokenUserIDMock: jest.SpyInstance<string, [Context]>;
 
   beforeAll(() => {
