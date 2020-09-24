@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "scripts": {
     "build": "tsc",
+    "postinstall": "patch-package",
     "initdb": "ts-node initDatabase.ts",
     "resetdb": "ts-node initDatabase.ts --reset",
     "start": "tsnd --respawn ./src/index.ts",
@@ -30,6 +31,8 @@
     "jwks-rsa": "^1.9.0",
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.5",
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.1.0",
     "qs": "^6.9.4",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^9.0.0",

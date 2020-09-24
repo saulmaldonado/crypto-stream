@@ -34,14 +34,18 @@ export const customAuthChecker: AuthChecker<Context> = async ({ context: { token
 
   const decoded = decode(token, { complete: true });
 
-  if (!decoded) return false;
-
-  const { header, payload } = decoded as JWTToken;
+  const { header } = decoded as JWTToken;
 
   try {
     const decodedToken = await new Promise<JWTPayload>((res, rej) =>
-      secret(req, header, payload, (err, JWTsecret) => {
-        if (err || !secret) {
+      /**
+       * patch jwksRsa.expressJwtSecret return method to exclude req and payload.
+       * req and payload go unused in the original method and can safely be unused in this
+       * scenario
+       * https://github.com/auth0/node-jwks-rsa/blob/master/src/integrations/express.js#L24
+       */
+      secret(header, (err, JWTsecret) => {
+        if (err || !JWTsecret) {
           rej(new ApolloError(err ?? 'Unable to verify JWT', 'INTERNAL_SERVER_ERROR'));
         }
         const resultToken = verify(token, JWTsecret as Secret) as JWTPayload;

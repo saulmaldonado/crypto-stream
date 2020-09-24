@@ -1,0 +1,13 @@
+diff --git a/node_modules/@types/express-jwt/index.d.ts b/node_modules/@types/express-jwt/index.d.ts
+index 52d7d90..ef9d852 100644
+--- a/node_modules/@types/express-jwt/index.d.ts
++++ b/node_modules/@types/express-jwt/index.d.ts
+@@ -23,7 +23,7 @@ declare namespace jwt {
+         "credentials_required"
+ 
+     export interface SecretCallbackLong {
+-        (req: express.Request, header: any, payload: any, done: (err: any, secret?: secretType) => void): void;
++        (header: any, done: (err: any, secret?: secretType) => void): void;
+     }
+     export interface SecretCallback {
+         (req: express.Request, payload: any, done: (err: any, secret?: secretType) => void): void;
