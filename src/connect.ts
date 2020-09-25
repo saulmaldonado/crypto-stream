@@ -3,6 +3,7 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-unused-vars */
 import mongoose, { ConnectionOptions } from 'mongoose';
+import { MongoDBConfig } from './config/DbConfig';
 
 /**
  * Wraps an asynchronous functions and displays a
@@ -33,7 +34,7 @@ const asyncLoadingWrapper = <A extends any[] | [any]>(
 export const connect = async (
   options: ConnectionOptions,
   db: string = '',
-  uri: string = 'mongodb://localhost:27017'
+  uri: string = MongoDBConfig.URI
 ): Promise<void | never> => {
   try {
     const wrappedConnect = asyncLoadingWrapper<[uri: string, options: ConnectionOptions]>(

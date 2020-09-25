@@ -6,13 +6,14 @@ import * as tokenMethods from '../../auth/jwt/getTokenUserID';
 import { getKey } from '../controllers/getAPIKey';
 import { generateAPIKey } from '../controllers/helpers/keyFunctions';
 import { redis } from '../../../utils/redisCache';
+import { MongoDBConfig } from '../../../config/DbConfig';
 
 config();
 
 const userID: string = 'auth0|5f6aa02c4419aa00717f9ee8';
 
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost:27017/test5', {
+  await mongoose.connect(`${MongoDBConfig.URI}/test5`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

@@ -1,5 +1,6 @@
 import { mongoose } from '@typegoose/typegoose';
 import { config } from 'dotenv';
+import { MongoDBConfig } from '../../../config/DbConfig';
 import { KeyModel } from '../../../models/Key';
 import * as tokenMethods from '../../auth/jwt/getTokenUserID';
 import { Context } from '../../auth/middleware/Context';
@@ -11,7 +12,7 @@ config();
 const userID: string = 'auth0|5f6aa02c4419aa00717f9ee8';
 
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost:27017/test2', {
+  await mongoose.connect(`${MongoDBConfig.URI}/test2`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

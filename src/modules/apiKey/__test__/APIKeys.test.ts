@@ -6,11 +6,12 @@ import { initializeTestingServer } from '../../../utils/testing/initializeServer
 import { getInvalidTestingToken, getTestingToken } from '../../../utils/testing/getTestingToken';
 import { APIKeyResolver } from '../APIKey';
 import { KeyModel } from '../../../models/Key';
+import { MongoDBConfig } from '../../../config/DbConfig';
 
 let token: string;
 
 beforeAll(async () => {
-  await mongoose.connect('mongodb://localhost:27017/test3', {
+  await mongoose.connect(`${MongoDBConfig.URI}/test3`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

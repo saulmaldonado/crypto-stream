@@ -5,3 +5,7 @@ export enum redisConfig {
   ONE_HOUR = 60 * 60,
   ONE_MINUTE = 60,
 }
+
+export enum redisOptions {
+  HOST = 'redis',
+}

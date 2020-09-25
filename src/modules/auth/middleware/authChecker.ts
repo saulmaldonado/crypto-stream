@@ -44,6 +44,8 @@ export const customAuthChecker: AuthChecker<Context> = async ({ context: { token
        * scenario
        * https://github.com/auth0/node-jwks-rsa/blob/master/src/integrations/express.js#L24
        */
+
+      // @ts-ignore
       secret(header, (err, JWTsecret) => {
         if (err || !JWTsecret) {
           rej(new ApolloError(err ?? 'Unable to verify JWT', 'INTERNAL_SERVER_ERROR'));
