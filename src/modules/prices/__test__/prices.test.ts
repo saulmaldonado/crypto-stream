@@ -9,6 +9,7 @@ import { pubSub } from '../../../utils/redisPubSub';
 import { customAuthChecker } from '../../auth/middleware/authChecker';
 import { redis } from '../../../utils/redisCache';
 import { startPricePublisher } from '../publsihers/pricePublush';
+import { PricePayload } from '../../../schemas/PricePayload';
 
 let token: string;
 let key: string;
@@ -242,4 +243,29 @@ describe('prices: streamPrices', () => {
       expect(streamData).toHaveLength(2);
     }).not.toThrow();
   }, 20000);
+
+  it('should filter coins', async () => {
+    const stream = new PriceResolver().streamPrices;
+    const coinIDs = ['BTC', 'ETH'];
+
+    const result = stream(
+      [{ coinID: 'BTC' }, { coinID: 'ETH' }, { coinID: 'XRP' }] as PricePayload[],
+      {
+        coinIDs,
+      }
+    );
+
+    expect(result).not.toEqual([{ coinID: 'BTC' }, { coinID: 'ETH' }, { coinID: 'XRP' }]);
+  });
+
+  it('should not filter coins, with null input', () => {
+    const stream = new PriceResolver().streamPrices;
+
+    const result = stream(
+      [{ coinID: 'BTC' }, { coinID: 'ETH' }, { coinID: 'XRP' }] as PricePayload[],
+      { coinIDs: [] }
+    );
+
+    expect(result).not.toEqual([{ coinID: 'BTC' }, { coinID: 'ETH' }]);
+  });
 });

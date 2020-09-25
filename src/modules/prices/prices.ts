@@ -13,11 +13,11 @@ export class PriceResolver {
     topics: 'PRICES',
   })
   @UseMiddleware(rateLimitAnon(100))
-  async streamPrices(
+  streamPrices(
     @Root() pricePayload: PricePayload[],
     @Arg('data', { nullable: true }) input: CoinIDInput
-  ): Promise<PricePayload[] | never> {
-    if (input?.coinIDs && input?.coinIDs.length) {
+  ): PricePayload[] {
+    if (input?.coinIDs && input.coinIDs.length) {
       return pricePayload.filter((coin) => input.coinIDs.includes(coin.coinID));
     }
     return pricePayload;
