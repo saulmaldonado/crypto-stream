@@ -8,8 +8,10 @@ import { APIKeyResolver } from '../../apiKey/APIKey';
 import { pubSub } from '../../../utils/redisPubSub';
 import { customAuthChecker } from '../../auth/middleware/authChecker';
 import { redis } from '../../../utils/redisCache';
-import { startPricePublisher } from '../publsihers/pricePublush';
+import { startPricePublisher, fetchAndPublish } from '../publsihers/pricePublush';
 import { PricePayload } from '../../../schemas/PricePayload';
+import * as redisCache from '../../../utils/redisCache';
+import { fetchPrices } from '../controllers/helpers/fetchCoinPrices';
 
 let token: string;
 let key: string;
@@ -107,17 +109,7 @@ describe('prices: getCoinRankings', () => {
     }
   `;
     const limit: number = 10;
-    const result = await graphql(
-      schema,
-      GET_COIN_RANKINGS,
-      null,
-      {
-        key,
-      },
-      {
-        limit,
-      }
-    );
+    const result = await graphql(schema, GET_COIN_RANKINGS, null, { key }, { limit });
 
     expect(result.data).toBeTruthy();
     expect(result.data?.getCoinRankings.length).toBe(10);
@@ -161,6 +153,35 @@ describe('prices: getPrices', () => {
     expect(result.data).toBeTruthy();
     expect(result.data?.getPrices[0].name).toBe('Bitcoin');
     expect(result.data?.getPrices[1].name).toBe('Ethereum');
+  });
+
+  describe('getCoinPrices', () => {
+    beforeAll(async () => {
+      // set mock cache data
+      redis.set(
+        'lastPrices',
+        JSON.stringify([
+          { coinID: 'BTC', currentPrice: 123456, name: 'bitcoin' },
+          { coinID: 'ETH', currentPrice: 123456, name: 'ethereum' },
+        ])
+      );
+    });
+
+    afterAll(async () => {
+      await redis.del('lastPrices');
+    });
+
+    it('should fetch prices for coins not in cache', async () => {
+      const coinIDs = ['btc', 'eth', 'tdx'];
+      const result = await graphql(schema, GET_COIN_PRICES, null, { key }, { coinIDs });
+
+      expect(result.data?.getPrices).toBeTruthy();
+      expect(result.data?.getPrices).toEqual([
+        { currentPrice: expect.any(Number), name: 'bitcoin' },
+        { currentPrice: expect.any(Number), name: 'ethereum' },
+        { currentPrice: expect.any(Number), name: 'Tidex Token' },
+      ]);
+    });
   });
 
   describe('ratelimiting: key', () => {
@@ -267,5 +288,65 @@ describe('prices: streamPrices', () => {
     );
 
     expect(result).not.toEqual([{ coinID: 'BTC' }, { coinID: 'ETH' }]);
+  });
+
+  describe('fetchAndPublish', () => {
+    const subscribeForFirstMessage = async () => {
+      return new Promise<Array<Object>>((res, rej) => {
+        pubSub.subscribe('PRICES', (mes) => {
+          res(mes);
+        });
+      });
+    };
+
+    afterAll(async () => {
+      await redis.del('lastPrices');
+      await redis.del('rankings');
+    });
+
+    it('should publish prices from API', async () => {
+      await fetchAndPublish(pubSub);
+
+      const mes = await subscribeForFirstMessage();
+
+      expect(mes).toBeTruthy();
+      expect(mes.length).toBe(100);
+      expect(mes[0]).toEqual({
+        currentPrice: expect.any(Number),
+        name: expect.any(String),
+        coinID: expect.any(String),
+        priceTimestamp: expect.any(String),
+        circulatingSupply: expect.any(Number),
+        maxSupply: expect.any(Number),
+        marketCap: expect.any(Number),
+        oneDayPriceChange: expect.any(Number),
+        oneDayPriceChangePct: expect.any(Number),
+        oneDayVolume: expect.any(Number),
+      });
+    });
+
+    it('should publish prices from cache', async () => {
+      // sets initial lastPrices cache in redis
+      await fetchPrices({ limit: 100, subscription: true });
+
+      await fetchAndPublish(pubSub);
+
+      const mes = await subscribeForFirstMessage();
+
+      expect(mes).toBeTruthy();
+      expect(mes.length).toBe(100);
+      expect(mes[0]).toEqual({
+        currentPrice: expect.any(Number),
+        name: expect.any(String),
+        coinID: expect.any(String),
+        priceTimestamp: expect.any(String),
+        circulatingSupply: expect.any(Number),
+        maxSupply: expect.any(Number),
+        marketCap: expect.any(Number),
+        oneDayPriceChange: expect.any(Number),
+        oneDayPriceChangePct: expect.any(Number),
+        oneDayVolume: expect.any(Number),
+      });
+    });
   });
 });
