@@ -6,7 +6,7 @@ import { redis } from '../../../utils/redisCache';
 import { CoinRanking } from '../../../schemas/CoinRanking';
 import { PricePayload } from '../../../schemas/PricePayload';
 
-const fetchAndPublish = async (pubSub: RedisPubSub) => {
+export const fetchAndPublish = async (pubSub: RedisPubSub) => {
   // fetch the coin rankings from cache (rankings have 10min expiry)
   const res = await redis.get('rankings');
   let coins: PricePayload[] = [];
@@ -31,7 +31,7 @@ const fetchAndPublish = async (pubSub: RedisPubSub) => {
  * @param {number} [priceInterval=60] Interval at which prices will be published in seconds.
  */
 export const startPricePublisher = async (pubSub: RedisPubSub, priceInterval: number = 60) => {
-  pricePublishedInit(() => {
+  return pricePublishedInit(() => {
     fetchAndPublish(pubSub);
   }, priceInterval);
 };

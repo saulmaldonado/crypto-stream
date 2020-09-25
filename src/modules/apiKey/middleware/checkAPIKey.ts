@@ -23,7 +23,6 @@ export const checkAPIKey: () => MiddlewareFn<Context> = () => async ({ context }
   if (!key) {
     return next();
   }
-
   await validateKey(key);
   return next();
 };

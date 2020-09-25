@@ -78,7 +78,7 @@ export const fetchPrices = async (
           'ex',
           ONE_MINUTE * 10
         )
-        .catch((reason) => console.error(reason));
+        .catch();
     }
 
     data.length = limit;
