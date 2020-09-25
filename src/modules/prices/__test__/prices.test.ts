@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { graphql, GraphQLSchema, subscribe, parse } from 'graphql';
 import { buildSchema } from 'type-graphql';
 
+import { config } from 'dotenv';
 import { getTestingToken } from '../../../utils/testing/getTestingToken';
 import { KeyModel } from '../../../models/Key';
 import { PriceResolver } from '../prices';
@@ -14,6 +15,8 @@ import { startPricePublisher, fetchAndPublish } from '../publsihers/pricePublush
 import { PricePayload } from '../../../schemas/PricePayload';
 import { fetchPrices } from '../controllers/helpers/fetchCoinPrices';
 import { MongoDBConfig } from '../../../config/DbConfig';
+
+config();
 
 let token: string;
 let key: string;

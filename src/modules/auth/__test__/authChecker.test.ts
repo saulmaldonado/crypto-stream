@@ -1,7 +1,10 @@
 import { ResolverData } from 'type-graphql';
+import { config } from 'dotenv';
 import { getInvalidTestingToken } from '../../../utils/testing/getTestingToken';
 import { customAuthChecker } from '../middleware/authChecker';
 import { Context } from '../middleware/Context';
+
+config();
 
 let invalidToken: string;
 beforeAll(async () => {

@@ -1,8 +1,11 @@
 import { NextFn, ResolverData } from 'type-graphql';
+import { config } from 'dotenv';
 import { redisConfig } from '../../../config/RedisConfig';
 import { redis } from '../../../utils/redisCache';
 import { Context } from '../middleware/Context';
 import { rateLimitAnon } from '../middleware/rateLimit';
+
+config();
 
 const address: string = '1.1.1.1';
 

@@ -2,11 +2,14 @@ import { createTestClient } from 'apollo-server-testing';
 import mongoose from 'mongoose';
 import { gql } from 'apollo-server-express';
 
+import { config } from 'dotenv';
 import { initializeTestingServer } from '../../../utils/testing/initializeServer';
 import { getInvalidTestingToken, getTestingToken } from '../../../utils/testing/getTestingToken';
 import { APIKeyResolver } from '../APIKey';
 import { KeyModel } from '../../../models/Key';
 import { MongoDBConfig } from '../../../config/DbConfig';
+
+config();
 
 let token: string;
 
