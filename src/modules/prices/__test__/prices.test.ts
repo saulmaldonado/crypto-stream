@@ -1,8 +1,10 @@
-import { getTestingToken } from '../../../utils/testing/getTestingToken';
+/* eslint-disable no-shadow */
 import mongoose from 'mongoose';
 import { graphql, GraphQLSchema, subscribe, parse } from 'graphql';
-import { KeyModel } from '../../../models/Key';
 import { buildSchema } from 'type-graphql';
+
+import { getTestingToken } from '../../../utils/testing/getTestingToken';
+import { KeyModel } from '../../../models/Key';
 import { PriceResolver } from '../prices';
 import { APIKeyResolver } from '../../apiKey/APIKey';
 import { pubSub } from '../../../utils/redisPubSub';
@@ -10,14 +12,13 @@ import { customAuthChecker } from '../../auth/middleware/authChecker';
 import { redis } from '../../../utils/redisCache';
 import { startPricePublisher, fetchAndPublish } from '../publsihers/pricePublush';
 import { PricePayload } from '../../../schemas/PricePayload';
-import * as redisCache from '../../../utils/redisCache';
 import { fetchPrices } from '../controllers/helpers/fetchCoinPrices';
 
 let token: string;
 let key: string;
 let schema: GraphQLSchema;
+// eslint-disable-next-line no-undef
 let timeout: NodeJS.Timeout;
-let anonRateLimit: number = 100;
 
 const GET_COIN_RANKINGS = `
 query {
@@ -50,8 +51,16 @@ query($coinIDs: [String!]!) {
     currentPrice
     name
   }
-}
-`;
+}`;
+
+const GET_COIN_RANKINGS_PARAMS = `
+query($limit: Int) {
+  getCoinRankings(limit: $limit) {
+    ranking
+    coinID
+    name
+  }
+}`;
 
 beforeAll(async () => {
   await mongoose.connect('mongodb://localhost:27017/test', {
@@ -95,21 +104,12 @@ describe('prices: getCoinRankings', () => {
       key,
     });
 
-    expect(true).toBeTruthy();
+    expect(result).toBeTruthy();
   });
 
   it('should limit data length when argument is passed in', async () => {
-    const GET_COIN_RANKINGS = `
-    query($limit: Int) {
-      getCoinRankings(limit: $limit) {
-        ranking
-        coinID
-        name
-      }
-    }
-  `;
     const limit: number = 10;
-    const result = await graphql(schema, GET_COIN_RANKINGS, null, { key }, { limit });
+    const result = await graphql(schema, GET_COIN_RANKINGS_PARAMS, null, { key }, { limit });
 
     expect(result.data).toBeTruthy();
     expect(result.data?.getCoinRankings.length).toBe(10);
@@ -292,7 +292,7 @@ describe('prices: streamPrices', () => {
 
   describe('fetchAndPublish', () => {
     const subscribeForFirstMessage = async () => {
-      return new Promise<Array<Object>>((res, rej) => {
+      return new Promise<Array<Object>>((res) => {
         pubSub.subscribe('PRICES', (mes) => {
           res(mes);
         });
@@ -310,7 +310,7 @@ describe('prices: streamPrices', () => {
       const mes = await subscribeForFirstMessage();
 
       expect(mes).toBeTruthy();
-      expect(mes.length).toBe(100);
+      expect(mes).toHaveLength(100);
       expect(mes[0]).toEqual({
         currentPrice: expect.any(Number),
         name: expect.any(String),
@@ -334,7 +334,7 @@ describe('prices: streamPrices', () => {
       const mes = await subscribeForFirstMessage();
 
       expect(mes).toBeTruthy();
-      expect(mes.length).toBe(100);
+      expect(mes).toHaveLength(100);
       expect(mes[0]).toEqual({
         currentPrice: expect.any(Number),
         name: expect.any(String),

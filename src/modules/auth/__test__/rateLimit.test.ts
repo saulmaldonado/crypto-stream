@@ -4,7 +4,7 @@ import { redis } from '../../../utils/redisCache';
 import { Context } from '../middleware/Context';
 import { rateLimitAnon } from '../middleware/rateLimit';
 
-let address: string = '1.1.1.1';
+const address: string = '1.1.1.1';
 
 beforeAll(async () => {});
 

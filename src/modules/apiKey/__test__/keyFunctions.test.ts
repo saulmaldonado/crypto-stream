@@ -1,12 +1,13 @@
 import { config } from 'dotenv';
+import { validate } from 'uuid';
 import * as tokenMethods from '../../auth/jwt/getTokenUserID';
 import { Context } from '../../auth/middleware/Context';
 import { decryptKey, generateAPIKey, genKey, Key } from '../controllers/helpers/keyFunctions';
-import { validate } from 'uuid';
+
 config();
 
-let time: Date = new Date('2020-09-23T01:17:22.376Z');
-let userID: string = 'auth0|5f6aa02c4419aa00717f9ee8';
+const time: Date = new Date('2020-09-23T01:17:22.376Z');
+const userID: string = 'auth0|5f6aa02c4419aa00717f9ee8';
 
 describe('keyFunctions: genKey', () => {
   let generatedKey: Omit<Key, 'timestamp'>;
@@ -41,7 +42,7 @@ describe('keyFunctions: generateAPIKey', () => {
   });
 
   it('should return a complete Key object', () => {
-    const getTokenUserIDMock = jest.spyOn(tokenMethods, 'getTokenUserID');
+    getTokenUserIDMock = jest.spyOn(tokenMethods, 'getTokenUserID');
     getTokenUserIDMock.mockImplementation(() => 'auth0|5f6aa02c4419aa00717f9ee8');
     const keyObj = generateAPIKey({} as Context);
     expect(keyObj).toEqual({

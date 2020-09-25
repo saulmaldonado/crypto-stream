@@ -1,12 +1,10 @@
 import { ResolverData } from 'type-graphql';
-import { getInvalidTestingToken, getTestingToken } from '../../../utils/testing/getTestingToken';
+import { getInvalidTestingToken } from '../../../utils/testing/getTestingToken';
 import { customAuthChecker } from '../middleware/authChecker';
 import { Context } from '../middleware/Context';
 
-let token: string;
 let invalidToken: string;
 beforeAll(async () => {
-  token = await getTestingToken();
   invalidToken = getInvalidTestingToken();
 });
 

@@ -7,7 +7,7 @@ export const initializeTestingServer = async (
   serverContext: Record<string, string>
 ): Promise<ApolloServer> => {
   const schema = await buildSchema({
-    resolvers: resolvers,
+    resolvers,
     authChecker: customAuthChecker,
   });
 

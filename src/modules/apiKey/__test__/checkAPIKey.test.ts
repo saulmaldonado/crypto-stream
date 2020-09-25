@@ -1,11 +1,12 @@
 import { config } from 'dotenv';
-import { getTestingToken } from '../../../utils/testing/getTestingToken';
+import mongoose from 'mongoose';
 import { NextFn, ResolverData } from 'type-graphql';
+
+import { getTestingToken } from '../../../utils/testing/getTestingToken';
 import { checkAPIKey } from '../middleware/checkAPIKey';
 import { Context } from '../../auth/middleware/Context';
 import { getKey } from '../controllers/getAPIKey';
 import { KeyModel } from '../../../models/Key';
-import mongoose from 'mongoose';
 import { redis } from '../../../utils/redisCache';
 
 config();
@@ -54,14 +55,14 @@ describe('checkAPIKey: checkAPIKey', () => {
     expect(next).toBeCalled();
   });
 
-  it('should disallow call with invalid token', () => {
+  it('should disallow call with invalid token', async () => {
     const next = jest.fn() as NextFn;
 
     key = '123456';
 
     const middleware = checkAPIKey();
 
-    expect(async () => {
+    await expect(async () => {
       await middleware({ context: { key } } as ResolverData<Context>, next);
     }).rejects.toThrow();
   });
@@ -69,7 +70,8 @@ describe('checkAPIKey: checkAPIKey', () => {
   it('should disallow call with tampered token signature', async () => {
     const next = jest.fn() as NextFn;
 
-    let [id, signature] = key.split('.');
+    let [, signature] = key.split('.');
+    const [id] = key.split('.');
 
     signature = 'sdkfljskdlgjdfgl';
 
@@ -77,7 +79,7 @@ describe('checkAPIKey: checkAPIKey', () => {
 
     const middleware = checkAPIKey();
 
-    expect(async () => {
+    await expect(async () => {
       await middleware({ context: { key } } as ResolverData<Context>, next);
     }).rejects.toThrow();
   });

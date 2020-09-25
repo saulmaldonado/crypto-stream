@@ -75,8 +75,8 @@ describe('APIKeys: getAPIKey', () => {
   });
 
   it('should fail with an invalid API key', async () => {
-    const token = getInvalidTestingToken();
-    const server = await initializeTestingServer([APIKeyResolver], { token });
+    const invalidToken = getInvalidTestingToken();
+    const server = await initializeTestingServer([APIKeyResolver], { token: invalidToken });
     const { query } = createTestClient(server);
     const res = await query({ query: GET_API_KEY });
 
@@ -135,8 +135,8 @@ describe('APIKeys: refreshAPIKey', () => {
   });
 
   it('should fail with an invalid API key', async () => {
-    const token = getInvalidTestingToken();
-    const server = await initializeTestingServer([APIKeyResolver], { token });
+    const invalidToken = getInvalidTestingToken();
+    const server = await initializeTestingServer([APIKeyResolver], { token: invalidToken });
     const { mutate } = createTestClient(server);
     const res = await mutate({ mutation: REFRESH_API_KEY });
 

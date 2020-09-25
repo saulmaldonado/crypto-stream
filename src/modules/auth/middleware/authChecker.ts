@@ -7,7 +7,7 @@ import { Context } from './Context';
 
 export type JWTPayload = {
   iss?: string;
-  sub?: string; //userID
+  sub?: string; // userID
   aud?: string[];
   iat?: number;
   exp?: number;
@@ -23,7 +23,7 @@ type JWTToken = {
   signature: string;
 };
 
-export const customAuthChecker: AuthChecker<Context> = async ({ context: { token, req } }) => {
+export const customAuthChecker: AuthChecker<Context> = async ({ context: { token } }) => {
   if (!token) return false;
   const secret = jwksRsa.expressJwtSecret({
     cache: true,

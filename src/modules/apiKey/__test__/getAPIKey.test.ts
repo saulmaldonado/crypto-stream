@@ -1,14 +1,15 @@
 import { mongoose } from '@typegoose/typegoose';
+import { config } from 'dotenv';
 import { KeyModel } from '../../../models/Key';
 import { Context } from '../../auth/middleware/Context';
 import * as tokenMethods from '../../auth/jwt/getTokenUserID';
 import { getKey } from '../controllers/getAPIKey';
 import { generateAPIKey } from '../controllers/helpers/keyFunctions';
-import { config } from 'dotenv';
 import { redis } from '../../../utils/redisCache';
+
 config();
 
-let userID: string = 'auth0|5f6aa02c4419aa00717f9ee8';
+const userID: string = 'auth0|5f6aa02c4419aa00717f9ee8';
 
 beforeAll(async () => {
   await mongoose.connect('mongodb://localhost:27017/test5', {

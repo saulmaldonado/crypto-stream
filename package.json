@@ -9,7 +9,8 @@
     "initdb": "ts-node initDatabase.ts",
     "resetdb": "ts-node initDatabase.ts --reset",
     "start": "tsnd --respawn ./src/index.ts",
-    "test": "jest"
+    "test": "jest",
+    "lint": "eslint 'src/**/*.ts'"
   },
   "keywords": [],
   "author": "Saul Maldonado",
@@ -58,6 +59,7 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",

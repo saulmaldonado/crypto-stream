@@ -5,9 +5,10 @@ import * as tokenMethods from '../../auth/jwt/getTokenUserID';
 import { Context } from '../../auth/middleware/Context';
 import { generateAPIKey } from '../controllers/helpers/keyFunctions';
 import { refreshAPIKey } from '../controllers/refreshAPIKey';
+
 config();
 
-let userID: string = 'auth0|5f6aa02c4419aa00717f9ee8';
+const userID: string = 'auth0|5f6aa02c4419aa00717f9ee8';
 
 beforeAll(async () => {
   await mongoose.connect('mongodb://localhost:27017/test2', {
@@ -59,8 +60,8 @@ describe('refreshAPIkey: controller', () => {
     });
   });
 
-  it('should fail if there is not an existing API key for user in database', () => {
-    expect(async () => {
+  it('should fail if there is not an existing API key for user in database', async () => {
+    await expect(async () => {
       await refreshAPIKey({} as Context);
     }).rejects.toThrow();
   });

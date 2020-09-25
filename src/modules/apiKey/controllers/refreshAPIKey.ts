@@ -9,13 +9,13 @@ export const refreshAPIKey = async (ctx: Context): Promise<APIKey> => {
   const userID = getTokenUserID(ctx);
 
   try {
-    const APIKey = await KeyModel.findOne({ userID });
+    const APIKeyObject = await KeyModel.findOne({ userID });
 
-    if (!APIKey) {
+    if (!APIKeyObject) {
       throw new ApolloError('No API key can be found for user', 'INTERNAL_SERVER_ERROR');
     }
 
-    await APIKey.remove();
+    await APIKeyObject.remove();
 
     const { key, _id, encryptedKey, timestamp, iv } = generateAPIKey(ctx);
 
