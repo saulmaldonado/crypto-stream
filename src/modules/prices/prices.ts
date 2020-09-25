@@ -1,4 +1,4 @@
-import { Arg, Query, Resolver, Root, Subscription, UseMiddleware } from 'type-graphql';
+import { Arg, Int, Query, Resolver, Root, Subscription, UseMiddleware } from 'type-graphql';
 import { CoinRanking } from '../../schemas/CoinRanking';
 import { PricePayload } from '../../schemas/PricePayload';
 import { checkAPIKey } from '../apiKey/middleware/checkAPIKey';
@@ -13,11 +13,11 @@ export class PriceResolver {
     topics: 'PRICES',
   })
   @UseMiddleware(rateLimitAnon(100))
-  async streamPrices(
+  streamPrices(
     @Root() pricePayload: PricePayload[],
     @Arg('data', { nullable: true }) input: CoinIDInput
-  ): Promise<PricePayload[] | never> {
-    if (input?.coinIDs && input?.coinIDs.length) {
+  ): PricePayload[] {
+    if (input?.coinIDs && input.coinIDs.length) {
       return pricePayload.filter((coin) => input.coinIDs.includes(coin.coinID));
     }
     return pricePayload;
@@ -33,7 +33,7 @@ export class PriceResolver {
   @UseMiddleware(rateLimitAnon(100))
   @UseMiddleware(checkAPIKey())
   async getCoinRankings(
-    @Arg('limit', { defaultValue: 100 }) limit: number
+    @Arg('limit', () => Int, { defaultValue: 100 }) limit: number
   ): Promise<CoinRanking[] | never> {
     return getRankings(limit);
   }

@@ -15,7 +15,7 @@ export class APIKeyModel {
   @prop()
   public _id!: string;
 
-  @prop({ index: true })
+  @prop({ unique: true })
   public userID!: string;
 
   @prop()

@@ -7,7 +7,7 @@ import { Context } from './Context';
 
 export type JWTPayload = {
   iss?: string;
-  sub?: string; //userID
+  sub?: string; // userID
   aud?: string[];
   iat?: number;
   exp?: number;
@@ -23,7 +23,7 @@ type JWTToken = {
   signature: string;
 };
 
-export const customAuthChecker: AuthChecker<Context> = async ({ context: { token, req } }) => {
+export const customAuthChecker: AuthChecker<Context> = async ({ context: { token } }) => {
   if (!token) return false;
   const secret = jwksRsa.expressJwtSecret({
     cache: true,
@@ -34,14 +34,18 @@ export const customAuthChecker: AuthChecker<Context> = async ({ context: { token
 
   const decoded = decode(token, { complete: true });
 
-  if (!decoded) return false;
-
-  const { header, payload } = decoded as JWTToken;
+  const { header } = decoded as JWTToken;
 
   try {
     const decodedToken = await new Promise<JWTPayload>((res, rej) =>
-      secret(req, header, payload, (err, JWTsecret) => {
-        if (err || !secret) {
+      /**
+       * patch jwksRsa.expressJwtSecret return method to exclude req and payload.
+       * req and payload go unused in the original method and can safely be unused in this
+       * scenario
+       * https://github.com/auth0/node-jwks-rsa/blob/master/src/integrations/express.js#L24
+       */
+      secret(header, (err, JWTsecret) => {
+        if (err || !JWTsecret) {
           rej(new ApolloError(err ?? 'Unable to verify JWT', 'INTERNAL_SERVER_ERROR'));
         }
         const resultToken = verify(token, JWTsecret as Secret) as JWTPayload;
@@ -53,8 +57,8 @@ export const customAuthChecker: AuthChecker<Context> = async ({ context: { token
 
     if (
       !(iss === `https://${process.env.AUTH0_DOMAIN}/`) ||
-      !(aud![0] === process.env.AUTH0_AUDIENCE) ||
-      !(azp === process.env.AUTH0_CLIENT_ID)
+      !(aud![0] === process.env.AUTH0_AUDIENCE || aud === process.env.AUTH0_AUDIENCE) ||
+      !(azp === process.env.AUTH0_CLIENT_ID || azp === process.env.AUTH0_API_ID)
     ) {
       return false;
     }

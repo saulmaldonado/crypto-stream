@@ -10,16 +10,16 @@ export const getKey = async (ctx: Context): Promise<APIKey> => {
   const userID = getTokenUserID(ctx);
 
   try {
-    let APIKey = await KeyModel.findOne({ userID });
+    let APIKeyObject = await KeyModel.findOne({ userID });
 
-    if (!APIKey) {
+    if (!APIKeyObject) {
       const { _id, key, encryptedKey, timestamp, iv } = generateAPIKey(ctx);
-      APIKey = await KeyModel.create({ _id, encryptedKey, userID, timestamp, iv });
+      APIKeyObject = await KeyModel.create({ _id, encryptedKey, userID, timestamp, iv });
       return { key, timestamp };
     }
 
-    const key = decryptKey(APIKey.encryptedKey, APIKey.iv);
-    const timestamp = APIKey.timestamp;
+    const key = decryptKey(APIKeyObject.encryptedKey, APIKeyObject.iv);
+    const { timestamp } = APIKeyObject;
     return { key, timestamp };
   } catch (error) {
     throw new ApolloError(error, 'INTERNAL_SERVER_ERROR');

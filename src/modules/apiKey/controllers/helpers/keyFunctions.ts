@@ -1,9 +1,12 @@
 import { ApolloError } from 'apollo-server-express';
 import { v4 } from 'uuid';
 import { randomBytes, createCipheriv, createDecipheriv, createHmac } from 'crypto';
+import { config } from 'dotenv';
 
 import { getTokenUserID } from '../../../auth/jwt/getTokenUserID';
 import { Context } from '../../../auth/middleware/Context';
+
+config();
 
 export type Key = {
   _id: string;
