@@ -72,11 +72,11 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "pre-push": "yarn test"
+      "pre-push": "docker-compose up --build "
     }
   },
   "lint-staged": {
-    "*.ts": "eslint --cache --fix",
+    "*.ts": "eslint --fix",
     "*.{ts}": "prettier --write"
   }
 }
