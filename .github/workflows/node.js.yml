@@ -12,7 +12,7 @@ on:
 jobs:
   container-job:
     runs-on: ubuntu-latest
-    container: node:alpine
+    container: node
     services:
       redis:
         image: redis:alpine
