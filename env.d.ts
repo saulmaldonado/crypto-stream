@@ -16,6 +16,8 @@ declare global {
       API_KEY_SECRET?: string;
       AUTH0_API_ID?: string;
       NODE_ENV: string;
+      MONGO_URI: string;
+      REDIS_HOST: string;
     }
   }
 }

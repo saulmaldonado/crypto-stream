@@ -8,14 +8,13 @@ import { Context } from '../../auth/middleware/Context';
 import { getKey } from '../controllers/getAPIKey';
 import { KeyModel } from '../../../models/Key';
 import { redis } from '../../../utils/redisCache';
-import { MongoDBConfig } from '../../../config/DbConfig';
 
 config();
 let token: string;
 let key: string;
 
 beforeAll(async () => {
-  await mongoose.connect(`${MongoDBConfig.URI}/test4`, {
+  await mongoose.connect(`${process.env.MONGO_URI}/test4`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

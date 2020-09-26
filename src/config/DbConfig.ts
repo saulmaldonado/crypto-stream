@@ -7,5 +7,4 @@ export enum CollectionNames {
 
 export enum MongoDBConfig {
   API_DB_NAME = 'api',
-  URI = 'mongodb://mongo:27017',
 }

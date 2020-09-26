@@ -7,14 +7,13 @@ import { initializeTestingServer } from '../../../utils/testing/initializeServer
 import { getInvalidTestingToken, getTestingToken } from '../../../utils/testing/getTestingToken';
 import { APIKeyResolver } from '../APIKey';
 import { KeyModel } from '../../../models/Key';
-import { MongoDBConfig } from '../../../config/DbConfig';
 
 config();
 
 let token: string;
 
 beforeAll(async () => {
-  await mongoose.connect(`${MongoDBConfig.URI}/test3`, {
+  await mongoose.connect(`${process.env.MONGO_URI}/test3`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

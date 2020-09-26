@@ -14,7 +14,6 @@ import { redis } from '../../../utils/redisCache';
 import { startPricePublisher, fetchAndPublish } from '../publsihers/pricePublush';
 import { PricePayload } from '../../../schemas/PricePayload';
 import { fetchPrices } from '../controllers/helpers/fetchCoinPrices';
-import { MongoDBConfig } from '../../../config/DbConfig';
 
 config();
 
@@ -67,7 +66,7 @@ query($limit: Int) {
 }`;
 
 beforeAll(async () => {
-  await mongoose.connect(`${MongoDBConfig.URI}/test`, {
+  await mongoose.connect(`${process.env.MONGO_URI}/test`, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,

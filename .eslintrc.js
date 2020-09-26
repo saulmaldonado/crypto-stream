@@ -21,15 +21,6 @@ module.exports = {
   rules: {
     'import/extensions': 0,
     'import/prefer-default-export': 0,
-    'comma-dangle': [
-      'error',
-      {
-        arrays: 'only-multiline',
-        objects: 'only-multiline',
-        imports: 'only-multiline',
-        exports: 'only-multiline',
-      },
-    ],
     'import/no-extraneous-dependencies': 0,
     'class-methods-use-this': 0,
     'no-param-reassign': 0,
