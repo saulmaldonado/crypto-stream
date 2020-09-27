@@ -8,7 +8,7 @@
     "postinstall": "patch-package",
     "start": "tsnd --respawn ./src/index.ts",
     "prestart": "docker-compose up -d",
-    "test": "jest --coverage",
+    "test": "jest",
     "lint": "eslint src/**/*.ts"
   },
   "keywords": [],
