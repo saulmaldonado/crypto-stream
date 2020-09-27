@@ -1,13 +1,16 @@
 {
   "name": "crypto-tracker-backend",
   "version": "1.0.0",
-  "description": "backend for the crypto-tracker app",
+  "description": "A public GraphQL crypto market data API with websocket feed",
   "main": "build/index.js",
   "scripts": {
     "build": "tsc",
     "postinstall": "patch-package",
-    "start": "tsnd --respawn ./src/index.ts",
-    "test": "jest",
+    "test:CI": "cross-env MONGO_URI='mongodb://mongo:27017' REDIS_HOST=redis jest --coverage",
+    "start": "cross-env MONGO_URI='mongodb://localhost:27017' REDIS_HOST=localhost tsnd --respawn ./src/index.ts",
+    "prestart": "docker-compose up -d",
+    "pretest": "docker-compose up -d",
+    "test": "cross-env MONGO_URI='mongodb://localhost:27017' REDIS_HOST=localhost jest --coverage",
     "lint": "eslint src/**/*.ts"
   },
   "keywords": [],
@@ -52,6 +55,7 @@
     "@typescript-eslint/eslint-plugin": "^4.1.1",
     "@typescript-eslint/parser": "^4.1.1",
     "apollo-server-testing": "^2.17.0",
+    "cross-env": "^7.0.2",
     "eslint": "^7.9.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.11.0",
