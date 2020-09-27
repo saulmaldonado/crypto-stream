@@ -28,7 +28,7 @@ jobs:
         run: yarn --frozen-lockfile
 
       - name: test
-        run: yarn test:CI
+        run: yarn test:CI --runInBand
         env:
           MONGO_URI: mongodb://mongo:27017
           REDIS_HOST: redis
