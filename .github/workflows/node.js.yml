@@ -45,6 +45,6 @@ jobs:
           AUTH0_MANAGEMENT_SECRET: ${{secrets.AUTH0_MANAGEMENT_SECRET}}
           NOMICS_API_KEY: ${{secrets.NOMICS_API_KEY}}
       - name: codcov
-        run: bash <(curl -s https://codecov.io/bash)  
+        run: bash <(curl -s https://codecov.io/bash)
         env:
           CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
