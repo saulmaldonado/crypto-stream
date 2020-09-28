@@ -15,7 +15,7 @@ jobs:
     container: node
     services:
       redis:
-        image: redis:alpine
+        image: saulmaldonado/crypto-redis:1.0.2
       mongo:
         image: mongo
     steps:
@@ -23,7 +23,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: '14.x'
+          node-version: "14.x"
       - name: Install dependencies
         run: yarn --frozen-lockfile
 

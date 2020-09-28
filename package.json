@@ -7,10 +7,11 @@
     "build": "tsc",
     "postinstall": "patch-package",
     "test:CI": "cross-env MONGO_URI='mongodb://mongo:27017' REDIS_HOST=redis jest --coverage",
+    "pretest:CI": "docker-compose up -d",
     "start": "cross-env MONGO_URI='mongodb://localhost:27017' REDIS_HOST=localhost tsnd --respawn ./src/index.ts",
     "prestart": "docker-compose up -d",
     "pretest": "docker-compose up -d",
-    "test": "cross-env MONGO_URI='mongodb://localhost:27017' REDIS_HOST=localhost jest --coverage",
+    "test": "cross-env MONGO_URI='mongodb://localhost:27017' REDIS_HOST=localhost jest --coverage --logHeapUsage",
     "lint": "eslint src/**/*.ts"
   },
   "keywords": [],
@@ -39,7 +40,8 @@
     "reflect-metadata": "^0.1.13",
     "ts-node": "^9.0.0",
     "type-graphql": "^1.0.0",
-    "uuid": "^8.3.0"
+    "uuid": "^8.3.0",
+    "weak-napi": "^2.0.2"
   },
   "devDependencies": {
     "@types/auth0-js": "^9.14.0",
@@ -80,7 +82,7 @@
     }
   },
   "lint-staged": {
-    "src/*.ts": [
+    "src/**/*.ts": [
       "eslint --fix",
       "prettier --write"
     ]

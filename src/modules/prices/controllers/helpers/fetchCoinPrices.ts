@@ -69,7 +69,7 @@ export const fetchPrices = async (
         .set(
           'rankings',
           JSON.stringify(
-            data.map(({ id: coinID, name }, index) => ({
+            data.slice(0, 100).map(({ id: coinID, name }, index) => ({
               ranking: index + 1,
               coinID,
               name,

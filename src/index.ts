@@ -7,7 +7,6 @@ import { buildSchema } from 'type-graphql';
 import http from 'http';
 
 import { connect } from './connect';
-import { customAuthChecker } from './modules/auth/middleware/authChecker';
 import { PriceResolver } from './modules/prices/prices';
 import { LoginResolver } from './modules/auth/login';
 import { APIKeyResolver } from './modules/apiKey/APIKey';
@@ -17,6 +16,7 @@ import { RegisterResolver } from './modules/auth/register';
 import { createContext } from './modules/auth/middleware/Context';
 import { pubSub } from './utils/redisPubSub';
 import { startPricePublisher } from './modules/prices/publsihers/pricePublush';
+import { customAuthChecker } from './modules/auth/middleware/authChecker';
 
 config();
 

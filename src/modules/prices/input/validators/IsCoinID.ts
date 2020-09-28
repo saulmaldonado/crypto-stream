@@ -4,16 +4,18 @@ import {
   ValidationOptions,
   registerDecorator,
 } from 'class-validator';
-import { allCoinIDs } from '../../../../config/coinIDsConfig';
+import { redis } from '../../../../utils/redisCache';
 
 @ValidatorConstraint()
 export class CoinIDConstraint implements ValidatorConstraintInterface {
   async validate(coinIDs: string[]) {
-    return coinIDs.every((coin, i, arr) => {
+    return coinIDs.every(async (coin, i, arr) => {
       // * mutates the original string
       arr[i] = arr[i].toUpperCase();
       coin = arr[i];
-      return allCoinIDs.includes(coin);
+
+      const res = await redis.hget('COINIDS', coin);
+      return res;
     });
   }
 }

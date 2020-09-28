@@ -30,7 +30,7 @@ export const fetchAndPublish = async (pubSub: RedisPubSub) => {
  * @param {Express} app  Express app instance
  * @param {number} [priceInterval=60] Interval at which prices will be published in seconds.
  */
-export const startPricePublisher = async (pubSub: RedisPubSub, priceInterval: number = 60) => {
+export const startPricePublisher = (pubSub: RedisPubSub, priceInterval: number = 60) => {
   return pricePublishedInit(() => {
     fetchAndPublish(pubSub);
   }, priceInterval);

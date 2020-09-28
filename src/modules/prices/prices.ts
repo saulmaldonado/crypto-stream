@@ -2,7 +2,8 @@ import { Arg, Int, Query, Resolver, Root, Subscription, UseMiddleware } from 'ty
 import { CoinRanking } from '../../schemas/CoinRanking';
 import { PricePayload } from '../../schemas/PricePayload';
 import { checkAPIKey } from '../apiKey/middleware/checkAPIKey';
-import { rateLimitAll, rateLimitAnon } from '../auth/middleware/rateLimit';
+import { rateLimitAnon } from '../auth/middleware/rateLimitAnon';
+import { rateLimitAll } from '../auth/middleware/rateLimitAll';
 import { getCoinPrices } from './controllers/getCoinPrices';
 import { getRankings } from './controllers/getRankings';
 import { CoinIDInput } from './input/coinIDs';

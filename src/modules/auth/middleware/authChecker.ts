@@ -50,8 +50,12 @@ export const customAuthChecker: AuthChecker<Context> = async ({ context: { token
         if (err || !JWTsecret) {
           rej(new ApolloError(err ?? 'Unable to verify JWT', 'INTERNAL_SERVER_ERROR'));
         }
-        const resultToken = verify(token, JWTsecret as Secret) as JWTPayload;
-        res(resultToken);
+        try {
+          const resultToken = verify(token, JWTsecret as Secret) as JWTPayload;
+          res(resultToken);
+        } catch (error) {
+          rej(error);
+        }
       })
     );
 
@@ -67,6 +71,12 @@ export const customAuthChecker: AuthChecker<Context> = async ({ context: { token
 
     return true;
   } catch (error) {
-    return false;
+    throw new ApolloError(
+      'Access denied! You need to be authorized to perform this action!',
+      'UNAUTHORIZED',
+      {
+        reason: error.message,
+      }
+    );
   }
 };

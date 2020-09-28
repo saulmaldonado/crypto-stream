@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 import { redisConfig } from '../../../config/RedisConfig';
 import { redis } from '../../../utils/redisCache';
 import { Context } from '../middleware/Context';
-import { rateLimitAnon } from '../middleware/rateLimit';
+import { rateLimitAnon } from '../middleware/rateLimitAnon';
 
 config();
 

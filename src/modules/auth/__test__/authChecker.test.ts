@@ -1,3 +1,4 @@
+/* eslint-disable jest/valid-expect */
 import { ResolverData } from 'type-graphql';
 import { config } from 'dotenv';
 import { getInvalidTestingToken } from '../../../utils/testing/getTestingToken';
@@ -21,8 +22,8 @@ describe('authChecker', () => {
   it('should unauthorize requests with an invalid token', async () => {
     const context = { context: { token: invalidToken } };
 
-    const result = await customAuthChecker(context as ResolverData<Context>, []);
-
-    expect(result).toBeFalsy();
+    expect(async () => {
+      await customAuthChecker(context as ResolverData<Context>, []);
+    }).rejects.toThrow();
   });
 });
