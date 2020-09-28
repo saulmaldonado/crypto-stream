@@ -7,7 +7,6 @@
     "build": "tsc",
     "postinstall": "patch-package",
     "test:CI": "cross-env MONGO_URI='mongodb://mongo:27017' REDIS_HOST=redis jest --coverage",
-    "pretest:CI": "docker-compose up -d",
     "start": "cross-env MONGO_URI='mongodb://localhost:27017' REDIS_HOST=localhost tsnd --respawn ./src/index.ts",
     "prestart": "docker-compose up -d",
     "pretest": "docker-compose up -d",
