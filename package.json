@@ -1,7 +1,11 @@
 {
-  "name": "crypto-tracker-backend",
+  "name": "crypto-tracker",
   "version": "1.0.0",
   "description": "A public GraphQL crypto market data API with websocket feed",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/saulmaldonado/dotenv-types-generator.git"
+  },
   "main": "build/index.js",
   "scripts": {
     "build": "tsc",
@@ -14,7 +18,7 @@
     "lint": "eslint src/**/*.ts"
   },
   "keywords": [],
-  "author": "Saul Maldonado",
+  "author": "Saul Maldonado <samaldonado4@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@typegoose/typegoose": "^7.3.5",
