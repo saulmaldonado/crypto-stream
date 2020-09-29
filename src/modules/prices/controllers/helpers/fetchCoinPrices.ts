@@ -5,7 +5,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 import { redis } from '../../../../utils/redisCache';
-import { PricePayload } from '../../../../schemas/PricePayload';
+import { MarketData } from '../../../../schemas/MarketData';
 
 type FetchPricesArguments = {
   coinIDs?: string[];
@@ -45,14 +45,14 @@ const ONE_HOUR = 60 * 60;
  *
  * @param {coinID: Array<string>=[], limit: number=100} options for fetching market prices
  *
- * @returns {Array.<PricePayload>} Array of coin market data
+ * @returns {Array.<MarketData>} Array of coin market data
  */
 export const fetchPrices = async (
   { coinIDs = [], limit = 100, subscription = false }: FetchPricesArguments = {
     coinIDs: [],
     limit: 100,
   }
-): Promise<PricePayload[] | never> => {
+): Promise<MarketData[] | never> => {
   const coinIDsString = coinIDs.length
     ? `&${qs.stringify({ ids: coinIDs }, { arrayFormat: 'comma' })}`
     : '';
@@ -83,7 +83,7 @@ export const fetchPrices = async (
 
     data.length = limit;
 
-    const mappedData: PricePayload[] = data.map((coin) => ({
+    const mappedData: MarketData[] = data.map((coin) => ({
       currentPrice: Number(coin.price),
       name: coin.name,
       coinID: coin.id,

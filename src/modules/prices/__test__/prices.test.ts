@@ -19,7 +19,7 @@ let token: string;
 let key: string;
 let schema: GraphQLSchema;
 
-const GET_COIN_RANKINGS = `
+const GET_CURRENCY_RANKINGS = `
 query {
   getCoinRankings {
     ranking
@@ -44,9 +44,9 @@ query($coinIDs: [String!]!) {
   }
 }`;
 
-const GET_COIN_RANKINGS_PARAMS = `
+const GET_CURRENCY_RANKINGS_PARAMS = `
 query($limit: Int) {
-  getCoinRankings(limit: $limit) {
+  getCurrencyRankings(limit: $limit) {
     ranking
     coinID
     name
@@ -95,16 +95,16 @@ describe('prices: getCoinRankings', () => {
     await redis.del('rankings');
   });
   it('should return ranking data', async () => {
-    const result = await graphql(schema, GET_COIN_RANKINGS, null, {
+    const result = await graphql(schema, GET_CURRENCY_RANKINGS, null, {
       key,
     });
     expect(result).toBeTruthy();
   });
   it('should limit data length when argument is passed in', async () => {
     const limit: number = 10;
-    const result = await graphql(schema, GET_COIN_RANKINGS_PARAMS, null, { key }, { limit });
+    const result = await graphql(schema, GET_CURRENCY_RANKINGS_PARAMS, null, { key }, { limit });
     expect(result.data).toBeTruthy();
-    expect(result.data?.getCoinRankings.length).toBe(10);
+    expect(result.data?.getCurrencyRankings.length).toBe(10);
   });
   describe('ratelimiting: address', () => {
     const address = '0.0.0.0';
@@ -123,7 +123,7 @@ describe('prices: getCoinRankings', () => {
       }
     });
     it('should rate limit after certain number of requests', async () => {
-      const result = await graphql(schema, GET_COIN_RANKINGS, null, {
+      const result = await graphql(schema, GET_CURRENCY_RANKINGS, null, {
         address,
       });
       expect(result.errors).toBeTruthy();

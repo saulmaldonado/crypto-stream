@@ -4,7 +4,7 @@
 import { graphql, GraphQLSchema, subscribe, parse } from 'graphql';
 import mongoose from 'mongoose';
 import { buildSchema } from 'type-graphql';
-import { PricePayload } from '../../../schemas/PricePayload';
+import { MarketData } from '../../../schemas/MarketData';
 import { redis } from '../../../utils/redisCache';
 import { pubSub } from '../../../utils/redisPubSub';
 import { fetchPrices } from '../controllers/helpers/fetchCoinPrices';
@@ -125,7 +125,7 @@ describe('prices: streamPrices', () => {
     const coinIDs = ['BTC', 'ETH'];
 
     const result = stream(
-      [{ coinID: 'BTC' }, { coinID: 'ETH' }, { coinID: 'XRP' }] as PricePayload[],
+      [{ coinID: 'BTC' }, { coinID: 'ETH' }, { coinID: 'XRP' }] as MarketData[],
       {
         coinIDs,
       }
@@ -138,7 +138,7 @@ describe('prices: streamPrices', () => {
     const stream = new PriceResolver().streamPrices;
 
     const result = stream(
-      [{ coinID: 'BTC' }, { coinID: 'ETH' }, { coinID: 'XRP' }] as PricePayload[],
+      [{ coinID: 'BTC' }, { coinID: 'ETH' }, { coinID: 'XRP' }] as MarketData[],
       { coinIDs: [] }
     );
 
@@ -149,7 +149,7 @@ describe('prices: streamPrices', () => {
     const stream = new PriceResolver().streamPrices;
 
     const result = stream(
-      [{ coinID: 'BTC' }, { coinID: 'ETH' }, { coinID: 'XRP' }] as PricePayload[],
+      [{ coinID: 'BTC' }, { coinID: 'ETH' }, { coinID: 'XRP' }] as MarketData[],
       { coinIDs: ['HGL', 'BTC', 'ETH'] }
     );
 

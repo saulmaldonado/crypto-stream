@@ -1,5 +1,5 @@
 /* eslint-disable prefer-const */
-import { PricePayload } from '../../../schemas/PricePayload';
+import { MarketData } from '../../../schemas/MarketData';
 import { getCoinsFromCache } from '../publsihers/helpers/getCoinsFromCache';
 import { fetchPrices } from './helpers/fetchCoinPrices';
 
@@ -8,7 +8,7 @@ export const getCoinPrices = async (coinIDs: string[]) => {
 
   if (ok) {
     if (!allMatched) {
-      const restOfCoins: PricePayload[] = await fetchPrices({ coinIDs: restOfCoinIds! });
+      const restOfCoins: MarketData[] = await fetchPrices({ coinIDs: restOfCoinIds! });
       coins = coins!.concat(restOfCoins);
     }
     return coins!;

@@ -4,12 +4,12 @@ import { pricePublishedInit } from './helpers/pricePublisherInit';
 import { fetchPrices } from '../controllers/helpers/fetchCoinPrices';
 import { redis } from '../../../utils/redisCache';
 import { CoinRanking } from '../../../schemas/CoinRanking';
-import { PricePayload } from '../../../schemas/PricePayload';
+import { MarketData } from '../../../schemas/MarketData';
 
 export const fetchAndPublish = async (pubSub: RedisPubSub) => {
   // fetch the coin rankings from cache (rankings have 10min expiry)
   const res = await redis.get('rankings');
-  let coins: PricePayload[] = [];
+  let coins: MarketData[] = [];
 
   if (!res) {
     /** if cache is empty, fetch all prices and filter to the top 100.

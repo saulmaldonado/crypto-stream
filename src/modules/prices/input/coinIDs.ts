@@ -5,7 +5,7 @@ import { IsCoinID } from './validators/IsCoinID';
 
 @InputType()
 export class CoinIDInput {
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @ArrayMinSize(1)
   @ArrayMaxSize(100)
   @IsCoinID()

@@ -1,39 +1,47 @@
 import { Arg, Int, Query, Resolver, Root, Subscription, UseMiddleware } from 'type-graphql';
 import { CoinRanking } from '../../schemas/CoinRanking';
-import { PricePayload } from '../../schemas/PricePayload';
+import { MarketData } from '../../schemas/MarketData';
 import { checkAPIKey } from '../apiKey/middleware/checkAPIKey';
 import { rateLimitAnon } from '../auth/middleware/rateLimitAnon';
 import { rateLimitAll } from '../auth/middleware/rateLimitAll';
 import { getCoinPrices } from './controllers/getCoinPrices';
 import { getRankings } from './controllers/getRankings';
 import { CoinIDInput } from './input/coinIDs';
+import metadata from './prices.metadata.json';
 
 @Resolver()
 export class PriceResolver {
-  @Subscription(() => [PricePayload], {
+  @Subscription(() => [MarketData], {
     topics: 'PRICES',
+    description: metadata.streamPrices.description,
   })
   @UseMiddleware(rateLimitAnon(100))
   streamPrices(
-    @Root() pricePayload: PricePayload[],
+    @Root() marketData: MarketData[],
     @Arg('data', { nullable: true }) input: CoinIDInput
-  ): PricePayload[] {
+  ): MarketData[] {
     if (input?.coinIDs && input.coinIDs.length) {
-      return pricePayload.filter((coin) => input.coinIDs.includes(coin.coinID));
+      return marketData.filter((coin) => input.coinIDs.includes(coin.coinID));
     }
-    return pricePayload;
+    return marketData;
   }
 
-  @Query(() => [PricePayload], { nullable: 'items' })
+  @Query(() => [MarketData], {
+    nullable: 'items',
+    description: metadata.getPrices.description,
+  })
   @UseMiddleware(rateLimitAll(100))
-  async getPrices(@Arg('data') { coinIDs }: CoinIDInput): Promise<PricePayload[] | never> {
+  async getPrices(@Arg('data') { coinIDs }: CoinIDInput): Promise<MarketData[] | never> {
     return getCoinPrices(coinIDs);
   }
 
-  @Query(() => [CoinRanking], { nullable: 'items' })
+  @Query(() => [CoinRanking], {
+    nullable: 'items',
+    description: metadata.getCurrencyRankings.description,
+  })
   @UseMiddleware(rateLimitAnon(100))
   @UseMiddleware(checkAPIKey())
-  async getCoinRankings(
+  async getCurrencyRankings(
     @Arg('limit', () => Int, { defaultValue: 100 }) limit: number
   ): Promise<CoinRanking[] | never> {
     return getRankings(limit);

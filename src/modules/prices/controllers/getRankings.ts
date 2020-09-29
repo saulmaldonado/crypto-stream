@@ -1,11 +1,11 @@
 import { redis } from '../../../utils/redisCache';
 import { CoinRanking } from '../../../schemas/CoinRanking';
-import { PricePayload } from '../../../schemas/PricePayload';
+import { MarketData } from '../../../schemas/MarketData';
 import { fetchPrices } from './helpers/fetchCoinPrices';
 
 export const getRankings = async (limit: number): Promise<CoinRanking[]> => {
   const res = await redis.get('rankings');
-  let coins: PricePayload[] = [];
+  let coins: MarketData[] = [];
 
   if (!res) {
     coins = await fetchPrices({ limit });

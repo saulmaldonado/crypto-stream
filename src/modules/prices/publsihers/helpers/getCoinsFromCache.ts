@@ -1,13 +1,13 @@
 import { redis } from '../../../../utils/redisCache';
-import { PricePayload } from '../../../../schemas/PricePayload';
+import { MarketData } from '../../../../schemas/MarketData';
 
 export const getCoinsFromCache = async (coinIDs: string[]) => {
   const result = await redis.get('lastPrices');
 
-  const coins: PricePayload[] = [];
+  const coins: MarketData[] = [];
 
   if (result) {
-    const cache: PricePayload[] = JSON.parse(result);
+    const cache: MarketData[] = JSON.parse(result);
 
     let index: number | null = null;
 

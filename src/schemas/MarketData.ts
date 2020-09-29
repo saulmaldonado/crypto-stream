@@ -1,7 +1,7 @@
 import { ObjectType, Field } from 'type-graphql';
 
-@ObjectType()
-export class PricePayload {
+@ObjectType({ description: 'Crypto currency market data' })
+export class MarketData {
   @Field()
   currentPrice!: number;
 
