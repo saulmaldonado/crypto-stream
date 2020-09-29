@@ -1,8 +1,9 @@
 /* eslint-disable max-classes-per-file */
 import { prop } from '@typegoose/typegoose';
 import { Field, ObjectType } from 'type-graphql';
+import metadata from './schemas.metadata.json';
 
-@ObjectType()
+@ObjectType({ description: metadata.APIKey.description })
 export class APIKey {
   @Field()
   public timestamp!: Date;

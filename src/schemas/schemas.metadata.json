@@ -1,0 +1,9 @@
+{
+  "MarketData": {
+    "description": "Price, supply, and market cap data for every currency"
+  },
+  "CurrencyRanking": { "description": "Currency ranking by market cap" },
+  "APIKey": {
+    "description": "Timestamp and an unencrypted API key for making authorized API requests"
+  }
+}

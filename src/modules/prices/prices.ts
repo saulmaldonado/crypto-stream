@@ -1,5 +1,5 @@
 import { Arg, Int, Query, Resolver, Root, Subscription, UseMiddleware } from 'type-graphql';
-import { CoinRanking } from '../../schemas/CoinRanking';
+import { CurrencyRanking } from '../../schemas/CurrencyRanking';
 import { MarketData } from '../../schemas/MarketData';
 import { checkAPIKey } from '../apiKey/middleware/checkAPIKey';
 import { rateLimitAnon } from '../auth/middleware/rateLimitAnon';
@@ -35,7 +35,7 @@ export class PriceResolver {
     return getCoinPrices(coinIDs);
   }
 
-  @Query(() => [CoinRanking], {
+  @Query(() => [CurrencyRanking], {
     nullable: 'items',
     description: metadata.getCurrencyRankings.description,
   })
@@ -43,7 +43,7 @@ export class PriceResolver {
   @UseMiddleware(checkAPIKey())
   async getCurrencyRankings(
     @Arg('limit', () => Int, { defaultValue: 100 }) limit: number
-  ): Promise<CoinRanking[] | never> {
+  ): Promise<CurrencyRanking[] | never> {
     return getRankings(limit);
   }
 }

@@ -3,7 +3,7 @@ import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { pricePublishedInit } from './helpers/pricePublisherInit';
 import { fetchPrices } from '../controllers/helpers/fetchCoinPrices';
 import { redis } from '../../../utils/redisCache';
-import { CoinRanking } from '../../../schemas/CoinRanking';
+import { CurrencyRanking } from '../../../schemas/CurrencyRanking';
 import { MarketData } from '../../../schemas/MarketData';
 
 export const fetchAndPublish = async (pubSub: RedisPubSub) => {
@@ -17,7 +17,7 @@ export const fetchAndPublish = async (pubSub: RedisPubSub) => {
     coins = await fetchPrices({ limit: 100, subscription: true });
   } else {
     // map the cache to coinIDs array and fetch the coins
-    const rankings: CoinRanking[] = JSON.parse(res);
+    const rankings: CurrencyRanking[] = JSON.parse(res);
     const coinIDs: string[] = rankings.slice(0, 100).map((coin) => coin.coinID);
     coins = await fetchPrices({ coinIDs, subscription: true });
   }
