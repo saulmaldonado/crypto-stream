@@ -2,3 +2,7 @@ node_modules
 yarn-error.log
 .github
 .vscode
+docker-compose*.yml
+build
+coverage
+.env
