@@ -15,7 +15,7 @@ export class CoinIDConstraint implements ValidatorConstraintInterface {
       coin = arr[i];
 
       const res = await redis.hget('COINIDS', coin);
-      return res;
+      return !!res;
     });
   }
 }

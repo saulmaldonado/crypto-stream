@@ -10,11 +10,12 @@
   "scripts": {
     "build": "tsc",
     "postinstall": "patch-package",
-    "test:CI": "cross-env MONGO_URI='mongodb://mongo:27017' REDIS_HOST=redis jest --coverage",
-    "start": "cross-env MONGO_URI='mongodb://localhost:27017' REDIS_HOST=localhost tsnd --respawn ./src/index.ts",
+    "test:CI": "jest --coverage",
+    "start": " tsnd --respawn ./src/index.ts",
     "prestart": "docker-compose up -d",
-    "pretest": "docker-compose up -d",
-    "test": "cross-env MONGO_URI='mongodb://localhost:27017' REDIS_HOST=localhost jest --coverage --logHeapUsage",
+    "pretest": "docker-compose stop && docker-compose -f docker-compose-test.yml up -d",
+    "posttest": "docker-compose stop",
+    "test": "jest --coverage --logHeapUsage",
     "lint": "eslint src/**/*.ts"
   },
   "keywords": [],
