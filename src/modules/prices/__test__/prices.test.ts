@@ -21,7 +21,7 @@ let schema: GraphQLSchema;
 
 const GET_CURRENCY_RANKINGS = `
 query {
-  getCoinRankings {
+  getCurrencyRankings {
     ranking
     coinID
     name
@@ -91,21 +91,52 @@ describe('prices: getCoinRankings', () => {
     });
     key = result.data?.getAPIKey.key;
   });
+
   afterEach(async () => {
     await redis.del('rankings');
   });
+
   it('should return ranking data', async () => {
     const result = await graphql(schema, GET_CURRENCY_RANKINGS, null, {
       key,
     });
     expect(result).toBeTruthy();
   });
+
   it('should limit data length when argument is passed in', async () => {
     const limit: number = 10;
     const result = await graphql(schema, GET_CURRENCY_RANKINGS_PARAMS, null, { key }, { limit });
     expect(result.data).toBeTruthy();
     expect(result.data?.getCurrencyRankings.length).toBe(10);
   });
+
+  describe('getRankings: from cache', () => {
+    let coins: { name: string; coinID: string }[];
+    beforeAll(async () => {
+      coins = [
+        { name: 'bitcoin', coinID: 'BTC' },
+        { name: 'ethereum', coinID: 'ETH' },
+      ];
+
+      await redis.set('rankings', JSON.stringify(coins));
+    });
+
+    it('should get rankings from cache', async () => {
+      const rankings = await graphql(
+        schema,
+        GET_CURRENCY_RANKINGS_PARAMS,
+        null,
+        { key },
+        { limit: 2 }
+      );
+
+      expect(rankings.data?.getCurrencyRankings).toEqual([
+        { name: 'bitcoin', coinID: 'BTC', ranking: 1 },
+        { name: 'ethereum', coinID: 'ETH', ranking: 2 },
+      ]);
+    });
+  });
+
   describe('ratelimiting: address', () => {
     const address = '0.0.0.0';
     beforeAll(async () => {
