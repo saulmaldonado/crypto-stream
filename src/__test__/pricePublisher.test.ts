@@ -1,4 +1,4 @@
-import { pricePublishedInit } from '../helpers/pricePublisherInit';
+import { pricePublishedInit } from '../modules/prices/publsihers/helpers/pricePublisherInit';
 
 describe('pricePublishedInit', () => {
   jest.useFakeTimers();

@@ -2,7 +2,7 @@ import { InputType, Field } from 'type-graphql';
 import { IsUserID } from '../../auth/input/validators/IsUserID';
 import { IsUsernameOrEmail } from '../../auth/input/validators/IsUsernameOrEmail';
 
-@InputType()
+@InputType('AddPortfolioInput')
 export class AddPortfolioInput {
   @Field()
   @IsUsernameOrEmail()

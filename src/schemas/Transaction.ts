@@ -1,7 +1,7 @@
 import { prop } from '@typegoose/typegoose';
 import { Field, ObjectType } from 'type-graphql';
 
-@ObjectType()
+@ObjectType('Transaction')
 export class Transaction {
   @Field()
   id!: string;

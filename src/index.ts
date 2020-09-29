@@ -44,6 +44,8 @@ const app = express();
     subscriptions: {
       onConnect: checkAPIKeySubscription,
     },
+    playground: true,
+    debug: process.env.NODE_ENV !== 'production',
   });
 
   server.applyMiddleware({ app });

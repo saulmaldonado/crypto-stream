@@ -1,7 +1,7 @@
 import { Field, InputType } from 'type-graphql';
 import { IsUserID } from './validators/IsUserID';
 
-@InputType()
+@InputType('VerifyEmailInput')
 export class VerifyEmailInput {
   @Field()
   @IsUserID()

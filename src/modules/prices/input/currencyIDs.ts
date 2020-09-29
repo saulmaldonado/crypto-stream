@@ -4,7 +4,7 @@ import { Field, InputType } from 'type-graphql';
 import { IsCoinID } from './validators/IsCoinID';
 import metadata from '../prices.metadata.json';
 
-@InputType()
+@InputType('CurrencyIDInput')
 export class CurrencyIDInput {
   @Field(() => [String], { nullable: true, description: metadata.CurrencyID.description })
   @ArrayMinSize(1)

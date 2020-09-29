@@ -1,11 +1,11 @@
 import { mongoose } from '@typegoose/typegoose';
 import { config } from 'dotenv';
-import { KeyModel } from '../../../models/Key';
-import { Context } from '../../auth/middleware/Context';
-import * as tokenMethods from '../../auth/jwt/getTokenUserID';
-import { getKey } from '../controllers/getAPIKey';
-import { generateAPIKey } from '../controllers/helpers/keyFunctions';
-import { redis } from '../../../utils/redisCache';
+import { KeyModel } from '../models/Key';
+import { Context } from '../modules/auth/middleware/Context';
+import * as tokenMethods from '../modules/auth/jwt/getTokenUserID';
+import { getKey } from '../modules/apiKey/controllers/getAPIKey';
+import { generateAPIKey } from '../modules/apiKey/controllers/helpers/keyFunctions';
+import { redis } from '../utils/redisCache';
 
 config();
 

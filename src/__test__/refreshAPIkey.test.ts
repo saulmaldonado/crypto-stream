@@ -1,10 +1,10 @@
 import { mongoose } from '@typegoose/typegoose';
 import { config } from 'dotenv';
-import { KeyModel } from '../../../models/Key';
-import * as tokenMethods from '../../auth/jwt/getTokenUserID';
-import { Context } from '../../auth/middleware/Context';
-import { generateAPIKey } from '../controllers/helpers/keyFunctions';
-import { refreshAPIKey } from '../controllers/refreshAPIKey';
+import { KeyModel } from '../models/Key';
+import * as tokenMethods from '../modules/auth/jwt/getTokenUserID';
+import { Context } from '../modules/auth/middleware/Context';
+import { generateAPIKey } from '../modules/apiKey/controllers/helpers/keyFunctions';
+import { refreshAPIKey } from '../modules/apiKey/controllers/refreshAPIKey';
 
 config();
 

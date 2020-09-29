@@ -1,5 +1,5 @@
 diff --git a/node_modules/jwks-rsa/lib/integrations/express.js b/node_modules/jwks-rsa/lib/integrations/express.js
-index 6cc77c5..98c8027 100644
+index 6cc77c5..59c7f6e 100644
 --- a/node_modules/jwks-rsa/lib/integrations/express.js
 +++ b/node_modules/jwks-rsa/lib/integrations/express.js
 @@ -24,7 +24,7 @@ module.exports.expressJwtSecret = function (options) {

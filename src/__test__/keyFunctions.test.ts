@@ -1,8 +1,13 @@
 import { config } from 'dotenv';
 import { validate } from 'uuid';
-import * as tokenMethods from '../../auth/jwt/getTokenUserID';
-import { Context } from '../../auth/middleware/Context';
-import { decryptKey, generateAPIKey, genKey, Key } from '../controllers/helpers/keyFunctions';
+import * as tokenMethods from '../modules/auth/jwt/getTokenUserID';
+import { Context } from '../modules/auth/middleware/Context';
+import {
+  decryptKey,
+  generateAPIKey,
+  genKey,
+  Key,
+} from '../modules/apiKey/controllers/helpers/keyFunctions';
 
 config();
 

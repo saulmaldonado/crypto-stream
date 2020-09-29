@@ -1,9 +1,9 @@
 import { NextFn, ResolverData } from 'type-graphql';
 import { config } from 'dotenv';
-import { redisConfig } from '../../../config/RedisConfig';
-import { redis } from '../../../utils/redisCache';
-import { Context } from '../middleware/Context';
-import { rateLimitAnon } from '../middleware/rateLimitAnon';
+import { redisConfig } from '../config/RedisConfig';
+import { redis } from '../utils/redisCache';
+import { Context } from '../modules/auth/middleware/Context';
+import { rateLimitAnon } from '../modules/auth/middleware/rateLimitAnon';
 
 config();
 

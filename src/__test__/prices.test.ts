@@ -5,13 +5,13 @@ import { graphql, GraphQLSchema } from 'graphql';
 import { buildSchema } from 'type-graphql';
 
 import { config } from 'dotenv';
-import { getTestingToken } from '../../../utils/testing/getTestingToken';
-import { KeyModel } from '../../../models/Key';
-import { PriceResolver } from '../prices';
-import { APIKeyResolver } from '../../apiKey/APIKey';
-import { pubSub } from '../../../utils/redisPubSub';
-import { customAuthChecker } from '../../auth/middleware/authChecker';
-import { redis } from '../../../utils/redisCache';
+import { getTestingToken } from './utils/getTestingToken';
+import { KeyModel } from '../models/Key';
+import { PriceResolver } from '../modules/prices/prices';
+import { APIKeyResolver } from '../modules/apiKey/APIKey';
+import { pubSub } from '../utils/redisPubSub';
+import { customAuthChecker } from '../modules/auth/middleware/authChecker';
+import { redis } from '../utils/redisCache';
 
 config();
 

@@ -1,7 +1,7 @@
 import { IsEmail, Length } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 
-@InputType()
+@InputType('RegisterInput')
 export class RegisterInput {
   @Field()
   @Length(5, 50)

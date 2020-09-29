@@ -1,7 +1,7 @@
 import { ObjectType, Field } from 'type-graphql';
 import metadata from './schemas.metadata.json';
 
-@ObjectType({ description: metadata.MarketData.description })
+@ObjectType('MarketData', { description: metadata.MarketData.description })
 export class MarketData {
   @Field()
   currentPrice!: number;

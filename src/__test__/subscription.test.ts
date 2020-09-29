@@ -4,16 +4,16 @@
 import { graphql, GraphQLSchema, subscribe, parse } from 'graphql';
 import mongoose from 'mongoose';
 import { buildSchema } from 'type-graphql';
-import { MarketData } from '../../../schemas/MarketData';
-import { redis } from '../../../utils/redisCache';
-import { pubSub } from '../../../utils/redisPubSub';
-import { fetchPrices } from '../controllers/helpers/fetchCoinPrices';
-import { PriceResolver } from '../prices';
-import { startPricePublisher, fetchAndPublish } from '../publsihers/pricePublush';
-import { KeyModel } from '../../../models/Key';
-import { getTestingToken } from '../../../utils/testing/getTestingToken';
-import { APIKeyResolver } from '../../apiKey/APIKey';
-import { customAuthChecker } from '../../auth/middleware/authChecker';
+import { MarketData } from '../schemas/MarketData';
+import { redis } from '../utils/redisCache';
+import { pubSub } from '../utils/redisPubSub';
+import { fetchPrices } from '../modules/prices/controllers/helpers/fetchCoinPrices';
+import { PriceResolver } from '../modules/prices/prices';
+import { startPricePublisher, fetchAndPublish } from '../modules/prices/publsihers/pricePublush';
+import { KeyModel } from '../models/Key';
+import { getTestingToken } from './utils/getTestingToken';
+import { APIKeyResolver } from '../modules/apiKey/APIKey';
+import { customAuthChecker } from '../modules/auth/middleware/authChecker';
 
 let token: string;
 let key: string;

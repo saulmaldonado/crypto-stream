@@ -2,12 +2,12 @@ import { config } from 'dotenv';
 import mongoose from 'mongoose';
 import { NextFn, ResolverData } from 'type-graphql';
 
-import { getTestingToken } from '../../../utils/testing/getTestingToken';
-import { checkAPIKey } from '../middleware/checkAPIKey';
-import { Context } from '../../auth/middleware/Context';
-import { getKey } from '../controllers/getAPIKey';
-import { KeyModel } from '../../../models/Key';
-import { redis } from '../../../utils/redisCache';
+import { getTestingToken } from './utils/getTestingToken';
+import { checkAPIKey } from '../modules/apiKey/middleware/checkAPIKey';
+import { Context } from '../modules/auth/middleware/Context';
+import { getKey } from '../modules/apiKey/controllers/getAPIKey';
+import { KeyModel } from '../models/Key';
+import { redis } from '../utils/redisCache';
 
 config();
 let token: string;

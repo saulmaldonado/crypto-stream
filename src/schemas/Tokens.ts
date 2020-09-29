@@ -3,7 +3,7 @@ import { IsJWT } from 'class-validator';
 import { Field, ObjectType } from 'type-graphql';
 import { IsUserID } from '../modules/auth/input/validators/IsUserID';
 
-@ObjectType()
+@ObjectType('LoginTokensAndID')
 export class LoginTokensAndID {
   @Field()
   @IsJWT()

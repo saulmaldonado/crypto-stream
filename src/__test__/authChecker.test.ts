@@ -1,9 +1,9 @@
 /* eslint-disable jest/valid-expect */
 import { ResolverData } from 'type-graphql';
 import { config } from 'dotenv';
-import { getInvalidTestingToken } from '../../../utils/testing/getTestingToken';
-import { customAuthChecker } from '../middleware/authChecker';
-import { Context } from '../middleware/Context';
+import { getInvalidTestingToken } from './utils/getTestingToken';
+import { customAuthChecker } from '../modules/auth/middleware/authChecker';
+import { Context } from '../modules/auth/middleware/Context';
 
 config();
 

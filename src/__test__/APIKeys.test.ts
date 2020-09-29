@@ -3,10 +3,10 @@ import mongoose from 'mongoose';
 import { gql } from 'apollo-server-express';
 
 import { config } from 'dotenv';
-import { initializeTestingServer } from '../../../utils/testing/initializeServer';
-import { getInvalidTestingToken, getTestingToken } from '../../../utils/testing/getTestingToken';
-import { APIKeyResolver } from '../APIKey';
-import { KeyModel } from '../../../models/Key';
+import { initializeTestingServer } from './utils/initializeServer';
+import { getInvalidTestingToken, getTestingToken } from './utils/getTestingToken';
+import { APIKeyResolver } from '../modules/apiKey/APIKey';
+import { KeyModel } from '../models/Key';
 
 config();
 

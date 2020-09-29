@@ -4,7 +4,7 @@ import { prop } from '@typegoose/typegoose';
 import { Coin } from './Coin';
 import { Transaction } from './Transaction';
 
-@ObjectType()
+@ObjectType('Portfolio')
 export class Portfolio {
   @Field()
   public id!: string;

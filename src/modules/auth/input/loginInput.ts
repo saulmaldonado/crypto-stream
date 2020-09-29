@@ -3,7 +3,7 @@ import { Field, InputType } from 'type-graphql';
 
 import { IsUsernameOrEmail } from './validators/IsUsernameOrEmail';
 
-@InputType()
+@InputType('LoginInput')
 export class LoginInput {
   @Field()
   @IsUsernameOrEmail()

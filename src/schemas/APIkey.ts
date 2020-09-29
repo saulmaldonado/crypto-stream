@@ -3,7 +3,7 @@ import { prop } from '@typegoose/typegoose';
 import { Field, ObjectType } from 'type-graphql';
 import metadata from './schemas.metadata.json';
 
-@ObjectType({ description: metadata.APIKey.description })
+@ObjectType('APIKey', { description: metadata.APIKey.description })
 export class APIKey {
   @Field()
   public timestamp!: Date;
