@@ -145,6 +145,17 @@ describe('prices: streamPrices', () => {
     expect(result).not.toEqual([{ coinID: 'BTC' }, { coinID: 'ETH' }]);
   }, 20000);
 
+  it('should fail when given invalid coin IDs', () => {
+    const stream = new PriceResolver().streamPrices;
+
+    const result = stream(
+      [{ coinID: 'BTC' }, { coinID: 'ETH' }, { coinID: 'XRP' }] as PricePayload[],
+      { coinIDs: ['HGL', 'BTC', 'ETH'] }
+    );
+
+    expect(result).not.toEqual([{ coinID: 'HGL' }, { coinID: 'BTC' }, { coinID: 'ETH' }]);
+  }, 20000);
+
   describe('fetchAndPublish', () => {
     let subscribeForFirstMessage: () => Promise<Object[]>;
 
