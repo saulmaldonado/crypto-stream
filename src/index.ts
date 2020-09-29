@@ -5,6 +5,7 @@ import { ApolloServer } from 'apollo-server-express';
 import { config } from 'dotenv';
 import { buildSchema } from 'type-graphql';
 import http from 'http';
+import cors from 'cors';
 
 import { connect } from './connect';
 import { PriceResolver } from './modules/prices/prices';
@@ -21,6 +22,8 @@ import { customAuthChecker } from './modules/auth/middleware/authChecker';
 config();
 
 const app = express();
+
+app.use(cors());
 
 (async () => {
   await connect(

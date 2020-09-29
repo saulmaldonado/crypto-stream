@@ -12,6 +12,8 @@
   "main": "build/index.js",
   "scripts": {
     "build": "webpack",
+    "prestart:prod":"docker-compose up -d",
+    "start:prod": "npx dotenv-cli -- node build/index.js",
     "postinstall": "patch-package",
     "test:CI": "jest --coverage",
     "start": " tsnd --respawn ./src/index.ts",
@@ -30,6 +32,7 @@
     "auth0-js": "^9.14.0",
     "axios": "^0.20.0",
     "class-validator": "^0.12.2",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
