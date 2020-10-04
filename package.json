@@ -12,7 +12,7 @@
   "main": "build/index.js",
   "scripts": {
     "build": "webpack",
-    "prestart:prod":"docker-compose up -d",
+    "prestart:prod":"yarn build",
     "start:prod": "npx dotenv-cli -- node build/index.js",
     "postinstall": "patch-package",
     "test:CI": "jest --coverage",

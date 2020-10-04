@@ -1,5 +1,5 @@
 {
-  "exclude": ["webpack.config.js", "node_modules", "jest.config.js", "build/index.js", "coverage/"],
+  "include": ["./src"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 

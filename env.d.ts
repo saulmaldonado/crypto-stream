@@ -18,6 +18,7 @@ declare global {
       NODE_ENV: string;
       MONGO_URI: string;
       REDIS_HOST: string;
+      REDIS_PASSWORD: string;
     }
   }
 }
