@@ -2,7 +2,7 @@
 
 # start nginx-ingress
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v0.35.0/deploy/static/provider/do/deploy.yaml
-kubectl apply -f ingress.yaml
+kubectl apply -f ingress-staging.yaml
 
 # start mongodb replicaset
 kubectl apply -f mongo-price-api.yaml
@@ -24,7 +24,7 @@ exit
 echo REDIS_PASSWORD=$REDIS_PASSWORD\n >> .env
 
 # generate server env for server
-kubectl create secret generic price-api-env --from-env-file=.env
+kubectl create secret generic price-api-env --from-env-file=.env.k8s
 
 # start server 
 kubectl apply -f graphQLServerDeployment.yaml

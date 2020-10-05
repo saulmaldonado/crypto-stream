@@ -5,3 +5,4 @@
 coverage
 .gitsecret/keys/random_seed
 !*.secret
+k8s/.env.k8s
