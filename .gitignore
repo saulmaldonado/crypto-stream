@@ -3,3 +3,5 @@
 .env
 .vscode
 coverage
+.gitsecret/keys/random_seed
+!*.secret
