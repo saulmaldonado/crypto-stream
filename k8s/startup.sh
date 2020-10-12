@@ -17,16 +17,16 @@ export CLUSTER_REDIS_HOST=crypto-redis-master.default.svc.cluster.local
 kubectl cp coinIds.redis crypto-redis-master-0:/tmp/
 kubectl exec -it crypto-redis-master-0 -- /bin/bash
 cd tmp
-redis-cli -a $REDIS_PASSWORD < coinIds.redis
+redis-cli -a $REDIS_PASSWORD <coinIds.redis
 exit
 
 # add redis password to .env
-echo REDIS_PASSWORD=$REDIS_PASSWORD >> .env
+echo REDIS_PASSWORD=$REDIS_PASSWORD >>.env
 
 # generate server env for server
 kubectl create secret generic price-api-env --from-env-file=.env.k8s
 
-# start server 
+# start server
 kubectl apply -f graphQLServerDeployment.yaml
 
 # display server logs

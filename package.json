@@ -13,7 +13,7 @@
   "scripts": {
     "build": "webpack",
     "prestart:prod":"yarn build",
-    "start:prod": "npx dotenv-cli -- node build/index.js",
+    "start:prod": "node build/index.js",
     "postinstall": "patch-package",
     "test:CI": "jest --coverage",
     "start": " tsnd --respawn ./src/index.ts",
