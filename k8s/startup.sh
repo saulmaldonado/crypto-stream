@@ -5,12 +5,12 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 kubectl apply -f ingress-staging.yaml
 
 # start mongodb replicaset
-kubectl apply -f mongo-price-api.yaml
+kubectl apply -f mongo-price-api-replicaset.yaml
 
 # start redis cluster
 helm install crypto-redis --set master.persistence.size=1Gi,slave.persistence.size=1Gi bitnami/redis
 
-export REDIS_PASSWORD=$(kubectl get secret --namespace default crypto-redis-redis-cluster -o jsonpath="{.data.redis-password}" | base64 --decode)
+export REDIS_PASSWORD=$(kubectl get secret --namespace default crypto-redis -o jsonpath="{.data.redis-password}" | base64 --decode)
 export CLUSTER_REDIS_HOST=crypto-redis-master.default.svc.cluster.local
 
 # copy and run coinIds redis script
@@ -21,7 +21,7 @@ redis-cli -a $REDIS_PASSWORD < coinIds.redis
 exit
 
 # add redis password to .env
-echo REDIS_PASSWORD=$REDIS_PASSWORD\n >> .env
+echo REDIS_PASSWORD=$REDIS_PASSWORD >> .env
 
 # generate server env for server
 kubectl create secret generic price-api-env --from-env-file=.env.k8s
