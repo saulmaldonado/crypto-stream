@@ -13,9 +13,6 @@ jobs:
       - name: Checkout master
         uses: actions/checkout@v2
 
-      - name: Update SHA
-        run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/site/_meta
-
       - name: Build container image
         run: docker build -t saulmaldonado/cryptotracker-graphql-price-api:$(echo $GITHUB_SHA | head -c7) .
 
