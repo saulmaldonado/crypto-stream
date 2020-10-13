@@ -30,8 +30,11 @@ jobs:
       - name: Push image to Docker Hub Container Registry
         run: docker push saulmaldonado/cryptotracker-graphql-price-api
 
+      - name: Get current image name
+        run: export OLD_IMAGE_NAME=$(kubectl get deployment price-api -o jsonpath="{.spec.template.spec.containers[0].image}")
+
       - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|saulmaldonado/cryptotracker-graphql-price-api:'${TAG}'|' $GITHUB_WORKSPACE/k8s/graphQLServerDeployment.yaml
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|${OLD_IMAGE_NAME}|saulmaldonado/cryptotracker-graphql-price-api:'${TAG}'|' $GITHUB_WORKSPACE/k8s/graphQLServerDeployment.yaml
 
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save crypto-tracker
