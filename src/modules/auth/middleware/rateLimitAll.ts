@@ -26,7 +26,7 @@ export const rateLimitAll: (limit: number, guestLimit: number) => MiddlewareFn<C
   if (current > userLimit) {
     throw new ApolloError("You've reached your limit");
   } else if (current === 1) {
-    await redis.expire(key, redisConfig.ONE_DAY);
+    await redis.expire(rateLimitKey, redisConfig.ONE_DAY);
   }
 
   return next();
