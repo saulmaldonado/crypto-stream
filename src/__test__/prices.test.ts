@@ -258,6 +258,6 @@ describe('prices: getPrices', () => {
       const result = await graphql(schema, GET_COIN_PRICES, null, { address }, { coinIDs });
 
       expect(result.errors).toBeTruthy();
-    });
+    }, 10000);
   });
 });
