@@ -3,7 +3,7 @@
     "description": "Websocket feed of the top 100 cryptocurrencies' market data. Market data is published every 10 seconds. Guest users are limited to 100 ticks per 24 hours. For unlimited streaming, you must include your API key in the HTTP header 'X-API-Key'"
   },
   "getPrices": {
-    "description": "Request market data for select currencies by ID (e.g. BTC, ETH). Market data is published every 10 seconds. Guest users are limited to 50 on-demand requests per 24 hours. Authorized users are limited to 100 on-demand request per 24 hours"
+    "description": "Request market data for select currencies by ID (e.g. BTC, ETH). Market data is published every 10 seconds. Guest users are limited to 50 on-demand requests per 24 hours. Authorized users are limited to 100 on-demand request per 24 hours. You must include your API key in the HTTP header 'X-API-Key'"
   },
   "getCurrencyRankings": {
     "description": "Get currencies ranked by market cap. Default: top 100. Guest users are limited to 100 requests per 24 hours. For unlimited requests, you must include your API key in the HTTP header 'X-API-Key'"

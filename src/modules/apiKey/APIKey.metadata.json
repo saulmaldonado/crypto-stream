@@ -1,8 +1,8 @@
 {
   "getAPIKey": {
-    "description": "Generate a new or recover your previous API Key. You must be registered and must include 'Authorization': 'Bearer {ACCESS_TOKEN}' in the HTTP request headers in order to be authenticated."
+    "description": "Generate a new or recover your previous API Key. You must be registered and you must include 'Authorization': 'Bearer <ACCESS_TOKEN>' in the HTTP request headers to be authenticated."
   },
   "refreshAPIKey": {
-    "description": "Generate a new API Key and expire your old API Key. You must be registered and must include 'Authorization': 'Bearer {ACCESS_TOKEN}' in the HTTP request headers in order to be authenticated."
+    "description": "Generate a new API Key and expire your old API Key. You must be registered and you must include 'Authorization': 'Bearer <ACCESS_TOKEN>' in the HTTP request headers to be authenticated."
   }
 }
