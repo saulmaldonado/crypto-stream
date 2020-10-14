@@ -14,7 +14,7 @@ kind: Deployment
 metadata:
   name: price-api
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: price-api
@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: price-api
-          image: saulmaldonado/cryptotracker-graphql-price-api:1.0.1
+          image: <IMAGE>
           ports:
             - containerPort: 5000
           envFrom:

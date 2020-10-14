@@ -12,6 +12,7 @@ import { APIKeyResolver } from '../modules/apiKey/APIKey';
 import { pubSub } from '../utils/redisPubSub';
 import { customAuthChecker } from '../modules/auth/middleware/authChecker';
 import { redis } from '../utils/redisCache';
+import { rateLimiters } from '../config/RateLimitConfig';
 
 config();
 
@@ -228,14 +229,32 @@ describe('prices: getPrices', () => {
   describe('ratelimiting: address', () => {
     const address = '0.0.0.0';
     beforeAll(async () => {
-      await redis.incrby(`${address} HIT ENDPOINT`, 50);
-    });
-
-    afterAll(async () => {
       await redis.del(`${address} HIT ENDPOINT`);
     });
 
-    it('should rate limit with address after certain number of request', async () => {
+    afterEach(async () => {
+      await redis.del(`${address} HIT ENDPOINT`);
+    });
+
+    it('should rate limit with address if value in redis at or above limit', async () => {
+      await redis.incrby(`${address} HIT ENDPOINT`, 50);
+
+      const result = await graphql(schema, GET_COIN_PRICES, null, { address }, { coinIDs });
+
+      expect(result.errors).toBeTruthy();
+    });
+
+    it('should rate limit with address after certain number of requests', async () => {
+      const limit = rateLimiters.getPrices.UNAUTHENTICATED;
+
+      const promises = [];
+
+      for (let i = 0; i < limit; i += 1) {
+        promises.push(graphql(schema, GET_COIN_PRICES, null, { address }, { coinIDs }));
+      }
+
+      await Promise.all(promises);
+
       const result = await graphql(schema, GET_COIN_PRICES, null, { address }, { coinIDs });
 
       expect(result.errors).toBeTruthy();

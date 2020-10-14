@@ -7,6 +7,7 @@ import { rateLimitAll } from '../auth/middleware/rateLimitAll';
 import { getCoinPrices } from './controllers/getCoinPrices';
 import { getRankings } from './controllers/getRankings';
 import { CurrencyIDInput } from './input/currencyIDs';
+import { rateLimiters } from '../../config/RateLimitConfig';
 import metadata from './prices.metadata.json';
 
 @Resolver()
@@ -15,7 +16,7 @@ export class PriceResolver {
     topics: 'PRICES',
     description: metadata.streamPrices.description,
   })
-  @UseMiddleware(rateLimitAnon(100))
+  @UseMiddleware(rateLimitAnon(rateLimiters.streamPrices.UNAUTHENTICATED))
   streamPrices(
     @Root() marketData: MarketData[],
     @Arg('data', { nullable: true }) input: CurrencyIDInput
@@ -30,7 +31,9 @@ export class PriceResolver {
     nullable: 'items',
     description: metadata.getPrices.description,
   })
-  @UseMiddleware(rateLimitAll(100))
+  @UseMiddleware(
+    rateLimitAll(rateLimiters.getPrices.AUTHENTICATED, rateLimiters.getPrices.UNAUTHENTICATED)
+  )
   async getPrices(@Arg('data') { coinIDs }: CurrencyIDInput): Promise<MarketData[] | never> {
     return getCoinPrices(coinIDs);
   }
@@ -39,7 +42,7 @@ export class PriceResolver {
     nullable: 'items',
     description: metadata.getCurrencyRankings.description,
   })
-  @UseMiddleware(rateLimitAnon(100))
+  @UseMiddleware(rateLimitAnon(rateLimiters.getCurrencyRankings.UNAUTHENTICATED))
   @UseMiddleware(checkAPIKey())
   async getCurrencyRankings(
     @Arg('limit', () => Int, { defaultValue: 100, description: metadata.limit.description })
