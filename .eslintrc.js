@@ -17,8 +17,12 @@ module.exports = {
       },
     },
   },
+  globals: {
+    'NodeJS': true
+  },
   plugins: ['@typescript-eslint', 'jest'],
   rules: {
+    "@typescript-eslint/no-unused-vars": ["error"],  
     'import/extensions': 0,
     'import/prefer-default-export': 0,
     'import/no-extraneous-dependencies': 0,

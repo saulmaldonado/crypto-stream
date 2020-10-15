@@ -1,9 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable no-shadow */
-/* eslint-disable no-undef */
-import { graphql, GraphQLSchema, subscribe, parse } from 'graphql';
+import { GraphQLSchema, subscribe, parse } from 'graphql';
 import mongoose from 'mongoose';
-import { buildSchema } from 'type-graphql';
 import { MarketData } from '../schemas/MarketData';
 import { redis } from '../utils/redisCache';
 import { pubSub } from '../utils/redisPubSub';
@@ -11,21 +9,11 @@ import { fetchPrices } from '../modules/prices/controllers/helpers/fetchCoinPric
 import { PriceResolver } from '../modules/prices/prices';
 import { startPricePublisher, fetchAndPublish } from '../modules/prices/publsihers/pricePublush';
 import { KeyModel } from '../models/Key';
-import { getTestingToken } from './utils/getTestingToken';
 import { APIKeyResolver } from '../modules/apiKey/APIKey';
-import { customAuthChecker } from '../modules/auth/middleware/authChecker';
+import { createSchemaAndToken, getTestingApiKey } from './utils/getTestingApiKey';
 
-let token: string;
 let key: string;
 let schema: GraphQLSchema;
-
-const GET_API_KEY = `
-query {
-  getAPIKey {
-    timestamp
-    key
-  }
-}`;
 
 const STREAM_PRICES = `
 subscription {
@@ -36,45 +24,29 @@ subscription {
 }`;
 
 beforeAll(async () => {
-  try {
-    await mongoose.connect(`${process.env.MONGO_URI}/test9`, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-    });
-    token = await getTestingToken();
+  await mongoose.connect(`${process.env.MONGO_URI}/test9`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+  });
 
-    schema = await buildSchema({
-      resolvers: [PriceResolver, APIKeyResolver],
-      authChecker: customAuthChecker,
-      pubSub,
-    });
-  } catch (error) {
-    fail(error);
-  }
+  ({ schema } = await createSchemaAndToken([PriceResolver, APIKeyResolver], pubSub));
+
+  key = await getTestingApiKey();
 });
 
 afterAll(async () => {
-  try {
-    await KeyModel.deleteMany({});
-    await mongoose.disconnect();
-    await pubSub.close();
-    redis.disconnect();
-  } catch (error) {
-    fail(error);
-  }
+  await KeyModel.deleteMany({});
+  await mongoose.disconnect();
+  await pubSub.close();
+  redis.disconnect();
 });
 
 describe('prices: streamPrices', () => {
   let timeout: NodeJS.Timeout;
 
   beforeAll(async () => {
-    const result = await graphql(schema, GET_API_KEY, null, {
-      token,
-    });
-
-    key = result.data?.getAPIKey.key;
     timeout = startPricePublisher(pubSub, 15);
   });
   afterAll(() => {
@@ -174,18 +146,14 @@ describe('prices: streamPrices', () => {
     });
 
     afterAll(async () => {
-      try {
-        await redis.del('lastPrices');
-      } catch (error) {
-        fail(error);
-      }
+      await redis.del('lastPrices');
     });
 
     afterEach(async () => {
       try {
         await redis.del('rankings');
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     });
 

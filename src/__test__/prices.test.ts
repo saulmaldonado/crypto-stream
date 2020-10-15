@@ -2,17 +2,15 @@
 /* eslint-disable no-shadow */
 import mongoose from 'mongoose';
 import { graphql, GraphQLSchema } from 'graphql';
-import { buildSchema } from 'type-graphql';
 
 import { config } from 'dotenv';
-import { getTestingToken } from './utils/getTestingToken';
 import { KeyModel } from '../models/Key';
 import { PriceResolver } from '../modules/prices/prices';
 import { APIKeyResolver } from '../modules/apiKey/APIKey';
 import { pubSub } from '../utils/redisPubSub';
-import { customAuthChecker } from '../modules/auth/middleware/authChecker';
 import { redis } from '../utils/redisCache';
 import { rateLimiters } from '../config/RateLimitConfig';
+import { createSchemaAndToken } from './utils/getTestingApiKey';
 
 config();
 
@@ -56,19 +54,14 @@ query($limit: Int) {
 
 beforeAll(async () => {
   try {
-    await mongoose.connect(`${process.env.MONGO_URI}/test`, {
+    await mongoose.connect(`${process.env.MONGO_URI}/pricesTest`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
       useFindAndModify: false,
     });
-    token = await getTestingToken();
 
-    schema = await buildSchema({
-      resolvers: [PriceResolver, APIKeyResolver],
-      authChecker: customAuthChecker,
-      pubSub,
-    });
+    ({ schema, token } = await createSchemaAndToken([PriceResolver, APIKeyResolver], pubSub));
   } catch (error) {
     fail(error);
   }
@@ -76,13 +69,10 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await KeyModel.deleteMany({});
-  try {
-    await mongoose.disconnect();
-    await pubSub.close();
-    redis.disconnect();
-  } catch (error) {
-    fail(error);
-  }
+  await mongoose.connection.db.dropDatabase();
+  await mongoose.disconnect();
+  await pubSub.close();
+  redis.disconnect();
 });
 
 describe('prices: getCoinRankings', () => {
