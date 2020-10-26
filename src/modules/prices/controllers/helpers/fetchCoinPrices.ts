@@ -1,11 +1,7 @@
-/* eslint-disable no-console */
 /* eslint-disable camelcase */
-import { ApolloError } from 'apollo-server-express';
-import axios from 'axios';
-import qs from 'qs';
-
 import { redis } from '../../../../utils/redisCache';
 import { MarketData } from '../../../../schemas/MarketData';
+import { fetchNewPrices } from './fetchNewPrices';
 
 type FetchPricesArguments = {
   coinIDs?: string[];
@@ -53,54 +49,44 @@ export const fetchPrices = async (
     limit: 100,
   }
 ): Promise<MarketData[] | never> => {
-  const coinIDsString = coinIDs.length
-    ? `&${qs.stringify({ ids: coinIDs }, { arrayFormat: 'comma' })}`
-    : '';
+  const data = await fetchNewPrices(coinIDs);
 
-  try {
-    const { data } = await axios.get<PriceData[]>(
-      `https://api.nomics.com/v1/currencies/ticker?key=${process.env.NOMICS_API_KEY}${coinIDsString}&interval=1d`
-    );
-
-    if (coinIDsString) {
-      limit = coinIDs.length;
-    } else {
-      redis
-        .set(
-          'rankings',
-          JSON.stringify(
-            data.slice(0, 100).map(({ id: coinID, name }, index) => ({
-              ranking: index + 1,
-              coinID,
-              name,
-            }))
-          ),
-          'ex',
-          ONE_MINUTE * 10
-        )
-        .catch();
-    }
-
-    data.length = limit;
-
-    const mappedData: MarketData[] = data.map((coin) => ({
-      currentPrice: Number(coin.price),
-      name: coin.name,
-      coinID: coin.id,
-      priceTimestamp: coin.price_timestamp,
-      circulatingSupply: Number(coin.circulating_supply),
-      maxSupply: Number(coin.max_supply),
-      marketCap: Number(coin.market_cap),
-      oneDayPriceChange: Number(coin['1d']?.price_change ?? 0),
-      oneDayPriceChangePct: Number(coin['1d']?.price_change_pct ?? 0),
-      oneDayVolume: Number(coin['1d']?.volume ?? 0),
-    }));
-
-    // if called for subscription, set subscription cache
-    if (subscription) redis.set('lastPrices', JSON.stringify(mappedData), 'ex', ONE_HOUR);
-
-    return mappedData;
-  } catch (error) {
-    throw new ApolloError(error, 'EXTERNAL_API_ERROR');
+  if (coinIDs.length) {
+    limit = coinIDs.length;
+  } else {
+    redis
+      .set(
+        'rankings',
+        JSON.stringify(
+          data.slice(0, 100).map(({ id: coinID, name }, index) => ({
+            ranking: index + 1,
+            coinID,
+            name,
+          }))
+        ),
+        'ex',
+        ONE_MINUTE * 10
+      )
+      .catch();
   }
+
+  data.length = limit;
+
+  const mappedData: MarketData[] = data.map((coin) => ({
+    currentPrice: Number(coin.price),
+    name: coin.name,
+    coinID: coin.id,
+    priceTimestamp: coin.price_timestamp,
+    circulatingSupply: Number(coin.circulating_supply),
+    maxSupply: Number(coin.max_supply),
+    marketCap: Number(coin.market_cap),
+    oneDayPriceChange: Number(coin['1d']?.price_change ?? 0),
+    oneDayPriceChangePct: Number(coin['1d']?.price_change_pct ?? 0),
+    oneDayVolume: Number(coin['1d']?.volume ?? 0),
+  }));
+
+  // if called for subscription, set subscription cache
+  if (subscription) redis.set('lastPrices', JSON.stringify(mappedData), 'ex', ONE_HOUR);
+
+  return mappedData;
 };
