@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: github-redirect
+spec:
+  type: ExternalName
+  externalName: github.com/saulmaldonado/cryptotracker
+  ports:
+    - port: 80
+      targetPort: 443

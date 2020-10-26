@@ -4,6 +4,7 @@ import {
   ValidationOptions,
   registerDecorator,
 } from 'class-validator';
+import Redis from 'ioredis';
 import { redis } from '../../../../utils/redisCache';
 
 @ValidatorConstraint()
@@ -14,7 +15,7 @@ export class CoinIDConstraint implements ValidatorConstraintInterface {
       arr[i] = arr[i].toUpperCase();
       coin = arr[i];
 
-      const res = await redis.hget('COINIDS', coin);
+      const res: Redis.BooleanResponse = await redis.sismember('COINIDS', coin);
       return !!res;
     });
   }

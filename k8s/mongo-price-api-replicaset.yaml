@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: mongo
+  name: mongo-price-api
   namespace: default
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -30,44 +30,43 @@ roleRef:
   name: read-pod-service-endpoint
 subjects:
   - kind: ServiceAccount
-    name: mongo
+    name: mongo-price-api
     namespace: default
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo
+  name: mongo-price-api
   labels:
-    name: mongo
+    name: mongo-price-api
 spec:
   ports:
     - port: 27017
       targetPort: 27017
   clusterIP: None
   selector:
-    role: mongo
+    role: mongo-price-api
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mongo
+  name: mongo-price-api
 spec:
-  serviceName: 'mongo'
+  serviceName: 'mongo-price-api'
   replicas: 2
   selector:
     matchLabels:
-      role: mongo
+      role: mongo-price-api
   template:
     metadata:
       labels:
-        role: mongo
-        environment: test
+        role: mongo-price-api
     spec:
-      serviceAccountName: mongo
+      serviceAccountName: mongo-price-api
       automountServiceAccountToken: true
       terminationGracePeriodSeconds: 30
       containers:
-        - name: mongo
+        - name: mongo-price-api
           image: mongo:4
           command:
             - mongod
@@ -77,18 +76,18 @@ spec:
           ports:
             - containerPort: 27017
           volumeMounts:
-            - name: mongo-persistent-storage
+            - name: mongo-price-api-persistent-storage
               mountPath: /data/db
         - name: mongo-sidecar
           image: morphy/k8s-mongo-sidecar
           env:
             - name: KUBERNETES_POD_LABELS
-              value: 'role=mongo,environment=test'
+              value: 'role=mongo-price-api'
             - name: KUBERNETES_SERVICE_NAME
-              value: 'mongo'
+              value: 'mongo-price-api'
   volumeClaimTemplates:
     - metadata:
-        name: mongo-persistent-storage
+        name: mongo-price-api-persistent-storage
       spec:
         accessModes: ['ReadWriteOnce']
         resources:
