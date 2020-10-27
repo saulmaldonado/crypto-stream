@@ -24,5 +24,6 @@ export const pricePublishedInit = (fn: () => void, interval: number) => {
   if (diff > 100) {
     return setTimeout(loop, diff);
   }
-  return loop();
+  /* istanbul ignore next */
+  return loop(); // the chances of this branch running during tests is highly unlikely
 };
