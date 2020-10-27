@@ -40,15 +40,21 @@ describe('keyFunctions: genKey', () => {
 });
 
 describe('keyFunctions: generateAPIKey', () => {
-  let getTokenUserIDMock: jest.SpyInstance<string, [Context]>;
+  let getTokenUserIDMock: jest.SpyInstance<
+    ReturnType<typeof tokenMethods.getTokenUserID>,
+    Parameters<typeof tokenMethods.getTokenUserID>
+  >;
+
+  beforeAll(() => {
+    getTokenUserIDMock = jest.spyOn(tokenMethods, 'getTokenUserID');
+    getTokenUserIDMock.mockImplementation(() => userID);
+  });
 
   afterAll(() => {
     getTokenUserIDMock.mockRestore();
   });
 
   it('should return a complete Key object', () => {
-    getTokenUserIDMock = jest.spyOn(tokenMethods, 'getTokenUserID');
-    getTokenUserIDMock.mockImplementation(() => 'auth0|5f6aa02c4419aa00717f9ee8');
     const keyObj = generateAPIKey({} as Context);
     expect(keyObj).toEqual({
       _id: expect.any(String),
@@ -56,6 +62,30 @@ describe('keyFunctions: generateAPIKey', () => {
       iv: expect.any(String),
       key: expect.any(String),
       timestamp: expect.any(Date),
+    });
+  });
+
+  describe('failure edge case', () => {
+    let genKeyMock: jest.SpyInstance<ReturnType<typeof genKey>, Parameters<typeof genKey>>;
+
+    beforeAll(async () => {
+      genKeyMock = jest.spyOn(
+        await import('../modules/apiKey/controllers/helpers/keyFunctions'),
+        'genKey'
+      );
+      genKeyMock.mockImplementation(() => {
+        throw new Error();
+      });
+    });
+
+    afterAll(() => {
+      genKeyMock.mockRestore();
+    });
+
+    it('should throw server error on failure', async () => {
+      expect(() => {
+        generateAPIKey({} as Context);
+      }).toThrow();
     });
   });
 });
