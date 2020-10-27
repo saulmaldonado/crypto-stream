@@ -7,12 +7,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/saulmaldonado/dotenv-types-generator.git"
+    "url": "https://github.com/saulmaldonado/CrytoTracker.git"
   },
   "main": "build/index.js",
   "scripts": {
     "build": "webpack",
-    "prestart:prod":"yarn build",
+    "prestart:prod": "yarn build",
     "start:prod": "node build/index.js",
     "postinstall": "patch-package",
     "test:CI": "jest --coverage",
@@ -20,8 +20,8 @@
     "prestart": "docker-compose up -d",
     "pretest": "docker-compose stop && docker-compose -f docker-compose-test.yml up -d",
     "posttest": "docker-compose stop",
-    "test": "jest --coverage --logHeapUsage",
-    "lint": "eslint src/**/*.ts"
+    "test": "jest --coverage --logHeapUsage --forceExit",
+    "lint": "eslint src/**/*.{ts}"
   },
   "keywords": [],
   "author": "Saul Maldonado <samaldonado4@gmail.com>",
@@ -30,7 +30,7 @@
     "@typegoose/typegoose": "^7.3.5",
     "apollo-server-express": "^2.17.0",
     "auth0-js": "^9.14.0",
-    "axios": "^0.20.0",
+    "axios": "^0.21.0",
     "class-validator": "^0.12.2",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
@@ -72,7 +72,6 @@
     "eslint": "^7.9.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-node": "^11.1.0",
@@ -86,8 +85,8 @@
     "ts-loader": "^8.0.4",
     "ts-node-dev": "^1.0.0-pre.62",
     "typescript": "^4.0.2",
-    "webpack": "^4.44.2",
-    "webpack-cli": "^3.3.12"
+    "webpack": "^5.3.0",
+    "webpack-cli": "^4.1.0"
   },
   "husky": {
     "hooks": {
@@ -96,7 +95,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{ts,yaml,yml,json}": [
+    "src/**/*.{ts,yaml,yml}": [
       "eslint --fix",
       "prettier --write"
     ]
