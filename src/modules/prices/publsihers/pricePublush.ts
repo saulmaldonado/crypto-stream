@@ -25,12 +25,14 @@ export const fetchAndPublish = async (pubSub: RedisPubSub) => {
   pubSub.publish('PRICES', coins);
 };
 
+type StartPricePublisher = (pubSub: RedisPubSub, priceInterval?: number) => NodeJS.Timeout;
 /**
  *
- * @param {Express} app  Express app instance
+ * @param {pubSub} RedisPubSub  Redis PubSub instance
  * @param {number} [priceInterval=60] Interval at which prices will be published in seconds.
+ * @returns {NodeJS.Timeout} NodeJS.Timeout
  */
-export const startPricePublisher = (pubSub: RedisPubSub, priceInterval: number = 60) => {
+export const startPricePublisher: StartPricePublisher = (pubSub, priceInterval = 60) => {
   return pricePublishedInit(() => {
     fetchAndPublish(pubSub);
   }, priceInterval);

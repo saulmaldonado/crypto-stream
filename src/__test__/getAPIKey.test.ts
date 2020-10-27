@@ -3,7 +3,6 @@ import { config } from 'dotenv';
 import { KeyModel } from '../models/Key';
 import { Context } from '../modules/auth/middleware/Context';
 import { getTokenUserID } from '../modules/auth/jwt/getTokenUserID';
-// import * as getTokenUserIDModule from '../modules/auth/jwt/getTokenUserID';
 import { getKey } from '../modules/apiKey/controllers/getAPIKey';
 import { generateAPIKey } from '../modules/apiKey/controllers/helpers/keyFunctions';
 import { redis } from '../utils/redisCache';
