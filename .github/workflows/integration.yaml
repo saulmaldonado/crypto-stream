@@ -16,7 +16,7 @@ jobs:
         node: ['14.x']
     services:
       redis:
-        image: saulmaldonado/crypto-redis-test:1.0.0
+        image: saulmaldonado/crypto-tracker-redis-test:2.0.0
       mongo:
         image: mongo:4.4
     steps:
