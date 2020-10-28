@@ -1,5 +1,5 @@
 diff --git a/node_modules/@types/express-jwt/index.d.ts b/node_modules/@types/express-jwt/index.d.ts
-index 52d7d90..ef9d852 100644
+index 52d7d90..bb55786 100644
 --- a/node_modules/@types/express-jwt/index.d.ts
 +++ b/node_modules/@types/express-jwt/index.d.ts
 @@ -23,7 +23,7 @@ declare namespace jwt {

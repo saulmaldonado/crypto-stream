@@ -6,7 +6,7 @@ import { pubSub } from '../utils/redisPubSub';
 describe('pricePublishedInit', () => {
   jest.useFakeTimers();
 
-  afterAll(() => {
+  afterAll(async () => {
     jest.clearAllTimers();
   });
 
@@ -21,27 +21,22 @@ describe('pricePublishedInit', () => {
 });
 
 describe('startPricePublisher', () => {
-  let fetchAndPublishMock: jest.SpyInstance<
-    ReturnType<typeof fetchAndPublish>,
-    Parameters<typeof fetchAndPublish>
-  >;
-
-  jest.useFakeTimers();
+  let fetchAndPublishMock: jest.SpyInstance<any, Parameters<typeof fetchAndPublish>>;
 
   beforeAll(async () => {
+    jest.useFakeTimers();
     fetchAndPublishMock = jest.spyOn(
       await import('../modules/prices/publsihers/pricePublush'),
       'fetchAndPublish'
     );
-
-    fetchAndPublishMock.mockImplementation(async () => {});
+    fetchAndPublishMock.mockImplementation(() => {});
   });
 
   afterAll(async () => {
-    fetchAndPublishMock.mockRestore();
     jest.clearAllTimers();
-    await pubSub.close();
     redis.disconnect();
+    await pubSub.close();
+    fetchAndPublishMock.mockRestore();
   });
 
   it('should call callback method', async () => {
@@ -50,5 +45,7 @@ describe('startPricePublisher', () => {
     jest.advanceTimersByTime(2000);
 
     expect(fetchAndPublishMock).toBeCalled();
+
+    expect(true).toBeTruthy();
   });
 });
