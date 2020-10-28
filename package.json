@@ -21,7 +21,8 @@
     "pretest": "docker-compose stop && docker-compose -f docker-compose-test.yml up -d",
     "posttest": "docker-compose stop",
     "test": "jest --coverage --logHeapUsage --forceExit",
-    "lint": "eslint src/**/*.{ts}"
+    "lint": "eslint src/**/*.{ts}",
+    "patch": "patch-package jwks-rsa @types/express-jwt"
   },
   "keywords": [],
   "author": "Saul Maldonado <samaldonado4@gmail.com>",
