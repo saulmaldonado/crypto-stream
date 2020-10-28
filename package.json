@@ -25,6 +25,7 @@
     "patch": "patch-package jwks-rsa @types/express-jwt"
   },
   "keywords": [],
+  "engines": {"node": ">=14.8"},
   "author": "Saul Maldonado <samaldonado4@gmail.com>",
   "license": "MIT",
   "dependencies": {
