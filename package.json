@@ -15,7 +15,7 @@
     "prestart:prod": "yarn build",
     "start:prod": "node build/index.js",
     "postinstall": "patch-package",
-    "test:CI": "jest --coverage",
+    "test:CI": "jest --coverage --forceExit",
     "start": " tsnd --respawn ./src/index.ts",
     "prestart": "docker-compose up -d",
     "pretest": "docker-compose stop && docker-compose -f docker-compose-test.yml up -d",
