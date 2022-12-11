@@ -48,7 +48,7 @@
     "mongoose": "^5.10.5",
     "patch-package": "^6.2.2",
     "postinstall-postinstall": "^2.1.0",
-    "qs": "^6.9.4",
+    "qs": "^6.9.7",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^9.0.0",
     "type-graphql": "^1.0.0",
